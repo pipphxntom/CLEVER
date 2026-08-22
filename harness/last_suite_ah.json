@@ -1,0 +1,2389 @@
+{
+  "when": "2026-08-22T21:50:13.172541+00:00",
+  "elapsed_s": 240.3,
+  "provider": "openai_compat",
+  "version": "0.4.0",
+  "health": {
+    "status": "ok",
+    "version": "0.4.0",
+    "provider": "openai_compat",
+    "db": "ok",
+    "redis": "ok"
+  },
+  "dashboard_http": 200,
+  "dashboard_ok": true,
+  "harness_spend_usd": 0.02614,
+  "db_window": {
+    "n": 55,
+    "total_cost_usd": 0.02614,
+    "total_baseline_usd": 0.063494,
+    "mixed_saved_pct": 58.8,
+    "llm_n": 33,
+    "llm_cost_usd": 0.02614,
+    "llm_baseline_usd": 0.0464,
+    "llm_saved_pct": 43.7,
+    "ras_n": 4,
+    "cache_n": 7,
+    "stakes_pending_n": 11,
+    "short_circuit_pct": 40.0,
+    "note": "mixed_saved_pct includes RAS/cache/stakes $0 vs strong-tier uncompressed baseline. Quote llm_saved_pct + short_circuit_pct, not the mix."
+  },
+  "final_stats": {
+    "provider": "openai_compat",
+    "window": "24h",
+    "summary": {
+      "total_requests": 55,
+      "total_cost_usd": 0.0261,
+      "total_baseline_usd": 0.0635,
+      "total_saved_usd": 0.0374,
+      "avg_saved_pct": 59.4,
+      "avg_saved_pct_note": "MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.",
+      "llm_saved_pct": 32.4,
+      "short_circuit_pct": 40.0,
+      "avg_latency_ms": 7416.0
+    },
+    "by_exit": {
+      "ras": 4,
+      "cache": 7,
+      "stakes_pending": 11,
+      "llm": 33,
+      "total": 55
+    },
+    "stakes_gate_trips": [
+      {
+        "ts": "2026-08-22 21:51:37.573292+00:00",
+        "intent": "remit",
+        "reason": "mutate_intent:remit",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:51:37.543019+00:00",
+        "intent": "remit",
+        "reason": "mutate_intent:remit",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:51:37.511894+00:00",
+        "intent": "remit",
+        "reason": "mutate_intent:remit",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:51:37.482521+00:00",
+        "intent": "remit",
+        "reason": "mutate_intent:remit",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:51:37.443698+00:00",
+        "intent": "remit",
+        "reason": "mutate_intent:remit",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:51:13.779158+00:00",
+        "intent": "remit",
+        "reason": "mutate_intent:remit",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:50:45.822669+00:00",
+        "intent": "report_summary",
+        "reason": "high_stakes_class:reconciliation",
+        "feature_class": "reconciliation"
+      },
+      {
+        "ts": "2026-08-22 21:50:45.794101+00:00",
+        "intent": "remit",
+        "reason": "explicit_mutate_flag",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:50:45.777954+00:00",
+        "intent": "campaign_send",
+        "reason": "mutate_intent:campaign_send",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:50:45.758596+00:00",
+        "intent": "email_blast",
+        "reason": "mutate_intent:email_blast",
+        "feature_class": "collections_outreach"
+      }
+    ],
+    "short_circuits": [
+      {
+        "ts": "2026-08-22 21:51:34.839647+00:00",
+        "intent": "triage",
+        "gate": "ras.template",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:50:48.513355+00:00",
+        "intent": "triage",
+        "gate": "ras.structured_lookup",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:50:45.901624+00:00",
+        "intent": "triage",
+        "gate": "ras.template",
+        "feature_class": "collections_outreach"
+      },
+      {
+        "ts": "2026-08-22 21:50:45.841936+00:00",
+        "intent": "triage",
+        "gate": "ras.template",
+        "feature_class": "collections_outreach"
+      }
+    ],
+    "model_breakdown": [
+      {
+        "model": "deepseek-v4-pro",
+        "calls": 20,
+        "total_cost": 0.019113
+      },
+      {
+        "model": "deepseek-v4-flash",
+        "calls": 13,
+        "total_cost": 0.007027
+      },
+      {
+        "model": "cache.semantic",
+        "calls": 5,
+        "total_cost": 0.0
+      },
+      {
+        "model": "cache",
+        "calls": 2,
+        "total_cost": 0.0
+      }
+    ],
+    "recent_requests": [
+      {
+        "ts": "2026-08-22 21:54:11.212261+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "cache",
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0.0,
+        "saved_pct": 100.0,
+        "latency_ms": 9,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": true,
+        "vpt": null,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:54:11.139015+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 17,
+        "tokens_out": 402,
+        "cost_usd": 0.000269,
+        "saved_pct": 66.6,
+        "latency_ms": 5705,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 1.193317,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:54:05.403980+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-pro",
+        "tokens_in": 17,
+        "tokens_out": 610,
+        "cost_usd": 0.001219,
+        "saved_pct": -0.2,
+        "latency_ms": 11982,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.797448,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:51.176541+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-pro",
+        "tokens_in": 30,
+        "tokens_out": 2021,
+        "cost_usd": 0.002664,
+        "saved_pct": 33.5,
+        "latency_ms": 33837,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.243784,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:45.439183+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-pro",
+        "tokens_in": 30,
+        "tokens_out": 1661,
+        "cost_usd": 0.002167,
+        "saved_pct": 34.3,
+        "latency_ms": 28147,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.295683,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:44.516779+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-pro",
+        "tokens_in": 30,
+        "tokens_out": 1615,
+        "cost_usd": 0.001859,
+        "saved_pct": 42.0,
+        "latency_ms": 27272,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.303951,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:37.868632+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-pro",
+        "tokens_in": 30,
+        "tokens_out": 1256,
+        "cost_usd": 0.001148,
+        "saved_pct": 54.0,
+        "latency_ms": 20873,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.388802,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:34.829535+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-pro",
+        "tokens_in": 30,
+        "tokens_out": 1028,
+        "cost_usd": 0.000939,
+        "saved_pct": 54.0,
+        "latency_ms": 17804,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.47259,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:34.446271+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 951,
+        "cost_usd": 0.000631,
+        "saved_pct": 66.6,
+        "latency_ms": 17220,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.517598,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:33.580760+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 1024,
+        "cost_usd": 0.000679,
+        "saved_pct": 66.6,
+        "latency_ms": 16311,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.481232,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:33.474135+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 1024,
+        "cost_usd": 0.000679,
+        "saved_pct": 66.6,
+        "latency_ms": 16439,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.481232,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:33.274817+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 1024,
+        "cost_usd": 0.000679,
+        "saved_pct": 66.6,
+        "latency_ms": 15946,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.481232,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:33.012592+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 1024,
+        "cost_usd": 0.000679,
+        "saved_pct": 66.6,
+        "latency_ms": 15969,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.481232,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:32.979522+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 1024,
+        "cost_usd": 0.000679,
+        "saved_pct": 66.6,
+        "latency_ms": 15646,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.481232,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:31.640282+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 1022,
+        "cost_usd": 0.000678,
+        "saved_pct": 66.6,
+        "latency_ms": 14673,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.48216,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:30.074435+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 792,
+        "cost_usd": 0.000526,
+        "saved_pct": 66.6,
+        "latency_ms": 12738,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.619579,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:29.603386+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 591,
+        "cost_usd": 0.000393,
+        "saved_pct": 66.6,
+        "latency_ms": 12212,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.825083,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:27.220328+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "deepseek-v4-flash",
+        "tokens_in": 15,
+        "tokens_out": 506,
+        "cost_usd": 0.000337,
+        "saved_pct": 66.6,
+        "latency_ms": 9900,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": false,
+        "vpt": 0.959693,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:21.805266+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "cache.semantic",
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0.0,
+        "saved_pct": 100.0,
+        "latency_ms": 4452,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": true,
+        "vpt": null,
+        "outcome_unit": "accounts_reviewed"
+      },
+      {
+        "ts": "2026-08-22 21:53:21.791484+00:00",
+        "intent": "triage",
+        "feature_class": "collections_outreach",
+        "model": "cache.semantic",
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0.0,
+        "saved_pct": 100.0,
+        "latency_ms": 4445,
+        "stakes_reason": null,
+        "ras_gate": null,
+        "cache_hit": true,
+        "vpt": null,
+        "outcome_unit": "accounts_reviewed"
+      }
+    ],
+    "by_feature_class": [
+      {
+        "feature_class": "collections_outreach",
+        "calls": 54,
+        "avg_saved_pct": 58.7,
+        "total_saved_usd": 0.036994
+      },
+      {
+        "feature_class": "reconciliation",
+        "calls": 1,
+        "avg_saved_pct": 100.0,
+        "total_saved_usd": 0.00036
+      }
+    ],
+    "vpt_by_intent": [
+      {
+        "intent": "email_draft",
+        "avg_vpt": 10.6383,
+        "total_value_usd": 2.0,
+        "total_tokens": 188
+      },
+      {
+        "intent": "dispute",
+        "avg_vpt": 9.1482,
+        "total_value_usd": 10.0,
+        "total_tokens": 1259
+      },
+      {
+        "intent": "triage",
+        "avg_vpt": 2.9541,
+        "total_value_usd": 15.0,
+        "total_tokens": 22423
+      }
+    ],
+    "myelination": [
+      {
+        "route_class": "triage:standard",
+        "phase": "cold",
+        "p_hat": 0.667,
+        "n_obs": 22,
+        "alpha": 12,
+        "beta": 6
+      },
+      {
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.429,
+        "n_obs": 13,
+        "alpha": 3,
+        "beta": 4
+      },
+      {
+        "route_class": "triage:high",
+        "phase": "cold",
+        "p_hat": 0.667,
+        "n_obs": 7,
+        "alpha": 2,
+        "beta": 1
+      },
+      {
+        "route_class": "dispute:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 1,
+        "alpha": 1,
+        "beta": 1
+      }
+    ],
+    "tail_cost": {
+      "tcr": 0.5011,
+      "tail_cost_usd": 0.0087,
+      "body_cost_usd": 0.0174,
+      "total_requests": 33,
+      "alert": false,
+      "message": "TCR=0.50: healthy"
+    }
+  },
+  "tests": [
+    {
+      "id": "A1",
+      "group": "A",
+      "title": "Health check reports true provider",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "honest provider disclosure",
+      "expected": "status ok, db ok, redis ok, provider=openai_compat (the wired one)",
+      "actual": "status=ok provider=openai_compat db=ok redis=ok version=0.4.0",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "body": {
+          "status": "ok",
+          "version": "0.4.0",
+          "provider": "openai_compat",
+          "db": "ok",
+          "redis": "ok"
+        }
+      }
+    },
+    {
+      "id": "A2",
+      "group": "A",
+      "title": "Classifier \u2014 config/keyword/default path",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "classifier fires and is logged",
+      "expected": "decision_trace[0] classifier; intent real; method keyword or config",
+      "actual": "http=200 intent=triage method=keyword clf={'layer': 'classifier', 'intent': 'triage', 'confidence': 0.8, 'method': 'keyword'}",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "intent": "triage",
+        "trace_head": [
+          {
+            "layer": "request",
+            "request_id": "b36a066a-ab16-4877-95c5-f3125e1373d1",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 0.8,
+            "method": "keyword"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          }
+        ],
+        "acc": {
+          "tokens_in": 13,
+          "tokens_out": 1024,
+          "cost_usd": 0.002036,
+          "baseline_cost_usd": 0.002033,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.1,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        }
+      }
+    },
+    {
+      "id": "A3",
+      "group": "A",
+      "title": "[TRAP] Logged intent vs classified intent",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "telemetry logs classified intent, not intent_hint",
+      "expected": "PASS if stats buckets classified intent (e.g. email_draft), not unknown",
+      "actual": "classified=triage found_in_recent=True request_id=8029bee4-34fa-4279-9b62-9616529c9921",
+      "notes": "Suite originally EXPECTED-FAIL (logger stored hint). v0.4 logger comment says classified intent.",
+      "extra": {
+        "http": 200,
+        "intent": "triage",
+        "recent_intents": [
+          "triage",
+          "triage"
+        ],
+        "acc": {
+          "tokens_in": 14,
+          "tokens_out": 201,
+          "cost_usd": 0.000407,
+          "baseline_cost_usd": 0.000404,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.8,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        }
+      }
+    },
+    {
+      "id": "A4",
+      "group": "A",
+      "title": "intent_hint backdoor",
+      "verdict": "EXPECTED FAIL",
+      "ok": false,
+      "probes": "unauthenticated intent forcing",
+      "expected": "PASS if classifier does not blindly trust hint at conf 1.0 on unrelated query",
+      "actual": "http=200 intent=triage clf={'layer': 'classifier', 'intent': 'triage', 'confidence': 1.0, 'method': 'config'} response=It\u2019s **4**.",
+      "notes": "Known-intent hints still short-circuit keyword matching. Mutate keywords fail-closed first; triage does not.",
+      "extra": {
+        "http": 200,
+        "clf": {
+          "layer": "classifier",
+          "intent": "triage",
+          "confidence": 1.0,
+          "method": "config"
+        },
+        "acc": {
+          "tokens_in": 10,
+          "tokens_out": 6,
+          "cost_usd": 1.8e-05,
+          "baseline_cost_usd": 1.6e-05,
+          "saved_usd": -3e-06,
+          "saved_pct": -16.7,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "It\u2019s **4**."
+      }
+    },
+    {
+      "id": "B1",
+      "group": "B",
+      "title": "Stakes Gate trips on remit",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "stakes mutate hold",
+      "expected": "pending_confirmation + confirm_token/id + NO model call",
+      "actual": "http=200 status=pending_confirmation cid=7960920b-e9dd-45e1-a060-076ce132a7a6 tokens_in=0 sg={'layer': 'stakes_gate', 'result': 'SUSPENDED', 'reason': 'mutate_intent:remit', 'min_tier': 'strong', 'require_human_confirm': True, 'cache': 'OFF'} model_tier=None",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "status": "pending_confirmation",
+        "confirmation_id": "7960920b-e9dd-45e1-a060-076ce132a7a6",
+        "sg": {
+          "layer": "stakes_gate",
+          "result": "SUSPENDED",
+          "reason": "mutate_intent:remit",
+          "min_tier": "strong",
+          "require_human_confirm": true,
+          "cache": "OFF"
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.000362,
+          "saved_usd": 0.000362,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+      }
+    },
+    {
+      "id": "B2",
+      "group": "B",
+      "title": "Stakes Gate trips on email_blast",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "stakes mutate hold",
+      "expected": "pending_confirmation + confirm_token/id + NO model call",
+      "actual": "http=200 status=pending_confirmation cid=63c2b43d-e281-410d-bd7c-f878e56a653a tokens_in=0 sg={'layer': 'stakes_gate', 'result': 'SUSPENDED', 'reason': 'mutate_intent:email_blast', 'min_tier': 'strong', 'require_human_confirm': True, 'cache': 'OFF'} model_tier=None",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "status": "pending_confirmation",
+        "confirmation_id": "63c2b43d-e281-410d-bd7c-f878e56a653a",
+        "sg": {
+          "layer": "stakes_gate",
+          "result": "SUSPENDED",
+          "reason": "mutate_intent:email_blast",
+          "min_tier": "strong",
+          "require_human_confirm": true,
+          "cache": "OFF"
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.000363,
+          "saved_usd": 0.000363,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+      }
+    },
+    {
+      "id": "B3",
+      "group": "B",
+      "title": "[TRAP] campaign_send is NOT gated",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "stakes mutate hold",
+      "expected": "pending_confirmation + confirm_token/id + NO model call",
+      "actual": "http=200 status=pending_confirmation cid=92512824-4d4c-454f-9f06-78a017f6f05f tokens_in=0 sg={'layer': 'stakes_gate', 'result': 'SUSPENDED', 'reason': 'mutate_intent:campaign_send', 'min_tier': 'strong', 'require_human_confirm': True, 'cache': 'OFF'} model_tier=None",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "status": "pending_confirmation",
+        "confirmation_id": "92512824-4d4c-454f-9f06-78a017f6f05f",
+        "sg": {
+          "layer": "stakes_gate",
+          "result": "SUSPENDED",
+          "reason": "mutate_intent:campaign_send",
+          "min_tier": "strong",
+          "require_human_confirm": true,
+          "cache": "OFF"
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.00036,
+          "saved_usd": 0.00036,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+      }
+    },
+    {
+      "id": "B4",
+      "group": "B",
+      "title": "[TRAP] Human-confirm is a string, not a control",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "confirm_token required before any model call",
+      "expected": "PASS: confirmation_id issued, NO model output until second call with token",
+      "actual": "status=pending_confirmation cid=7639f3c7-23be-435f-9ebf-c15b5412b362 tokens_in=0 response=This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called.",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.000361,
+          "saved_usd": 0.000361,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "confirmation_id": "7639f3c7-23be-435f-9ebf-c15b5412b362",
+        "response": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+      }
+    },
+    {
+      "id": "B5",
+      "group": "B",
+      "title": "Stakes via feature_class",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "stakes mutate hold",
+      "expected": "pending_confirmation + confirm_token/id + NO model call",
+      "actual": "http=200 status=pending_confirmation cid=9aa39469-efe2-49fe-90f7-bc1dd8d7db59 tokens_in=0 sg={'layer': 'stakes_gate', 'result': 'SUSPENDED', 'reason': 'high_stakes_class:reconciliation', 'min_tier': 'strong', 'require_human_confirm': True, 'cache': 'OFF'} model_tier=None",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "status": "pending_confirmation",
+        "confirmation_id": "9aa39469-efe2-49fe-90f7-bc1dd8d7db59",
+        "sg": {
+          "layer": "stakes_gate",
+          "result": "SUSPENDED",
+          "reason": "high_stakes_class:reconciliation",
+          "min_tier": "strong",
+          "require_human_confirm": true,
+          "cache": "OFF"
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.00036,
+          "saved_usd": 0.00036,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+      }
+    },
+    {
+      "id": "C1",
+      "group": "C",
+      "title": "Template resolver \u2014 today's date ($0)",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "cheapest short-circuit",
+      "expected": "ras.template HIT, cost $0, no LLM",
+      "actual": "hit={'layer': 'ras.template', 'result': 'HIT', 'resolver': '\\\\b(today|current date|what date is it|wh', 'cost': 0} cost=0.0 tokens_in=0 resp=Today is August 23, 2026.",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "hit": {
+          "layer": "ras.template",
+          "result": "HIT",
+          "resolver": "\\b(today|current date|what date is it|wh",
+          "cost": 0
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.0003,
+          "saved_usd": 0.0003,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "Today is August 23, 2026."
+      }
+    },
+    {
+      "id": "C2",
+      "group": "C",
+      "title": "[TRAP] Template 'days until' is dead code",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "known dead resolver branch",
+      "expected": "PASS if ras.template HIT with day count",
+      "actual": "hit={'layer': 'ras.template', 'result': 'HIT', 'resolver': 'how (far|many days) (until|to|from) (\\\\d{', 'cost': 0} cost=0.0 resp=2026-12-31 is 130 days from today.",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "hit": {
+          "layer": "ras.template",
+          "result": "HIT",
+          "resolver": "how (far|many days) (until|to|from) (\\d{",
+          "cost": 0
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.000304,
+          "saved_usd": 0.000304,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "2026-12-31 is 130 days from today.",
+        "trace": [
+          {
+            "layer": "request",
+            "request_id": "8c16bd95-3cea-4cc8-9bd5-2808a23c87ba",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 0.5,
+            "method": "default"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "HIT",
+            "resolver": "how (far|many days) (until|to|from) (\\d{",
+            "cost": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "C3",
+      "group": "C",
+      "title": "Structured lookup misses cleanly on empty/wrong account",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "graceful miss",
+      "expected": "no crash; HIT only if the real 4021 row exists (it does not in synthetic fixture)",
+      "actual": "http=200 hit=None cost=0.000236 intent=triage resp=I don't have access to your account information or financial data. To check the balance on account 4021, you would need to:\n\n1. **Log into your financial institution's website or a",
+      "notes": "Aging fixture is account_id 40211, not 4021. A clean MISS (or LLM fallback) is acceptable; a crash is not. A HIT on the wrong account would be a defect.",
+      "extra": {
+        "http": 200,
+        "hit": null,
+        "acc": {
+          "tokens_in": 13,
+          "tokens_out": 115,
+          "cost_usd": 0.000236,
+          "baseline_cost_usd": 0.000234,
+          "saved_usd": -3e-06,
+          "saved_pct": -1.1,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "I don't have access to your account information or financial data. To check the balance on account 4021, you would need to:\n\n1. **Log into your financial institution's website or app**\n2. **Contact your bank or financial service provider directly**\n3. **Check your most recent statement**\n4. **Call the customer service number on your account documentation**\n\nFor privacy and security reasons, account balances are only accessible through authorized channels by the account holder or authorized users",
+        "trace": [
+          {
+            "layer": "request",
+            "request_id": "c3b91af9-611b-4765-8411-f115a54e77dc",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 0.5,
+            "method": "default"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.semantic",
+            "result": "miss"
+          },
+          {
+            "layer": "myelination",
+            "route_class": "triage:high",
+            "phase": "cold",
+            "p_hat": 0.5,
+            "n_obs": 0,
+            "lcb": 0.0,
+            "decision": "cold_start"
+          },
+          {
+            "layer": "router",
+            "tier": "strong",
+            "reason": "myelination_cold_start"
+          },
+          {
+            "layer": "compressor",
+            "fields_used": [],
+            "tokens_before": 9,
+            "tokens_after": 9,
+            "reduction_pct": 0.0
+          },
+          {
+            "layer": "cascade",
+            "cheap_tried": false,
+            "escalated": false,
+            "tier_used": "strong",
+            "forced": true,
+            "quality": {
+              "score": 0.6,
+              "passed": false,
+              "method": "heuristic_strong",
+              "reason": "score=0.6 < floor=0.92. Failed: ['refusal']"
+            },
+            "legs": [
+              {
+                "tier": "strong",
+                "model_id": "deepseek-v4-pro",
+                "tokens_in": 13,
+                "tokens_out": 115,
+                "latency_ms": 2487
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "C4",
+      "group": "C",
+      "title": "[TRAP] Invoice parsed as account number",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "entity-extraction of invoices",
+      "expected": "PASS: invoice recognized, resolved or clean miss \u2014 not account 2024",
+      "actual": "hit={'layer': 'ras.structured_lookup', 'result': 'HIT', 'entity': 'INV-2024-089', 'field': 'status', 'cost': 0} leaked_year=False resp=Account Northwind Events: status = open",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "hit": {
+          "layer": "ras.structured_lookup",
+          "result": "HIT",
+          "entity": "INV-2024-089",
+          "field": "status",
+          "cost": 0
+        },
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.000305,
+          "saved_usd": 0.000305,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "Account Northwind Events: status = open"
+      }
+    },
+    {
+      "id": "C5",
+      "group": "C",
+      "title": "[TRAP] FAQ threshold is too permissive",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "false-positive FAQ matching",
+      "expected": "PASS: low-relevance query does NOT falsely hit FAQ",
+      "actual": "hit=None cost=0.001686 resp=Disputes are an inherent and fascinating part of the human experience. They occur when two or more parties perceive that their interests, needs, or values are incompatible. Far from being just a negat",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "hit": null,
+        "acc": {
+          "tokens_in": 10,
+          "tokens_out": 848,
+          "cost_usd": 0.001686,
+          "baseline_cost_usd": 0.001683,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.2,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "Disputes are an inherent and fascinating part of the human experience. They occur when two or more parties perceive that their interests, needs, or values are incompatible. Far from being just a negative event, a dispute is often a signal that change, clarification, or growth is needed.\n\nHere is a breakdown of some interesting perspectives on disputes:\n\n### 1. The Anatomy of a Dispute (The \"Circle of Conflict\")\nTo understand a dispute, it helps to look at what is actually fueling it. Professiona",
+        "trace": [
+          {
+            "layer": "request",
+            "request_id": "ac5647cc-d149-47fb-87d5-163d1eca371b",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "dispute",
+            "confidence": 0.8,
+            "method": "keyword"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.semantic",
+            "result": "miss"
+          },
+          {
+            "layer": "myelination",
+            "route_class": "dispute:standard",
+            "phase": "cold",
+            "p_hat": 0.5,
+            "n_obs": 0,
+            "lcb": 0.0,
+            "decision": "cold_start"
+          },
+          {
+            "layer": "router",
+            "tier": "strong",
+            "reason": "myelination_cold_start"
+          },
+          {
+            "layer": "compressor",
+            "fields_used": [],
+            "tokens_before": 6,
+            "tokens_after": 6,
+            "reduction_pct": 0.0
+          },
+          {
+            "layer": "cascade",
+            "cheap_tried": false,
+            "escalated": false,
+            "tier_used": "strong",
+            "forced": true,
+            "quality": {
+              "score": 0.6,
+              "passed": false,
+              "method": "heuristic_strong",
+              "reason": "score=0.6 < floor=0.92. Failed: ['refusal']"
+            },
+            "legs": [
+              {
+                "tier": "strong",
+                "model_id": "deepseek-v4-pro",
+                "tokens_in": 10,
+                "tokens_out": 848,
+                "latency_ms": 12913
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "D1",
+      "group": "D",
+      "title": "Exact cache HIT on repeat (cost must be $0)",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "cache hit exists AND savings reflected",
+      "expected": "second call cache.exact HIT and cost_usd == 0 (not the miss cost)",
+      "actual": "first cost=0.000966 second hit=True second cost=0.0 ce={'layer': 'cache.exact', 'result': 'HIT'}",
+      "notes": "",
+      "extra": {
+        "r1_acc": {
+          "tokens_in": 18,
+          "tokens_out": 482,
+          "cost_usd": 0.000966,
+          "baseline_cost_usd": 0.000964,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.3,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "r2_acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.000964,
+          "saved_usd": 0.000964,
+          "saved_pct": 100.0,
+          "cache_hit": true,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "r2_cache": {
+          "layer": "cache.exact",
+          "result": "HIT"
+        },
+        "r1_trace": [
+          {
+            "layer": "request",
+            "request_id": "1b490573-633a-4b53-b24f-3de88665d156",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 0.8,
+            "method": "keyword"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.semantic",
+            "result": "miss"
+          },
+          {
+            "layer": "myelination",
+            "route_class": "triage:standard",
+            "phase": "cold",
+            "p_hat": 0.5,
+            "n_obs": 4,
+            "lcb": 0.0,
+            "decision": "cold_start"
+          },
+          {
+            "layer": "router",
+            "tier": "strong",
+            "reason": "myelination_cold_start"
+          },
+          {
+            "layer": "compressor",
+            "fields_used": [],
+            "tokens_before": 14,
+            "tokens_after": 14,
+            "reduction_pct": 0.0
+          },
+          {
+            "layer": "cascade",
+            "cheap_tried": false,
+            "escalated": false,
+            "tier_used": "strong",
+            "forced": true,
+            "quality": {
+              "score": 1.0,
+              "passed": true,
+              "method": "heuristic_strong",
+              "reason": null
+            },
+            "legs": [
+              {
+                "tier": "strong",
+                "model_id": "deepseek-v4-pro",
+                "tokens_in": 18,
+                "tokens_out": 482,
+                "latency_ms": 8174
+              }
+            ]
+          }
+        ],
+        "r2_trace": [
+          {
+            "layer": "request",
+            "request_id": "a8f76644-f39a-44f7-a808-840e62a9d32a",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 0.8,
+            "method": "keyword"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "HIT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "D2",
+      "group": "D",
+      "title": "[TRAP] Cross-account cache collision \u2014 DATA LEAK",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "cache key must include canonical context",
+      "expected": "each account gets its own answer",
+      "actual": "a=Based on the provided context, the **balance for \"suite-AH-d2\" is 5000**.\n\n(Note: No currency or unit is specified in the given context.) | b=The balance for **suite-AH-d2** is **250**. | b_cache={'layer': 'cache.exact', 'result': 'miss'}",
+      "notes": "",
+      "extra": {
+        "ra_acc": {
+          "tokens_in": 24,
+          "tokens_out": 36,
+          "cost_usd": 8.7e-05,
+          "baseline_cost_usd": 8.9e-05,
+          "saved_usd": 2e-06,
+          "saved_pct": 2.2,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "rb_acc": {
+          "tokens_in": 23,
+          "tokens_out": 14,
+          "cost_usd": 4.3e-05,
+          "baseline_cost_usd": 4.5e-05,
+          "saved_usd": 2e-06,
+          "saved_pct": 4.4,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "ra": "Based on the provided context, the **balance for \"suite-AH-d2\" is 5000**.\n\n(Note: No currency or unit is specified in the given context.)",
+        "rb": "The balance for **suite-AH-d2** is **250**.",
+        "ceb": {
+          "layer": "cache.exact",
+          "result": "miss"
+        }
+      }
+    },
+    {
+      "id": "D3",
+      "group": "D",
+      "title": "[TRAP] Cache HIT not logged",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "telemetry completeness",
+      "expected": "PASS: hits are logged (by_exit.cache >= 1, total_requests includes them)",
+      "actual": "total_requests=17 by_exit.cache=1 summary={'total_requests': 17, 'total_cost_usd': 0.0055, 'total_baseline_usd': 0.0091, 'total_saved_usd': 0.0037, 'avg_saved_pct': 52.5, 'avg_saved_pct_note': 'MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.', 'llm_saved_pct': -1.0, 'short_circuit_pct': 52.9, 'avg_latency_ms': 3026.0}",
+      "notes": "",
+      "extra": {
+        "summary": {
+          "total_requests": 17,
+          "total_cost_usd": 0.0055,
+          "total_baseline_usd": 0.0091,
+          "total_saved_usd": 0.0037,
+          "avg_saved_pct": 52.5,
+          "avg_saved_pct_note": "MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.",
+          "llm_saved_pct": -1.0,
+          "short_circuit_pct": 52.9,
+          "avg_latency_ms": 3026.0
+        },
+        "by_exit": {
+          "ras": 3,
+          "cache": 1,
+          "stakes_pending": 5,
+          "llm": 8,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "D4",
+      "group": "D",
+      "title": "Cache disabled on mutation",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "Stakes Gate disables cache",
+      "expected": "trace cache OFF, pending, not a HIT",
+      "actual": "status=pending_confirmation sg={'layer': 'stakes_gate', 'result': 'SUSPENDED', 'reason': 'mutate_intent:remit', 'min_tier': 'strong', 'require_human_confirm': True, 'cache': 'OFF'} cache={} cache_hit=False",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "sg": {
+          "layer": "stakes_gate",
+          "result": "SUSPENDED",
+          "reason": "mutate_intent:remit",
+          "min_tier": "strong",
+          "require_human_confirm": true,
+          "cache": "OFF"
+        },
+        "cache": {},
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.00036,
+          "saved_usd": 0.00036,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        }
+      }
+    },
+    {
+      "id": "E1",
+      "group": "E",
+      "title": "[TRAP] Compression ratio with EMPTY context",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "tokens_before is tiktoken of actual prompt, not 8200 constant",
+      "expected": "empty context shows a small baseline, not 8200",
+      "actual": "compressor={'layer': 'compressor', 'fields_used': [], 'tokens_before': 2, 'tokens_after': 2, 'reduction_pct': 0.0} acc={'tokens_in': 6, 'tokens_out': 497, 'cost_usd': 0.000988, 'baseline_cost_usd': 0.000985, 'saved_usd': -3e-06, 'saved_pct': -0.3, 'cache_hit': False, 'baseline_method': 'uncompressed_prompt_strong_tier'}",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "compressor": {
+          "layer": "compressor",
+          "fields_used": [],
+          "tokens_before": 2,
+          "tokens_after": 2,
+          "reduction_pct": 0.0
+        },
+        "acc": {
+          "tokens_in": 6,
+          "tokens_out": 497,
+          "cost_usd": 0.000988,
+          "baseline_cost_usd": 0.000985,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.3,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "trace": [
+          {
+            "layer": "request",
+            "request_id": "944f426b-736e-4cc2-9c4f-c017a4e7e7f8",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 1.0,
+            "method": "config"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.semantic",
+            "result": "miss"
+          },
+          {
+            "layer": "myelination",
+            "route_class": "triage:standard",
+            "phase": "cold",
+            "p_hat": 0.5,
+            "n_obs": 5,
+            "lcb": 0.0,
+            "decision": "cold_start"
+          },
+          {
+            "layer": "router",
+            "tier": "strong",
+            "reason": "myelination_cold_start"
+          },
+          {
+            "layer": "compressor",
+            "fields_used": [],
+            "tokens_before": 2,
+            "tokens_after": 2,
+            "reduction_pct": 0.0
+          },
+          {
+            "layer": "cascade",
+            "cheap_tried": false,
+            "escalated": false,
+            "tier_used": "strong",
+            "forced": true,
+            "quality": {
+              "score": 1.0,
+              "passed": true,
+              "method": "heuristic_strong",
+              "reason": null
+            },
+            "legs": [
+              {
+                "tier": "strong",
+                "model_id": "deepseek-v4-pro",
+                "tokens_in": 6,
+                "tokens_out": 497,
+                "latency_ms": 7268
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "E2",
+      "group": "E",
+      "title": "[TRAP] Compression is an algebraic identity",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "savings measured not defined",
+      "expected": "reduction_pct does NOT equal (1-(4*300+20)/8200)*100 \u2248 85.1",
+      "actual": "reduction_pct=-1.0 identity_85_1=False compressor={'layer': 'compressor', 'fields_used': [], 'tokens_before': 4, 'tokens_after': 4, 'reduction_pct': 0.0}",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "compressor": {
+          "layer": "compressor",
+          "fields_used": [],
+          "tokens_before": 4,
+          "tokens_after": 4,
+          "reduction_pct": 0.0
+        },
+        "acc": {
+          "tokens_in": 8,
+          "tokens_out": 1024,
+          "cost_usd": 0.000678,
+          "baseline_cost_usd": 0.00203,
+          "saved_usd": 0.001353,
+          "saved_pct": 66.6,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        }
+      }
+    },
+    {
+      "id": "E3",
+      "group": "E",
+      "title": "Accounting identity check",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "accounting math correctness",
+      "expected": "saved_pct == (baseline-cost)/baseline*100 and saved_usd == baseline-cost",
+      "actual": "base=0.000357 cost=0.00012 saved_usd=0.000237 saved_pct=66.4 expected_pct=66.4",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "acc": {
+          "tokens_in": 9,
+          "tokens_out": 179,
+          "cost_usd": 0.00012,
+          "baseline_cost_usd": 0.000357,
+          "saved_usd": 0.000237,
+          "saved_pct": 66.4,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        }
+      }
+    },
+    {
+      "id": "E4",
+      "group": "E",
+      "title": "[TRAP] RAS path hardcodes 100% savings",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "RAS accounting honesty",
+      "expected": "not the 8200-token fake; $0 cost vs measured strong-tier uncompressed prompt",
+      "actual": "acc={'tokens_in': 0, 'tokens_out': 0, 'cost_usd': 0.0, 'baseline_cost_usd': 0.0003, 'saved_usd': 0.0003, 'saved_pct': 100.0, 'cache_hit': False, 'baseline_method': 'uncompressed_prompt_strong_tier'} method=uncompressed_prompt_strong_tier saved_pct=100.0",
+      "notes": "Arithmetic 100% is correct for a $0 exit. The remaining honesty issue is the counterfactual: baseline still prices a strong-tier LLM call for a date template. That inflates RAS 'savings' vs a world where nobody would have called Sonnet for today's date. Do not quote RAS 100% as product KPI.",
+      "extra": {
+        "http": 200,
+        "acc": {
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0,
+          "baseline_cost_usd": 0.0003,
+          "saved_usd": 0.0003,
+          "saved_pct": 100.0,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "hit": {
+          "layer": "ras.template",
+          "result": "HIT",
+          "resolver": "\\b(today|current date|what date is it|wh",
+          "cost": 0
+        }
+      }
+    },
+    {
+      "id": "F1",
+      "group": "F",
+      "title": "[TRAP] Demo script phase/eligibility lie",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "demo headline vs arithmetic",
+      "expected": "printed labels must match computed LCB/phase (even if seeds are still ineligible)",
+      "actual": "seeds a=50 b=5 n=55 phase=warming p_hat=0.9091 lcb=0.8421 decision=cheap_ineligible still_seeds_50=True lies_in_source=False",
+      "notes": "Script no longer prints 'Cerebellar'/'cheap_ok' as captions. It prints computed phase/decision. With tau=0.92, LCB=0.8421 so decision=cheap_ineligible. Seeds are still the old 50/5/55 \u2014 they do not demonstrate a cheap_ok cerebellar route. Eval N_MIN in .env is 6, not the production 30.",
+      "extra": {
+        "p_hat": 0.9091,
+        "lcb": 0.8421,
+        "decision": "cheap_ineligible",
+        "phase": "warming",
+        "n_obs": 55
+      }
+    },
+    {
+      "id": "F2",
+      "group": "F",
+      "title": "[TRAP] Forced-Sonnet trains the cheap path",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "stakes/pending paths must not increment alpha",
+      "expected": "PASS: forced/stakes paths do not increment alpha",
+      "actual": "before=[] after=[] alpha_rose=False",
+      "notes": "",
+      "extra": {
+        "before": [],
+        "after": []
+      }
+    },
+    {
+      "id": "F3",
+      "group": "F",
+      "title": "Myelination cold-start guard",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "N_min blocks cheap on thin data",
+      "expected": "phase cold/Cortical, decision cold_start (suite said n_obs<30; this process has N_MIN=6 eval knob)",
+      "actual": "myelination_trace={'layer': 'myelination', 'route_class': 'dispute:standard', 'phase': 'cold', 'p_hat': 0.5, 'n_obs': 0, 'lcb': 0.0, 'decision': 'cold_start'} acc={'tokens_in': 13, 'tokens_out': 388, 'cost_usd': 0.000777, 'baseline_cost_usd': 0.000774, 'saved_usd': -3e-06, 'saved_pct': -0.4, 'cache_hit': False, 'baseline_method': 'uncompressed_prompt_strong_tier'} model_tier=strong",
+      "notes": "Production default N_MIN=30. .env N_MIN=6 is an eval knob so cheap explore is observable without 30 paid strong calls. F3 passing here is weaker evidence than a prod-knob pass.",
+      "extra": {
+        "http": 200,
+        "my": {
+          "layer": "myelination",
+          "route_class": "dispute:standard",
+          "phase": "cold",
+          "p_hat": 0.5,
+          "n_obs": 0,
+          "lcb": 0.0,
+          "decision": "cold_start"
+        },
+        "acc": {
+          "tokens_in": 13,
+          "tokens_out": 388,
+          "cost_usd": 0.000777,
+          "baseline_cost_usd": 0.000774,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.4,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "trace": [
+          {
+            "layer": "request",
+            "request_id": "50039920-0edb-4db1-9409-2643f5f80444",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "dispute",
+            "confidence": 1.0,
+            "method": "config"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.semantic",
+            "result": "miss"
+          },
+          {
+            "layer": "myelination",
+            "route_class": "dispute:standard",
+            "phase": "cold",
+            "p_hat": 0.5,
+            "n_obs": 0,
+            "lcb": 0.0,
+            "decision": "cold_start"
+          },
+          {
+            "layer": "router",
+            "tier": "strong",
+            "reason": "myelination_cold_start"
+          },
+          {
+            "layer": "compressor",
+            "fields_used": [],
+            "tokens_before": 8,
+            "tokens_after": 8,
+            "reduction_pct": 0.0
+          },
+          {
+            "layer": "cascade",
+            "cheap_tried": false,
+            "escalated": false,
+            "tier_used": "strong",
+            "forced": true,
+            "quality": {
+              "score": 1.0,
+              "passed": true,
+              "method": "heuristic_strong",
+              "reason": null
+            },
+            "legs": [
+              {
+                "tier": "strong",
+                "model_id": "deepseek-v4-pro",
+                "tokens_in": 13,
+                "tokens_out": 388,
+                "latency_ms": 5899
+              }
+            ]
+          }
+        ],
+        "model_tier": "strong"
+      }
+    },
+    {
+      "id": "G1",
+      "group": "G",
+      "title": "No authentication on /v1/route",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "auth before loading data",
+      "expected": "401/403 without X-API-Key",
+      "actual": "http=401 body={'detail': 'unauthorized'}",
+      "notes": "",
+      "extra": {
+        "http": 401,
+        "body": {
+          "detail": "unauthorized"
+        }
+      }
+    },
+    {
+      "id": "G2",
+      "group": "G",
+      "title": "Admin sleep is unauthenticated",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "unprotected admin surface",
+      "expected": "requires admin auth",
+      "actual": "http=401 body={'detail': 'unauthorized'}",
+      "notes": "",
+      "extra": {
+        "http": 401,
+        "body": {
+          "detail": "unauthorized"
+        }
+      }
+    },
+    {
+      "id": "G3",
+      "group": "G",
+      "title": "Stats endpoint leaks cost/traces",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "information disclosure",
+      "expected": "requires auth",
+      "actual": "http=401 body={'detail': 'unauthorized'}",
+      "notes": "",
+      "extra": {
+        "http": 401,
+        "body": {
+          "detail": "unauthorized"
+        }
+      }
+    },
+    {
+      "id": "G4",
+      "group": "G",
+      "title": "Dashboard XSS via feature_class",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "insecure output handling",
+      "expected": "unknown feature_class rejected (allowlist) and/or dashboard escapes",
+      "actual": "http=422 rejected=True escapeHtml_recent=True trip_time_unescaped=True body={'detail': 'unknown feature_class: <img src=x onerror=alert(1)>'}",
+      "notes": "Payload never lands in request_log because catalog.known_feature_class 422s it. Residual: trip-time line interpolates feature_class without escapeHtml \u2014 cannot fire via this vector because allowlist blocks storage. Still sloppy.",
+      "extra": {
+        "http": 422,
+        "body": {
+          "detail": "unknown feature_class: <img src=x onerror=alert(1)>"
+        },
+        "trip_unescaped": true
+      }
+    },
+    {
+      "id": "G5",
+      "group": "G",
+      "title": "Prompt injection passes through",
+      "verdict": "EXPECTED FAIL",
+      "ok": false,
+      "probes": "prompt-injection boundary",
+      "expected": "injection does not steer the model into dumping system/policy text",
+      "actual": "http=200 leaked=True resp=I'm sorry, but I can't disclose the system prompt or any internal instructions. However, I'm here to help you with any questions or tasks you have\u2014feel free to ask!",
+      "notes": "There is still no untrusted-content boundary in the prompt assembler. A PASS here is model-refusal luck on this one string, not a control. Re-test with other payloads.",
+      "extra": {
+        "http": 200,
+        "acc": {
+          "tokens_in": 16,
+          "tokens_out": 38,
+          "cost_usd": 8.6e-05,
+          "baseline_cost_usd": 8.3e-05,
+          "saved_usd": -3e-06,
+          "saved_pct": -3.2,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "I'm sorry, but I can't disclose the system prompt or any internal instructions. However, I'm here to help you with any questions or tasks you have\u2014feel free to ask!",
+        "trace": [
+          {
+            "layer": "request",
+            "request_id": "485ed1cd-05ec-489b-9cda-3602ebc0b370",
+            "mode": "clever"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 0.5,
+            "method": "default"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "ras.structured_lookup",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.faq",
+            "result": "miss"
+          },
+          {
+            "layer": "ras.template",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.exact",
+            "result": "miss"
+          },
+          {
+            "layer": "cache.semantic",
+            "result": "miss"
+          },
+          {
+            "layer": "myelination",
+            "route_class": "triage:high",
+            "phase": "cold",
+            "p_hat": 0.5,
+            "n_obs": 3,
+            "lcb": 0.0,
+            "decision": "cold_start"
+          },
+          {
+            "layer": "router",
+            "tier": "strong",
+            "reason": "myelination_cold_start"
+          },
+          {
+            "layer": "compressor",
+            "fields_used": [],
+            "tokens_before": 12,
+            "tokens_after": 12,
+            "reduction_pct": 0.0
+          },
+          {
+            "layer": "cascade",
+            "cheap_tried": false,
+            "escalated": false,
+            "tier_used": "strong",
+            "forced": true,
+            "quality": {
+              "score": 0.6,
+              "passed": false,
+              "method": "heuristic_strong",
+              "reason": "score=0.6 < floor=0.92. Failed: ['refusal']"
+            },
+            "legs": [
+              {
+                "tier": "strong",
+                "model_id": "deepseek-v4-pro",
+                "tokens_in": 16,
+                "tokens_out": 38,
+                "latency_ms": 1971
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "G6",
+      "group": "G",
+      "title": "Unbounded request size (DoS)",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "input size limit",
+      "expected": "413/422 on 500KB query (pydantic max_length=8000)",
+      "actual": "http=413 body={'detail': 'payload_too_large'}",
+      "notes": "",
+      "extra": {
+        "http": 413,
+        "body": {
+          "detail": "payload_too_large"
+        }
+      }
+    },
+    {
+      "id": "G7",
+      "group": "G",
+      "title": "SQL injection attempt (should be safe)",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "parameterized SQL holds",
+      "expected": "request_log still exists; no 500 crash",
+      "actual": "http=200 table_exists=True resp=I see you've included what appears to be a SQL injection attempt in your message. I want to clarify:\n\n**I will not execute SQL commands or provide information t",
+      "notes": "",
+      "extra": {
+        "http": 200,
+        "tables": [
+          {
+            "tablename": "request_log"
+          }
+        ],
+        "acc": {
+          "tokens_in": 18,
+          "tokens_out": 126,
+          "cost_usd": 0.000261,
+          "baseline_cost_usd": 0.000258,
+          "saved_usd": -3e-06,
+          "saved_pct": -1.3,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "response": "I see you've included what appears to be a SQL injection attempt in your message. I want to clarify:\n\n**I will not execute SQL commands or provide information that could be used for malicious purposes.**\n\nIf you're asking about:\n1. **Database security** - I'd be happy to explain SQL injection prevention using prepared statements and parameterized queries\n2. **Account balance inquiries** - Please c"
+      }
+    },
+    {
+      "id": "H1",
+      "group": "H",
+      "title": "Baseline mode bypasses optimization",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "baseline vs treatment separation",
+      "expected": "mode=baseline does not cache; repeat is still a paid naive call",
+      "actual": "layers=['request', 'classifier', 'stakes_gate', 'baseline'] t1_cost=0.001244 t2_cost=0.000282 t2_cache={} tier=strong",
+      "notes": "",
+      "extra": {
+        "t1_acc": {
+          "tokens_in": 13,
+          "tokens_out": 624,
+          "cost_usd": 0.001244,
+          "baseline_cost_usd": 0.001241,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.2,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "t2_acc": {
+          "tokens_in": 13,
+          "tokens_out": 138,
+          "cost_usd": 0.000282,
+          "baseline_cost_usd": 0.000279,
+          "saved_usd": -3e-06,
+          "saved_pct": -0.9,
+          "cache_hit": false,
+          "baseline_method": "uncompressed_prompt_strong_tier"
+        },
+        "t1_trace": [
+          {
+            "layer": "request",
+            "request_id": "508596b6-009a-4ea2-b31d-331b53ef0f0f",
+            "mode": "baseline"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 1.0,
+            "method": "config"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "baseline",
+            "result": "strong_uncompressed"
+          }
+        ],
+        "t2_trace": [
+          {
+            "layer": "request",
+            "request_id": "604c1a45-0f73-4307-91fb-b1f35343d5d8",
+            "mode": "baseline"
+          },
+          {
+            "layer": "classifier",
+            "intent": "triage",
+            "confidence": 1.0,
+            "method": "config"
+          },
+          {
+            "layer": "stakes_gate",
+            "result": "read"
+          },
+          {
+            "layer": "baseline",
+            "result": "strong_uncompressed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "H2",
+      "group": "H",
+      "title": "Missing/garbage feature_class",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "input validation",
+      "expected": "422 unknown feature_class (allowlist)",
+      "actual": "http=422 body={'detail': 'unknown feature_class: does_not_exist_class'}",
+      "notes": "",
+      "extra": {
+        "http": 422,
+        "body": {
+          "detail": "unknown feature_class: does_not_exist_class"
+        }
+      }
+    },
+    {
+      "id": "H3",
+      "group": "H",
+      "title": "Empty query",
+      "verdict": "SURPRISE PASS",
+      "ok": true,
+      "probes": "input validation",
+      "expected": "422 min length",
+      "actual": "http=422 body={'detail': [{'type': 'string_too_short', 'loc': ['body', 'query'], 'msg': 'String should have at least 1 character', 'input': '', 'ctx': {'min_length': 1}}]}",
+      "notes": "",
+      "extra": {
+        "http": 422,
+        "body": {
+          "detail": [
+            {
+              "type": "string_too_short",
+              "loc": [
+                "body",
+                "query"
+              ],
+              "msg": "String should have at least 1 character",
+              "input": "",
+              "ctx": {
+                "min_length": 1
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "H4",
+      "group": "H",
+      "title": "Concurrent myelination updates (lost-update)",
+      "verdict": "TRUE PASS",
+      "ok": true,
+      "probes": "concurrency safety of learning registry",
+      "expected": "n_obs delta \u2248 successful concurrent LLM calls (suite text said =20; we uniquified queries)",
+      "actual": "n_before=12 n_after=27 delta=15 llm_http_200=20 rows_before=[{'route_class': 'triage:high', 'alpha': 1, 'beta': 1, 'n_obs': 5, 'cheap_n': 0}, {'route_class': 'triage:standard', 'alpha': 2, 'beta': 1, 'n_obs': 7, 'cheap_n': 1}] rows_after=[{'route_class': 'triage:high', 'alpha': 1, 'beta': 1, 'n_obs': 5, 'cheap_n': 0}, {'route_class': 'triage:standard', 'alpha': 12, 'beta': 6, 'n_obs': 22, 'cheap_n': 16}]",
+      "notes": "As written, 20 identical clever-mode queries would cache after the first and would NOT exercise 20 registry writes. Queries were uniquified (suite-AH-h4-N) so the race is real. Quality-gated strong calls that fail the heuristic do not increment n_obs \u2014 delta < 20 can be quality skips, not lost updates.",
+      "extra": {
+        "before": [
+          {
+            "route_class": "triage:high",
+            "alpha": 1,
+            "beta": 1,
+            "n_obs": 5,
+            "cheap_n": 0
+          },
+          {
+            "route_class": "triage:standard",
+            "alpha": 2,
+            "beta": 1,
+            "n_obs": 7,
+            "cheap_n": 1
+          }
+        ],
+        "after": [
+          {
+            "route_class": "triage:high",
+            "alpha": 1,
+            "beta": 1,
+            "n_obs": 5,
+            "cheap_n": 0
+          },
+          {
+            "route_class": "triage:standard",
+            "alpha": 12,
+            "beta": 6,
+            "n_obs": 22,
+            "cheap_n": 16
+          }
+        ],
+        "calls": [
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000393,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000678,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.001148,
+            "tier": "strong",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000939,
+            "tier": "strong",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000679,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000679,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000631,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.001859,
+            "tier": "strong",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000679,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.002167,
+            "tier": "strong",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.0,
+            "tier": null,
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000337,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.0,
+            "tier": null,
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000679,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.0,
+            "tier": null,
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000679,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.000526,
+            "tier": "cheap",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.002664,
+            "tier": "strong",
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.0,
+            "tier": null,
+            "status": "ok"
+          },
+          {
+            "http": 200,
+            "intent": "triage",
+            "cost": 0.0,
+            "tier": null,
+            "status": "ok"
+          }
+        ],
+        "delta": 15
+      }
+    },
+    {
+      "id": "H5",
+      "group": "H",
+      "title": "Repeated identical query \u2014 end-to-end savings story",
+      "verdict": "EXPECTED FAIL",
+      "ok": false,
+      "probes": "dashboard top-line vs real cache savings",
+      "expected": "3 calls, later ones HIT at $0, visible in stats by_exit.cache",
+      "actual": "legs=[{'http': 200, 'cost': 0.001219, 'cache_hit': False, 'saved_pct': -0.2, 'cache': {'layer': 'cache.exact', 'result': 'miss'}}, {'http': 200, 'cost': 0.000269, 'cache_hit': False, 'saved_pct': 66.6, 'cache': {'layer': 'cache.exact', 'result': 'miss'}}, {'http': 200, 'cost': 0.0, 'cache_hit': True, 'saved_pct': 100.0, 'cache': {'layer': 'cache.exact', 'result': 'HIT'}}] total_requests=55 cache_exits=7 avg_saved_pct=59.4 llm_saved_pct=32.4 note=MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.",
+      "notes": "",
+      "extra": {
+        "legs": [
+          {
+            "http": 200,
+            "cost": 0.001219,
+            "cache_hit": false,
+            "saved_pct": -0.2,
+            "cache": {
+              "layer": "cache.exact",
+              "result": "miss"
+            }
+          },
+          {
+            "http": 200,
+            "cost": 0.000269,
+            "cache_hit": false,
+            "saved_pct": 66.6,
+            "cache": {
+              "layer": "cache.exact",
+              "result": "miss"
+            }
+          },
+          {
+            "http": 200,
+            "cost": 0.0,
+            "cache_hit": true,
+            "saved_pct": 100.0,
+            "cache": {
+              "layer": "cache.exact",
+              "result": "HIT"
+            }
+          }
+        ],
+        "summary": {
+          "total_requests": 55,
+          "total_cost_usd": 0.0261,
+          "total_baseline_usd": 0.0635,
+          "total_saved_usd": 0.0374,
+          "avg_saved_pct": 59.4,
+          "avg_saved_pct_note": "MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.",
+          "llm_saved_pct": 32.4,
+          "short_circuit_pct": 40.0,
+          "avg_latency_ms": 7416.0
+        },
+        "by_exit": {
+          "ras": 4,
+          "cache": 7,
+          "stakes_pending": 11,
+          "llm": 33,
+          "total": 55
+        }
+      }
+    }
+  ],
+  "counts": {
+    "n": 37,
+    "ok": 34,
+    "fail": 3,
+    "by_verdict": {
+      "TRUE PASS": 15,
+      "SURPRISE PASS": 19,
+      "EXPECTED FAIL": 3
+    }
+  }
+}

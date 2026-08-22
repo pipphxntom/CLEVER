@@ -1,0 +1,555 @@
+{
+  "provider": "openai_compat",
+  "window": "24h",
+  "summary": {
+    "total_requests": 93,
+    "total_cost_usd": 0.0179,
+    "total_baseline_usd": 0.0642,
+    "total_saved_usd": 0.0463,
+    "avg_saved_pct": 61.3,
+    "avg_saved_pct_note": "MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.",
+    "llm_saved_pct": 16.3,
+    "short_circuit_pct": 53.8,
+    "avg_latency_ms": 2057.0
+  },
+  "by_exit": {
+    "ras": 31,
+    "cache": 6,
+    "stakes_pending": 13,
+    "llm": 43,
+    "total": 93
+  },
+  "stakes_gate_trips": [
+    {
+      "ts": "2026-08-22 20:51:31.114254+00:00",
+      "intent": "campaign_send",
+      "reason": "mutate_intent:campaign_send",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:51:31.097946+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:16:58.213071+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:14:57.190689+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 19:35:53.191878+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 19:35:52.988211+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 19:35:52.961277+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 19:35:52.924273+00:00",
+      "intent": "campaign_send",
+      "reason": "mutate_intent:campaign_send",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 19:35:52.890006+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 19:29:43.613984+00:00",
+      "intent": "remit",
+      "reason": "mutate_intent:remit",
+      "feature_class": "collections_outreach"
+    }
+  ],
+  "short_circuits": [
+    {
+      "ts": "2026-08-22 21:25:48.209192+00:00",
+      "intent": "triage",
+      "gate": "ras.structured_lookup",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 21:25:39.616888+00:00",
+      "intent": "dispute",
+      "gate": "ras.faq",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 21:25:35.676702+00:00",
+      "intent": "triage",
+      "gate": "ras.template",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 21:18:24.653014+00:00",
+      "intent": "triage",
+      "gate": "ras.structured_lookup",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 21:18:12.317953+00:00",
+      "intent": "dispute",
+      "gate": "ras.faq",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 21:18:08.981007+00:00",
+      "intent": "triage",
+      "gate": "ras.template",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:52:05.239203+00:00",
+      "intent": "triage",
+      "gate": "ras.structured_lookup",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:51:31.071494+00:00",
+      "intent": "triage",
+      "gate": "ras.template",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:51:31.051773+00:00",
+      "intent": "dispute",
+      "gate": "ras.faq",
+      "feature_class": "collections_outreach"
+    },
+    {
+      "ts": "2026-08-22 20:51:30.148889+00:00",
+      "intent": "triage",
+      "gate": "ras.structured_lookup",
+      "feature_class": "collections_outreach"
+    }
+  ],
+  "model_breakdown": [
+    {
+      "model": "deepseek-v4-pro",
+      "calls": 26,
+      "total_cost": 0.010712
+    },
+    {
+      "model": "mock-strong",
+      "calls": 15,
+      "total_cost": 0.006958
+    },
+    {
+      "model": "cache",
+      "calls": 6,
+      "total_cost": 0.0
+    },
+    {
+      "model": "mock-cheap",
+      "calls": 1,
+      "total_cost": 0.000139
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "calls": 1,
+      "total_cost": 0.000136
+    }
+  ],
+  "recent_requests": [
+    {
+      "ts": "2026-08-22 21:27:15.346405+00:00",
+      "intent": "email_draft",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 80,
+      "tokens_out": 130,
+      "cost_usd": 0.00031,
+      "saved_pct": -1.3,
+      "latency_ms": 3054,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 9.52381,
+      "outcome_unit": "emails_queued"
+    },
+    {
+      "ts": "2026-08-22 21:27:11.902799+00:00",
+      "intent": "email_draft",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-flash",
+      "tokens_in": 66,
+      "tokens_out": 184,
+      "cost_usd": 0.000136,
+      "saved_pct": 67.1,
+      "latency_ms": 80639,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 8.0,
+      "outcome_unit": "emails_queued"
+    },
+    {
+      "ts": "2026-08-22 21:25:51.230317+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 26,
+      "tokens_out": 160,
+      "cost_usd": 0.000334,
+      "saved_pct": -0.9,
+      "latency_ms": 3002,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 2.688172,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:25:48.209192+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 49,
+      "stakes_reason": null,
+      "ras_gate": "ras.structured_lookup",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:25:48.133081+00:00",
+      "intent": "dispute",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 7,
+      "tokens_out": 576,
+      "cost_usd": 0.001145,
+      "saved_pct": -0.3,
+      "latency_ms": 8501,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 8.576329,
+      "outcome_unit": "disputes_logged"
+    },
+    {
+      "ts": "2026-08-22 21:25:39.616888+00:00",
+      "intent": "dispute",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 20,
+      "stakes_reason": null,
+      "ras_gate": "ras.faq",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "disputes_logged"
+    },
+    {
+      "ts": "2026-08-22 21:25:39.579534+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 9,
+      "tokens_out": 49,
+      "cost_usd": 0.000103,
+      "saved_pct": -3.0,
+      "latency_ms": 3848,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 8.62069,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:25:35.676702+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 1584,
+      "stakes_reason": null,
+      "ras_gate": "ras.template",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:18:27.634624+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 26,
+      "tokens_out": 143,
+      "cost_usd": 0.0003,
+      "saved_pct": -0.7,
+      "latency_ms": 2968,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 2.95858,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:18:24.653014+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 55,
+      "stakes_reason": null,
+      "ras_gate": "ras.structured_lookup",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:18:24.567374+00:00",
+      "intent": "dispute",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 7,
+      "tokens_out": 840,
+      "cost_usd": 0.001668,
+      "saved_pct": -0.2,
+      "latency_ms": 12217,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 5.903188,
+      "outcome_unit": "disputes_logged"
+    },
+    {
+      "ts": "2026-08-22 21:18:12.317953+00:00",
+      "intent": "dispute",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 73,
+      "stakes_reason": null,
+      "ras_gate": "ras.faq",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "disputes_logged"
+    },
+    {
+      "ts": "2026-08-22 21:18:12.224097+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 9,
+      "tokens_out": 43,
+      "cost_usd": 9.1e-05,
+      "saved_pct": -3.4,
+      "latency_ms": 3145,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 9.615385,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 21:18:08.981007+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 1563,
+      "stakes_reason": null,
+      "ras_gate": "ras.template",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 20:52:06.865511+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 63,
+      "tokens_out": 49,
+      "cost_usd": 0.000139,
+      "saved_pct": 2.8,
+      "latency_ms": 1612,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 4.464286,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 20:52:05.239203+00:00",
+      "intent": "triage",
+      "feature_class": "collections_outreach",
+      "model": "none",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "latency_ms": 12,
+      "stakes_reason": null,
+      "ras_gate": "ras.structured_lookup",
+      "cache_hit": false,
+      "vpt": null,
+      "outcome_unit": "accounts_reviewed"
+    },
+    {
+      "ts": "2026-08-22 20:52:05.207302+00:00",
+      "intent": "email_draft",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 66,
+      "tokens_out": 127,
+      "cost_usd": 0.000295,
+      "saved_pct": 1.7,
+      "latency_ms": 2712,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 10.362694,
+      "outcome_unit": "emails_queued"
+    },
+    {
+      "ts": "2026-08-22 20:52:02.463108+00:00",
+      "intent": "email_draft",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 66,
+      "tokens_out": 190,
+      "cost_usd": 0.00042,
+      "saved_pct": 0.9,
+      "latency_ms": 3343,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 7.8125,
+      "outcome_unit": "emails_queued"
+    },
+    {
+      "ts": "2026-08-22 20:51:59.085248+00:00",
+      "intent": "email_draft",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 66,
+      "tokens_out": 148,
+      "cost_usd": 0.000337,
+      "saved_pct": 1.2,
+      "latency_ms": 3043,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 9.345794,
+      "outcome_unit": "emails_queued"
+    },
+    {
+      "ts": "2026-08-22 20:51:56.014773+00:00",
+      "intent": "email_draft",
+      "feature_class": "collections_outreach",
+      "model": "deepseek-v4-pro",
+      "tokens_in": 68,
+      "tokens_out": 168,
+      "cost_usd": 0.000378,
+      "saved_pct": 1.3,
+      "latency_ms": 3340,
+      "stakes_reason": null,
+      "ras_gate": null,
+      "cache_hit": false,
+      "vpt": 8.474576,
+      "outcome_unit": "emails_queued"
+    }
+  ],
+  "by_feature_class": [
+    {
+      "feature_class": "collections_outreach",
+      "calls": 93,
+      "avg_saved_pct": 61.3,
+      "total_saved_usd": 0.046275
+    }
+  ],
+  "vpt_by_intent": [
+    {
+      "intent": "remit",
+      "avg_vpt": 88.2353,
+      "total_value_usd": 9.0,
+      "total_tokens": 102
+    },
+    {
+      "intent": "email_draft",
+      "avg_vpt": 16.1146,
+      "total_value_usd": 44.0,
+      "total_tokens": 5572
+    },
+    {
+      "intent": "dispute",
+      "avg_vpt": 7.2398,
+      "total_value_usd": 10.0,
+      "total_tokens": 1430
+    },
+    {
+      "intent": "triage",
+      "avg_vpt": 5.753,
+      "total_value_usd": 8.0,
+      "total_tokens": 4063
+    }
+  ],
+  "myelination": [
+    {
+      "route_class": "email_draft:standard",
+      "phase": "cold",
+      "p_hat": 0.333,
+      "n_obs": 12,
+      "alpha": 2,
+      "beta": 4
+    },
+    {
+      "route_class": "triage:standard",
+      "phase": "cold",
+      "p_hat": 0.5,
+      "n_obs": 1,
+      "alpha": 1,
+      "beta": 1
+    }
+  ],
+  "tail_cost": {
+    "tcr": 0.7936,
+    "tail_cost_usd": 0.0079,
+    "body_cost_usd": 0.01,
+    "total_requests": 43,
+    "alert": false,
+    "message": "TCR=0.79: healthy"
+  }
+}

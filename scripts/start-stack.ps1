@@ -32,6 +32,8 @@ docker cp db\schema_novel.sql clever_postgres:/schema_novel.sql
 docker exec clever_postgres psql -U clever -d clever -f /schema_novel.sql
 docker cp db\schema_v03.sql clever_postgres:/schema_v03.sql
 docker exec clever_postgres psql -U clever -d clever -f /schema_v03.sql
+docker cp db\schema_v04.sql clever_postgres:/schema_v04.sql
+docker exec clever_postgres psql -U clever -d clever -f /schema_v04.sql
 docker cp harness\seed_faq.sql clever_postgres:/seed_faq.sql
 docker exec clever_postgres psql -U clever -d clever -f /seed_faq.sql
 
