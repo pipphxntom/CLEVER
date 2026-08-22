@@ -1,0 +1,2 @@
+These scripts generated the original Glean-era source. Running them overwrites gateway/ files.
+Do not execute. Kept only for history.

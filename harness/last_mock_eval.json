@@ -1,0 +1,219 @@
+{
+  "provider": "mock",
+  "base": "http://127.0.0.1:8080",
+  "passed": 30,
+  "failed": 0,
+  "total": 30,
+  "cases": [
+    {
+      "id": "health.provider_mock",
+      "intended": "status=ok, provider=mock, db=ok, redis=ok",
+      "actual": "{\"status\": \"ok\", \"version\": \"0.3.0\", \"provider\": \"mock\", \"db\": \"ok\", \"redis\": \"ok\"}",
+      "pass": true,
+      "detail": "Live stack must be mock + healthy infra before any gate claims."
+    },
+    {
+      "id": "auth.stats_401",
+      "intended": "GET /v1/stats without key -> 401",
+      "actual": "401",
+      "pass": true,
+      "detail": "Stats must not be public."
+    },
+    {
+      "id": "auth.route_401",
+      "intended": "POST /v1/route without key -> 401",
+      "actual": "401",
+      "pass": true,
+      "detail": "Route must not be public."
+    },
+    {
+      "id": "ui.dashboard",
+      "intended": "GET / serves dashboard HTML",
+      "actual": "200 text/html; charset=utf-8",
+      "pass": true,
+      "detail": "UI is the dashboard at /."
+    },
+    {
+      "id": "validation.unknown_feature_class",
+      "intended": "unknown feature_class -> 422",
+      "actual": "422",
+      "pass": true,
+      "detail": "YAML is the allowlist."
+    },
+    {
+      "id": "ras.template.today",
+      "intended": "exit ras.template, cost=0, no model",
+      "actual": "status=ok cost=0.0 hit=ras.template tokens=0",
+      "pass": true,
+      "detail": "Today is August 23, 2026."
+    },
+    {
+      "id": "ras.faq.disputes",
+      "intended": "exit ras.faq, cost=0, AR-team answer",
+      "actual": "hit=ras.faq cost=0.0 resp=Disputes are handled by the AR team. Submit via the dispute intent wit",
+      "pass": true,
+      "detail": "FAQ must rank the question, not answer-side leakage."
+    },
+    {
+      "id": "ras.structured.account",
+      "intended": "exit ras.structured_lookup, $12500 Northwind, cost=0",
+      "actual": "hit=ras.structured_lookup resp=Account Northwind Events: balance $12,500.00",
+      "pass": true,
+      "detail": "Requires aging_data loaded."
+    },
+    {
+      "id": "ras.structured.invoice_not_year",
+      "intended": "INV-2024-089 is invoice, not account 2024; status from aging",
+      "actual": "hit=ras.structured_lookup resp=Account Northwind Events: status = open",
+      "pass": true,
+      "detail": "Account Northwind Events: status = open"
+    },
+    {
+      "id": "stakes.remit_pending",
+      "intended": "status=pending_confirmation, cost=0, no model, confirmation_id set",
+      "actual": "status=pending_confirmation cost=0.0 cid=a3162d0d-6e55-4cba-a84c-c8bfff67c772 tokens=0",
+      "pass": true,
+      "detail": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called"
+    },
+    {
+      "id": "stakes.campaign_send_pending",
+      "intended": "campaign_send is mutate: pending_confirmation, no model",
+      "actual": "status=pending_confirmation intent=campaign_send cost=0.0",
+      "pass": true,
+      "detail": "YAML stakes, not a hardcoded Python set."
+    },
+    {
+      "id": "stakes.remit_confirm_strong",
+      "intended": "valid confirm_token -> status=ok, tier=strong, model called, cache OFF",
+      "actual": "status=ok tier=strong tokens_in=8 cache_layer={'layer': 'cache.exact', 'result': 'OFF'}",
+      "pass": true,
+      "detail": "Mutate must never use cheap tier or cache."
+    },
+    {
+      "id": "stakes.bad_token_still_pending",
+      "intended": "invalid confirm_token -> still pending, no model",
+      "actual": "status=pending_confirmation tokens=0",
+      "pass": true,
+      "detail": "Fail closed."
+    },
+    {
+      "id": "compressor.empty_context_zero",
+      "intended": "empty context => reduction_pct == 0 (never 85.1)",
+      "actual": "reduction=0.0 before=8 after=8",
+      "pass": true,
+      "detail": "The old 8200 constant is forbidden."
+    },
+    {
+      "id": "myelination.cold_start_forces_strong",
+      "intended": "new route n_obs < 30 => cheap ineligible, tier=strong, cheap_tried false",
+      "actual": "phase=cold n_obs=0 decision=cold_start tier=strong cascade={'layer': 'cascade', 'cheap_tried': False, 'escalated': False, 'tier_used': 'strong', 'forced': True, 'quality': {'score': None, 'passed': True, 'method': 'unchecked_strong', 'reason': 'unchecked_strong'}, 'legs': [{'tier': 'strong', 'model_id': 'mock-strong', 'tokens_in': 8, 'tokens_out': 26, 'latency_ms': 0}]}",
+      "pass": true,
+      "detail": "Cold start using strong is correct. Cheap must not be unlocked by forced-strong successes."
+    },
+    {
+      "id": "compressor.fat_context_reduces",
+      "intended": "fat unused fields dropped; tokens_after < tokens_before; reduction > 10%",
+      "actual": "status=ok cache=False reduction=93.8 973->60 fields=['account', 'contact', 'balance', 'invoice_ids', 'last_contact']",
+      "pass": true,
+      "detail": "Savings must come from real projection, not a constant."
+    },
+    {
+      "id": "cache.second_call_hit_zero",
+      "intended": "second identical call: cache HIT, cost=0, tokens_in=0",
+      "actual": "first_hit=False second_hit=True cost=0.0 tokens=0 layer={'layer': 'cache.exact', 'result': 'HIT'}",
+      "pass": true,
+      "detail": "HIT accounting must be $0, not the first-call cost."
+    },
+    {
+      "id": "cache.no_cross_account",
+      "intended": "same question, different account => MISS (not HIT)",
+      "actual": "cache_hit=False layer={'layer': 'cache.exact', 'result': 'miss'}",
+      "pass": true,
+      "detail": "Cross-account reuse is a PII/correctness bug."
+    },
+    {
+      "id": "classifier.mutate_overrides_hint",
+      "intended": "hint=triage but query is remit => pending mutate, not LLM triage",
+      "actual": "status=pending_confirmation intent=remit",
+      "pass": true,
+      "detail": "Fail closed on money-moving language."
+    },
+    {
+      "id": "accounting.ras_tokens_zero",
+      "intended": "RAS path tokens_in=tokens_out=0, saved_pct=100 vs real uncompressed baseline (not 8200)",
+      "actual": "in=0 out=0 saved=100.0 method=uncompressed_prompt_strong_tier baseline=0.00091",
+      "pass": true,
+      "detail": "Baseline on a 10-word query must be cents-of-a-cent, not a fake 8200-token Sonnet bill."
+    },
+    {
+      "id": "mode.baseline_skips_optimizations",
+      "intended": "mode=baseline: no RAS hit, strong uncompressed, still logs",
+      "actual": "status=ok ras=None tier=strong layers=['request', 'classifier', 'stakes_gate', 'baseline']",
+      "pass": true,
+      "detail": "Baseline is the A/B, not a formula."
+    },
+    {
+      "id": "telemetry.intent_not_unknown",
+      "intended": "logged intent is classified intent, never 'unknown' for keyword queries",
+      "actual": "unknown_rows=0",
+      "pass": true,
+      "detail": "Old logger wrote intent_hint or unknown."
+    },
+    {
+      "id": "telemetry.cache_hits_logged",
+      "intended": "cache HIT writes a request_log row with cost 0",
+      "actual": "[{'intent': 'triage', 'cache_hit': True, 'cost_usd': Decimal('0.000000'), 'tokens_in': 0, 'model_used': 'cache'}, {'intent': 'email_draft', 'cache_hit': True, 'cost_usd': Decimal('0.000000'), 'tokens_in': 0, 'model_used': 'cache'}, {'intent': 'triage', 'cache_hit': True, 'cost_usd': Decimal('0.000000'), 'tokens_in': 0, 'model_used': 'cache'}, {'intent': 'email_draft', 'cache_hit': True, 'cost_usd': Decimal('0.000000'), 'tokens_in': 0, 'model_used': 'cache'}]",
+      "pass": true,
+      "detail": "Old HIT skipped telemetry."
+    },
+    {
+      "id": "telemetry.stakes_and_ras_columns_split",
+      "intended": "stakes_reason only on mutate; ras_gate_fired only on RAS; not the same column reused",
+      "actual": "[{'intent': 'email_draft', 'stakes_reason': None, 'ras_gate_fired': None, 'gate_fired': None}, {'intent': 'triage', 'stakes_reason': None, 'ras_gate_fired': 'ras.template', 'gate_fired': 'ras.template'}, {'intent': 'remit', 'stakes_reason': 'mutate_intent:remit', 'ras_gate_fired': None, 'gate_fired': 'mutate_intent:remit'}, {'intent': 'triage', 'stakes_reason': None, 'ras_gate_fired': None, 'gate_fired': None}, {'intent': 'triage', 'stakes_reason': None, 'ras_gate_fired': None, 'gate_fired': None}, {'intent': 'triage', 'stakes_reason': None, 'ras_gate_fired': None, 'gate_fired': None}, {'intent': 'email_draft', 'stakes_reason': None, 'ras_gate_fired': None, 'gate_fired': None}, {'intent': 'email_draft', 'stakes_reason': None, 'ras_gate_fired': None, 'gate_fired': None}]",
+      "pass": true,
+      "detail": "Inspected sample."
+    },
+    {
+      "id": "telemetry.no_row_both_ras_and_stakes",
+      "intended": "a row is RAS xor stakes, not both",
+      "actual": "both=0",
+      "pass": true,
+      "detail": "Dashboard trips panel must not show FAQ hits as stakes trips."
+    },
+    {
+      "id": "myelination.registry_snapshot",
+      "intended": "forced-strong calls do not increment n_obs (cheap_tried=false)",
+      "actual": "[]",
+      "pass": true,
+      "detail": "See follow-up cheap-path probe."
+    },
+    {
+      "id": "myelination.forced_strong_does_not_write",
+      "intended": "registry empty or n_obs not inflated by the many forced-strong drafts in this run",
+      "actual": "rows=0 n_obs=[]",
+      "pass": true,
+      "detail": "If n_obs grew from strong-only calls, the success signal is still wrong."
+    },
+    {
+      "id": "myelination.95pct_at_n100_still_blocked_at_tau092",
+      "intended": "alpha=96,beta=5,n=100 => LCB~0.901 < q_floor 0.92 => cheap_ineligible (NOT a bug)",
+      "actual": "decision=cheap_ineligible lcb=0.9008 cheap_tried=False tier=strong",
+      "pass": true,
+      "detail": "Old slide said LCB 0.907 >= 0.90. Floor is 0.92 now. 95% success in 100 trials is not enough."
+    },
+    {
+      "id": "myelination.98pct_unlocks_cheap",
+      "intended": "alpha=99,beta=2,n=100 => LCB>=0.92 => cheap_tried=true",
+      "actual": "decision=cheap_ok lcb=0.9413 cheap_tried=True escalated=False tier=cheap legs=[{'tier': 'cheap', 'model_id': 'mock-cheap', 'tokens_in': 59, 'tokens_out': 26, 'latency_ms': 0}]",
+      "pass": true,
+      "detail": "This is the actual unlock bar. Mock canned text should pass quality so no escalate."
+    },
+    {
+      "id": "stats.window_and_split",
+      "intended": "stats has short_circuits vs stakes_gate_trips, provider=mock, 24h window",
+      "actual": "provider=mock window=24h trips=10 ras=10 summary={'total_requests': 42, 'total_cost_usd': 0.0071, 'total_baseline_usd': 0.0437, 'total_saved_usd': 0.0366, 'avg_saved_pct': 73.7, 'avg_latency_ms': 248.0}",
+      "pass": true,
+      "detail": "avg_saved_pct mixes RAS 100% with LLM ~0% \u2014 do not quote it as model-routing savings."
+    }
+  ]
+}

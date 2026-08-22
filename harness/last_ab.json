@@ -1,0 +1,164 @@
+{
+  "provider": "openai_compat",
+  "rows": [
+    {
+      "id": "date",
+      "clever": {
+        "http": 200,
+        "status": "ok",
+        "intent": "triage",
+        "tier": null,
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0.0,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "ras.structured_lookup",
+          "ras.faq",
+          "ras.template"
+        ],
+        "preview": "Today is August 23, 2026."
+      },
+      "baseline": {
+        "http": 200,
+        "status": "ok",
+        "intent": "triage",
+        "tier": "strong",
+        "tokens_in": 9,
+        "tokens_out": 49,
+        "cost_usd": 0.000103,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "baseline"
+        ],
+        "preview": "I don't have access to real-time information such as today's date. Please check your device's clock, a calendar, or ask "
+      }
+    },
+    {
+      "id": "faq",
+      "clever": {
+        "http": 200,
+        "status": "ok",
+        "intent": "dispute",
+        "tier": null,
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0.0,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "ras.structured_lookup",
+          "ras.faq"
+        ],
+        "preview": "Disputes are handled by the AR team. Submit via the dispute intent with supporting docs."
+      },
+      "baseline": {
+        "http": 200,
+        "status": "ok",
+        "intent": "dispute",
+        "tier": "strong",
+        "tokens_in": 7,
+        "tokens_out": 576,
+        "cost_usd": 0.001145,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "baseline"
+        ],
+        "preview": "Disputes are handled by different people, organizations, or courts depending entirely on **what the dispute is about**. "
+      }
+    },
+    {
+      "id": "balance",
+      "clever": {
+        "http": 200,
+        "status": "ok",
+        "intent": "triage",
+        "tier": null,
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0.0,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "ras.structured_lookup"
+        ],
+        "preview": "Account Northwind Events: balance $12,500.00"
+      },
+      "baseline": {
+        "http": 200,
+        "status": "ok",
+        "intent": "triage",
+        "tier": "strong",
+        "tokens_in": 26,
+        "tokens_out": 160,
+        "cost_usd": 0.000334,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "baseline"
+        ],
+        "preview": "I'm not able to access specific account balances or financial data, as I don't have access to external systems or databa"
+      }
+    },
+    {
+      "id": "dunning",
+      "clever": {
+        "http": 200,
+        "status": "ok",
+        "intent": "email_draft",
+        "tier": "cheap",
+        "tokens_in": 66,
+        "tokens_out": 184,
+        "cost_usd": 0.000136,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "ras.structured_lookup",
+          "ras.faq",
+          "ras.template",
+          "cache.exact",
+          "cache.semantic",
+          "myelination",
+          "router",
+          "compressor",
+          "cascade"
+        ],
+        "preview": "Subject: Reminder: Payment for Invoice INV-2024-089  \n\nDear Ada Cole,  \n\nI hope this email finds you well. This is a fri"
+      },
+      "baseline": {
+        "http": 200,
+        "status": "ok",
+        "intent": "email_draft",
+        "tier": "strong",
+        "tokens_in": 80,
+        "tokens_out": 130,
+        "cost_usd": 0.00031,
+        "cache_hit": false,
+        "layers": [
+          "request",
+          "classifier",
+          "stakes_gate",
+          "baseline"
+        ],
+        "preview": "Subject: Urgent: Overdue payment for account 40211 \u2013 reference AB e652cf\n\nDear Ada Cole,\n\nThis is a reminder that invoic"
+      }
+    }
+  ]
+}

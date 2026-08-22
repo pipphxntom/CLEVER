@@ -1,0 +1,23 @@
+{
+  "version": "synthetic-v1",
+  "rows": [
+    {
+      "account_id": "40211",
+      "account": "Northwind Events",
+      "balance": 12500.00,
+      "days_overdue": 45,
+      "status": "open",
+      "contact": "ada@example.test",
+      "invoice_ids": ["INV-2024-089"]
+    },
+    {
+      "account_id": "38870",
+      "account": "Bluebird Venues",
+      "balance": 8200.00,
+      "days_overdue": 32,
+      "status": "open",
+      "contact": "lee@example.test",
+      "invoice_ids": ["INV-2024-101"]
+    }
+  ]
+}

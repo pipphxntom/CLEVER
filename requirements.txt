@@ -1,0 +1,17 @@
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic>=2.11.0,<3
+pydantic-settings>=2.7.0,<3
+python-dotenv==1.0.1
+pyyaml>=6.0
+httpx==0.28.1
+asyncpg>=0.29.0
+redis[asyncio]>=5.0.0
+apscheduler==3.10.4
+openai>=1.59.0
+tiktoken>=0.8.0
+rank-bm25>=0.2.2
+sentence-transformers>=3.0.0
+openpyxl==3.1.2
+pytest>=8.0.0
+pytest-asyncio>=0.24.0

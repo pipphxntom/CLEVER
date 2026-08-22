@@ -1,0 +1,12 @@
+# USD per 1M tokens. Internal tiers only.
+# Source: https://api-docs.deepseek.com/quick_start/pricing/  (fetched 2026-08-23)
+# CACHE-MISS OFF-PEAK — weekends are all-day off-peak as of 2026-08-23 (Beijing).
+# Peak cache-miss (weekday UTC peak windows): cheap 0.44/1.32, strong 1.32/3.96
+# Cache-hit input is much cheaper (0.007 / 0.022 off-peak). We do NOT use hit rates
+# here because CLEVER cannot see provider cache-hit splits unless usage reports them.
+cheap:
+  in: 0.22
+  out: 0.66
+strong:
+  in: 0.66
+  out: 1.98

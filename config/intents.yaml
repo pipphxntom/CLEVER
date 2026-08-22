@@ -1,0 +1,238 @@
+# Intent catalog — source of truth for stakes, tier, fields, keywords.
+# stakes: read | mutate | soft_write
+# tier: cheap | strong
+
+triage:
+  stakes: read
+  tier: cheap
+  fields: [account, balance, days_overdue, status, contact, invoice_ids]
+  keywords:
+    - overdue
+    - aged
+    - aging
+    - outstanding
+    - delinquent
+    - who owes
+
+email_draft:
+  stakes: read
+  tier: cheap
+  fields: [account, contact, balance, invoice_ids, last_contact]
+  keywords:
+    - draft email
+    - write email
+    - write a
+    - dunning
+    - collections email
+    - compose email
+    - compose
+    - dunning letter
+
+email_blast:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - blast
+    - send all
+    - bulk send
+    - mass email
+    - send to all
+
+remit:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - remit
+    - payment received
+    - pay invoice
+    - settle balance
+
+inbox_check:
+  stakes: read
+  tier: cheap
+  fields: [thread_id, account, sentiment, ask]
+  keywords:
+    - inbox
+    - new replies
+    - check responses
+    - new messages
+
+dispute:
+  stakes: read
+  tier: strong
+  fields: [account, history, dispute_docs]
+  keywords:
+    - dispute
+    - challenge invoice
+    - contest
+    - disagree with charge
+
+notes:
+  stakes: soft_write
+  tier: cheap
+  fields: [account, note_text]
+  keywords:
+    - add note
+    - log note
+    - record note
+
+event_summary:
+  stakes: read
+  tier: cheap
+  fields: [event_id, event_name, status]
+  keywords:
+    - event summary
+    - tell me about the event
+    - event details
+
+event_status_check:
+  stakes: read
+  tier: cheap
+  fields: [event_id, registration_count, capacity]
+  keywords:
+    - registration count
+    - how many registered
+    - capacity
+    - seats left
+
+event_publish:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - publish event
+    - go live
+    - launch event
+
+registration_lookup:
+  stakes: read
+  tier: cheap
+  fields: [attendee, event_id, status]
+  keywords:
+    - registration status
+    - is registered
+    - attendee status
+
+registration_cancel:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - cancel registration
+    - unregister
+    - refund registration
+
+campaign_draft:
+  stakes: read
+  tier: cheap
+  fields: [audience, offer, channel]
+  keywords:
+    - draft campaign
+    - write campaign
+    - compose campaign
+
+campaign_send:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - send campaign
+    - launch campaign
+    - blast campaign
+    - push campaign
+
+audience_segment:
+  stakes: read
+  tier: cheap
+  fields: [segment, filters]
+  keywords:
+    - audience
+    - who should receive
+    - target list
+
+venue_search:
+  stakes: read
+  tier: cheap
+  fields: [city, dates, capacity]
+  keywords:
+    - find venue
+    - venue in
+    - venue for
+    - search venues
+    - where to host
+
+rfp_draft:
+  stakes: read
+  tier: cheap
+  fields: [venue, event_id, requirements]
+  keywords:
+    - draft rfp
+    - write rfp
+    - rfp for venue
+
+rfp_send:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - send rfp
+    - submit rfp
+    - send proposal
+
+ticket_lookup:
+  stakes: read
+  tier: cheap
+  fields: [ticket_id, status, account]
+  keywords:
+    - ticket #
+    - support case
+    - open ticket
+    - check issue
+
+ticket_response_draft:
+  stakes: read
+  tier: cheap
+  fields: [ticket_id, thread, account]
+  keywords:
+    - respond to ticket
+    - reply to case
+    - draft response
+
+ticket_escalate:
+  stakes: mutate
+  tier: strong
+  cache: false
+  human_confirm: true
+  keywords:
+    - escalate ticket
+    - escalate case
+    - raise priority
+
+report_summary:
+  stakes: read
+  tier: cheap
+  fields: [report_name, period, metrics]
+  keywords:
+    - weekly report
+    - monthly report
+    - give me a summary
+    - metrics dashboard
+
+insight_query:
+  stakes: read
+  tier: cheap
+  fields: [metric, period, breakdown]
+  keywords:
+    - analyse
+    - analyze
+    - trend
+    - breakdown
+    - compare

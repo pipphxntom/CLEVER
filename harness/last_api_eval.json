@@ -1,0 +1,101 @@
+{
+  "provider_expected": "openai_compat",
+  "passed": 13,
+  "failed": 0,
+  "total": 13,
+  "approx_accounted_usd": 0.001492,
+  "pricing_note": "accounted USD uses config/pricing.yaml cache-miss off-peak, not the vendor invoice",
+  "cases": [
+    {
+      "id": "health.not_mock",
+      "intended": "provider=openai_compat, db=ok, redis=ok",
+      "actual": "{\"status\": \"ok\", \"version\": \"0.3.0\", \"provider\": \"openai_compat\", \"db\": \"ok\", \"redis\": \"ok\"}",
+      "pass": true,
+      "detail": "If this is still mock, stop. Do not interpret canned text as API."
+    },
+    {
+      "id": "ras.date",
+      "intended": "HIT ras.template, cost=0, tokens_in=0",
+      "actual": "http=200 hit=ras.template cost=0.0 tok=0 resp=Today is August 23, 2026.",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "ras.faq",
+      "intended": "HIT ras.faq, cost=0, tokens_in=0",
+      "actual": "http=200 hit=ras.faq cost=0.0 tok=0 resp=Disputes are handled by the AR team. Submit via the dispute intent with supporti",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "ras.structured",
+      "intended": "SQL HIT $12500, no vendor call",
+      "actual": "hit=ras.structured_lookup resp=Account Northwind Events: balance $12,500.00 cost=0.0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "stakes.pending_no_vendor",
+      "intended": "pending_confirmation, tokens_in=0 (no paid call)",
+      "actual": "status=pending_confirmation tok=0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "llm.clever_draft",
+      "intended": "real vendor call; usage tokens > 0; not a mock canned paragraph",
+      "actual": "http=200 tier=strong model_id=[{'tier': 'strong', 'model_id': 'deepseek-v4-pro', 'tokens_in': 40, 'tokens_out': 96, 'latency_ms': 3275}] cost=0.000216 in=40 out=96 forced=True cheap_tried=False esc=False quality={'checked': False, 'method': 'unchecked_strong', 'score': None, 'passed': True, 'reason': 'unchecked_strong'} compress=45.5 myelin=cold_start mentions=2 preview='Subject: Urgent: Action Required on Your Account\\n\\nDear Customer,\\n\\nOur records indicate that account **40211** has an outstanding balance of **$12,500.00** that is now past due.\\n\\nWe'",
+      "pass": true,
+      "detail": "Cold start should force strong. Mentions of 40211/12500/Ada are a grounding check, not a pass gate."
+    },
+    {
+      "id": "llm.clever_draft.grounding",
+      "intended": "email should use account 40211 or $12500 or Ada or INV-2024-089 (at least 1)",
+      "actual": "mentions=2 text='Subject: Urgent: Action Required on Your Account\\n\\nDear Customer,\\n\\nOur records indicate that account **40211** has an outstanding balance of **$12,500.00** that is now past due.\\n\\nWe kindly request that you remit payment immediately to avoid further collection activity.\\n\\nIf payment has already been se'",
+      "pass": true,
+      "detail": "If 0, the model ignored context. FLAG even if HTTP 200."
+    },
+    {
+      "id": "llm.baseline_draft",
+      "intended": "mode=baseline: strong, no RAS, real tokens, typically >= clever tokens_in",
+      "actual": "http=200 tier=strong cost=0.000242 in=72 out=98 layers=['request', 'classifier', 'stakes_gate', 'baseline']",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "llm.clever_vs_baseline_input_tokens",
+      "intended": "clever LLM path tokens_in <= baseline; clever must actually have called a model (not RAS)",
+      "actual": "clever_ras=False clever_in=40 baseline_in=72 clever_cost=0.000216 baseline_cost=0.000242",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "llm.fat_context_compresses",
+      "intended": "noise_block dropped; tokens_after < tokens_before by >10%",
+      "actual": "http=200 red=95.9 873->36 fields=['account', 'balance'] cost=9.5e-05 in=39",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "llm.fat_clever_cheaper_or_equal",
+      "intended": "clever actual cost_usd <= baseline cost_usd on the same fat prompt",
+      "actual": "clever=9.5e-05 baseline=0.000939 clever_in=39 base_in=1281",
+      "pass": true,
+      "detail": "If clever is MORE expensive, cascade (cheap fail + strong) billed two legs. That is a real finding, not a rounding error."
+    },
+    {
+      "id": "cache.api_second_call_zero",
+      "intended": "repeat => cache HIT, cost 0, no extra vendor tokens",
+      "actual": "http=200 cache=True cost=0.0 tok=0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "stats.provider_live",
+      "intended": "stats.provider is openai_compat, not mock",
+      "actual": "provider=openai_compat summary={'total_requests': 60, 'total_cost_usd': 0.0099, 'total_baseline_usd': 0.0513, 'total_saved_usd': 0.0415, 'avg_saved_pct': 71.5, 'avg_latency_ms': 557.0}",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

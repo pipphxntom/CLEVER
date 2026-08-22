@@ -1,0 +1,41 @@
+# Rancher Desktop only (dockerd/moby). Do not use Docker Desktop.
+# Start: powershell -File scripts\start-stack.ps1
+
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: clever_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: clever
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-clever}
+      POSTGRES_DB: clever
+    ports:
+      - "${POSTGRES_PUBLISH:-127.0.0.1:5432:5432}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clever -d clever"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: clever_redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-clever}"]
+    ports:
+      - "${REDIS_PUBLISH:-127.0.0.1:6379:6379}"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "REDISCLI_AUTH=${REDIS_PASSWORD:-clever} redis-cli ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:
+  redis_data:

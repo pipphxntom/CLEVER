@@ -1,0 +1,550 @@
+{
+  "test_id": "real_test-2",
+  "provider": "openai_compat",
+  "n_min_note": "Uses process N_MIN/N_EXPLORE from .env (eval: 6/3). Production defaults 30/10.",
+  "accounted_usd": 0.003984,
+  "exit_counts": {
+    "ras.structured_lookup": 3,
+    "ras.faq": 1,
+    "ras.template": 1,
+    "stakes_pending": 2,
+    "llm:strong": 12
+  },
+  "tier_counts": {
+    "strong": 12
+  },
+  "stats_summary": {
+    "total_requests": 79,
+    "total_cost_usd": 0.0139,
+    "total_baseline_usd": 0.0579,
+    "total_saved_usd": 0.0441,
+    "avg_saved_pct": 63.9,
+    "avg_saved_pct_note": "MIXED: includes RAS/cache 100%. Use llm_saved_pct + short_circuit_pct.",
+    "llm_saved_pct": 18.4,
+    "short_circuit_pct": 55.7,
+    "avg_latency_ms": 893.0
+  },
+  "stats_by_exit": {
+    "ras": 25,
+    "cache": 6,
+    "stakes_pending": 13,
+    "llm": 35,
+    "total": 79
+  },
+  "rows": [
+    {
+      "name": "lookup",
+      "http": 200,
+      "status": "ok",
+      "intent": "triage",
+      "exit": "ras.structured_lookup",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "ras",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "Account Northwind Events: balance $12,500.00"
+    },
+    {
+      "name": "lookup_repeat",
+      "http": 200,
+      "status": "ok",
+      "intent": "triage",
+      "exit": "ras.structured_lookup",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "ras",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "Account Northwind Events: balance $12,500.00"
+    },
+    {
+      "name": "faq",
+      "http": 200,
+      "status": "ok",
+      "intent": "dispute",
+      "exit": "ras.faq",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "ras",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "Disputes are handled by the AR team. Submit via the dispute intent with supporting docs."
+    },
+    {
+      "name": "date",
+      "http": 200,
+      "status": "ok",
+      "intent": "triage",
+      "exit": "ras.template",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "ras",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "Today is August 23, 2026."
+    },
+    {
+      "name": "remit",
+      "http": 200,
+      "status": "pending_confirmation",
+      "intent": "remit",
+      "exit": "stakes_pending",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "stakes_pending",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+    },
+    {
+      "name": "campaign",
+      "http": 200,
+      "status": "pending_confirmation",
+      "intent": "campaign_send",
+      "exit": "stakes_pending",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "stakes_pending",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "This intent is classified as a mutation. Resubmit with confirm_token to proceed. No model was called."
+    },
+    {
+      "name": "draft_0",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 69,
+      "tokens_out": 133,
+      "cost_usd": 0.000309,
+      "saved_pct": 1.7,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 0,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Subject: Outstanding balance on account #40211 \u2013 ref 2a7c28\n\nDear Ada Cole,\n\nWe are writing regarding outstanding invoice INV-2024-089 on account #40211, with a"
+    },
+    {
+      "name": "draft_1",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 69,
+      "tokens_out": 174,
+      "cost_usd": 0.00039,
+      "saved_pct": 1.3,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 1,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Subject: Action Required: Outstanding Balance for Account #40211  \n\nDear Ada Cole,  \n\nI hope this message finds you well. This is a friendly reminder regarding "
+    },
+    {
+      "name": "draft_2",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 68,
+      "tokens_out": 130,
+      "cost_usd": 0.000302,
+      "saved_pct": 1.7,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 2,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Subject: Payment Reminder for Account 40211 \u2013 Ref 0b8ada\n\nDear Ada Cole,\n\nWe hope this message finds you well.\n\nThis is a friendly reminder that a balance of $1"
+    },
+    {
+      "name": "draft_3",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 67,
+      "tokens_out": 127,
+      "cost_usd": 0.000296,
+      "saved_pct": 1.8,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 3,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Subject: Payment Reminder for Invoice INV-2024-089 \u2013 Ref 12010b\n\nDear Ada Cole,\n\nWe are writing regarding account 40211, which currently has an outstanding bala"
+    },
+    {
+      "name": "draft_4",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 68,
+      "tokens_out": 152,
+      "cost_usd": 0.000346,
+      "saved_pct": 1.5,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 4,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Subject: Urgent: Outstanding balance on account #40211 \u2013 Ref 4286a7\n\nDear Ada Cole,\n\nI hope this message finds you well.\n\nThis is a reminder regarding the outst"
+    },
+    {
+      "name": "draft_5",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 67,
+      "tokens_out": 133,
+      "cost_usd": 0.000308,
+      "saved_pct": 1.7,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 5,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Subject: Outstanding balance on account 40211 \u2013 Ref DD2FB9  \n\nDear Ada Cole,  \n\nI hope this message finds you well. This is a friendly reminder that invoice INV"
+    },
+    {
+      "name": "draft_6",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 136,
+      "tokens_out": 338,
+      "cost_usd": 0.000464,
+      "saved_pct": 35.5,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "explore",
+        "p_hat": 0.5,
+        "n_obs": 6,
+        "lcb": 0.0,
+        "decision": "explore"
+      },
+      "preview": "Subject: Outstanding Balance Reminder \u2013 Ref 89b4ec  \n\nDear Ada Cole,  \n\nWe hope this message finds you well. This is a friendly reminder that a balance of **$12"
+    },
+    {
+      "name": "draft_7",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 68,
+      "tokens_out": 168,
+      "cost_usd": 0.000378,
+      "saved_pct": 1.4,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "warming",
+        "p_hat": 0.2,
+        "n_obs": 7,
+        "lcb": 0.0,
+        "decision": "cheap_ineligible"
+      },
+      "preview": "Subject: Action Required: Outstanding Balance on Account 40211  \n\nDear Ada Cole,  \n\nWe are writing regarding outstanding balance of **$12,500.00** on your accou"
+    },
+    {
+      "name": "draft_same_a",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 66,
+      "tokens_out": 148,
+      "cost_usd": 0.000337,
+      "saved_pct": 1.4,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "warming",
+        "p_hat": 0.2,
+        "n_obs": 8,
+        "lcb": 0.0,
+        "decision": "cheap_ineligible"
+      },
+      "preview": "Subject: Urgent: Outstanding Balance for Account 40211 \u2013 Ref SAMEONE\n\nDear Ada Cole,\n\nWe hope this message finds you well.\n\nThis is a reminder regarding the out"
+    },
+    {
+      "name": "draft_same_b",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 66,
+      "tokens_out": 190,
+      "cost_usd": 0.00042,
+      "saved_pct": 1.1,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "warming",
+        "p_hat": 0.2,
+        "n_obs": 9,
+        "lcb": 0.0,
+        "decision": "cheap_ineligible"
+      },
+      "preview": "Subject: Urgent: Outstanding Balance for Account 40211 \u2013 Ref SAMEONE\n\nDear Ada Cole,\n\nWe hope this message finds you well.\n\nThis is a reminder regarding the out"
+    },
+    {
+      "name": "other_account",
+      "http": 200,
+      "status": "ok",
+      "intent": "email_draft",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 66,
+      "tokens_out": 127,
+      "cost_usd": 0.000295,
+      "saved_pct": 1.5,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.55,
+        "passed": false,
+        "reason": "score=0.55 < floor=0.92. Failed: ['grounded', 'required_fields']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "email_draft:standard",
+        "phase": "warming",
+        "p_hat": 0.2,
+        "n_obs": 10,
+        "lcb": 0.0,
+        "decision": "cheap_ineligible"
+      },
+      "preview": "Subject: Outstanding balance on account 38870 \u2013 Ref: SAMEONE\n\nDear Lee,\n\nThis is a reminder regarding invoice **INV-2024-101** on account **38870**, which remai"
+    },
+    {
+      "name": "invoice",
+      "http": 200,
+      "status": "ok",
+      "intent": "triage",
+      "exit": "ras.structured_lookup",
+      "tier": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "saved_pct": 100.0,
+      "cache_hit": false,
+      "quality": {
+        "checked": false,
+        "method": "ras",
+        "score": null,
+        "passed": null,
+        "reason": null
+      },
+      "myelination": {},
+      "preview": "Account Northwind Events: status = open"
+    },
+    {
+      "name": "triage",
+      "http": 200,
+      "status": "ok",
+      "intent": "triage",
+      "exit": "llm:strong",
+      "tier": "strong",
+      "tokens_in": 63,
+      "tokens_out": 49,
+      "cost_usd": 0.000139,
+      "saved_pct": 3.2,
+      "cache_hit": false,
+      "quality": {
+        "checked": true,
+        "method": "heuristic_strong",
+        "score": 0.8,
+        "passed": false,
+        "reason": "score=0.8 < floor=0.92. Failed: ['grounded']"
+      },
+      "myelination": {
+        "layer": "myelination",
+        "route_class": "triage:standard",
+        "phase": "cold",
+        "p_hat": 0.5,
+        "n_obs": 0,
+        "lcb": 0.0,
+        "decision": "cold_start"
+      },
+      "preview": "Based on the aging report, **Ada Cole** owes **$12,500.00**, which is **45 days overdue**.  \nThe associated account is **40211**, and the outstanding invoice is"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {"q": "what is today's date", "expect_layer": "ras.template"},
+  {"q": "who handles disputes", "expect_layer": "ras.faq", "needs": "faq"},
+  {"q": "what is the balance on account 40211", "expect_layer": "ras.structured", "needs": "aging"},
+  {"q": "what is the status of INV-2024-089", "expect_layer": "ras.structured", "needs": "aging"},
+  {"q": "please remit payment for 40211", "expect_layer": "stakes.pending"},
+  {"q": "launch campaign to the list", "expect_layer": "stakes.pending"},
+  {"q": "draft email to the customer about the invoice", "expect_layer": "llm"}
+]

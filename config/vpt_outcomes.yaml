@@ -1,0 +1,66 @@
+# Assumed value per outcome unit. NOT finance-approved cash recovery.
+# Field name is assumed_value_usd on purpose.
+
+triage:
+  unit: accounts_reviewed
+  assumed_value_usd: 0.50
+
+email_draft:
+  unit: emails_queued
+  assumed_value_usd: 2.00
+
+email_blast:
+  unit: blast_sent
+  assumed_value_usd: 1.50
+
+inbox_check:
+  unit: threads_processed
+  assumed_value_usd: 0.75
+
+dispute:
+  unit: disputes_logged
+  assumed_value_usd: 5.00
+
+remit:
+  unit: payments_processed
+  assumed_value_usd: 3.00
+
+notes:
+  unit: notes_logged
+  assumed_value_usd: 0.25
+
+event_summary:
+  unit: events_reviewed
+  assumed_value_usd: 0.30
+
+event_status_check:
+  unit: events_checked
+  assumed_value_usd: 0.20
+
+registration_lookup:
+  unit: registrations_checked
+  assumed_value_usd: 0.15
+
+campaign_draft:
+  unit: campaigns_drafted
+  assumed_value_usd: 3.00
+
+venue_search:
+  unit: venues_evaluated
+  assumed_value_usd: 1.00
+
+rfp_draft:
+  unit: rfps_drafted
+  assumed_value_usd: 5.00
+
+ticket_lookup:
+  unit: tickets_reviewed
+  assumed_value_usd: 0.40
+
+report_summary:
+  unit: reports_generated
+  assumed_value_usd: 1.50
+
+insight_query:
+  unit: insights_generated
+  assumed_value_usd: 2.00

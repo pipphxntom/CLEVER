@@ -1,0 +1,78 @@
+# Feature classes — quality floors and cache policy.
+# q_floor is the single quality threshold (also used as myelination tau).
+# default_tier: cheap | strong
+
+collections_outreach:
+  q_floor: 0.92
+  default_tier: cheap
+  cache: true
+  default_intent: triage
+
+event_management:
+  q_floor: 0.90
+  default_tier: cheap
+  cache: true
+  default_intent: event_summary
+
+registration:
+  q_floor: 0.90
+  default_tier: cheap
+  cache: true
+  default_intent: registration_lookup
+
+marketing_automation:
+  q_floor: 0.95
+  default_tier: cheap
+  cache: true
+  default_intent: campaign_draft
+
+venue_sourcing:
+  q_floor: 0.90
+  default_tier: cheap
+  cache: true
+  default_intent: venue_search
+
+customer_support:
+  q_floor: 0.93
+  default_tier: cheap
+  cache: true
+  default_intent: ticket_lookup
+
+analytics_reporting:
+  q_floor: 0.93
+  default_tier: cheap
+  cache: true
+  default_intent: report_summary
+
+billing_support:
+  q_floor: 0.92
+  default_tier: cheap
+  cache: true
+  default_intent: triage
+
+reconciliation:
+  q_floor: 0.99
+  stakes: mutate
+  cache: false
+  default_tier: strong
+  default_intent: report_summary
+
+ledger:
+  q_floor: 0.99
+  stakes: mutate
+  cache: false
+  default_tier: strong
+  default_intent: report_summary
+
+payment:
+  q_floor: 0.99
+  stakes: mutate
+  cache: false
+  default_tier: strong
+  default_intent: remit
+
+customer_facing:
+  q_floor: 0.98
+  default_tier: strong
+  cache: true
+  default_intent: ticket_lookup
