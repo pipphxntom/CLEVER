@@ -1,0 +1,151 @@
+{
+  "started": "2026-08-23T00:47:21.645584+00:00",
+  "ended": "2026-08-23T00:47:46.793137+00:00",
+  "provider_live": true,
+  "provider_mock": false,
+  "health": {
+    "status": "ok",
+    "version": "0.5.0",
+    "provider": "openai_compat",
+    "db": "ok",
+    "redis": "ok"
+  },
+  "spend_usd": 0.001375,
+  "passed": 18,
+  "failed": [],
+  "n": 18,
+  "ok": true,
+  "rows": [
+    {
+      "id": "health",
+      "intended": "status=ok, db=ok, redis=ok (provider is whatever .env loaded)",
+      "actual": "{\"status\": \"ok\", \"version\": \"0.5.0\", \"provider\": \"openai_compat\", \"db\": \"ok\", \"redis\": \"ok\"}",
+      "pass": true,
+      "detail": "provider=openai_compat version=0.5.0"
+    },
+    {
+      "id": "auth.route_401",
+      "intended": "401 without key",
+      "actual": "401",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "auth.consolidate_401",
+      "intended": "401 without admin key",
+      "actual": "401",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "pipeline.ras_date",
+      "intended": "ras.template HIT, cost=0, tokens_in=0",
+      "actual": "hit=ras.template cost=0.0 tokens=0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "pipeline.stakes_remit",
+      "intended": "pending_confirmation, no LLM tokens",
+      "actual": "status=pending_confirmation tokens=0 cost=0.0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "routing.cold_start",
+      "intended": "n_obs=0 \u2192 decision=cold_start, cheap_tried=false, strong",
+      "actual": "decision=cold_start phase=cold n=0 cheap_tried=False tier=strong cost=0.000523",
+      "pass": true,
+      "detail": "Cold start is independent of N_MIN as long as n_obs=0."
+    },
+    {
+      "id": "routing.below_n_min_still_cold",
+      "intended": "n_obs=5, cheap_n=0 \u2192 still cold if process N_MIN>5 (this .env is 6)",
+      "actual": "decision=cold_start n=5 cheap_tried=False tier=strong credible=0.0",
+      "pass": true,
+      "detail": "If this FAIL, the process N_MIN is \u22645 or seeding did not stick."
+    },
+    {
+      "id": "routing.first_explore_after_cold",
+      "intended": "n_obs>=N_MIN and cheap_n=0 \u2192 decision=explore, cheap_tried=true",
+      "actual": "decision=explore phase=explore n=6 cheap_tried=True escalated=False tier=cheap score=1.0",
+      "pass": true,
+      "detail": "Escalation after cheap is a quality result, not a routing fail."
+    },
+    {
+      "id": "routing.lock_in_cheap",
+      "intended": "\u03b1=99,\u03b2=2,n=100 \u2192 locked_cheap, cheap_tried=true",
+      "actual": "decision=locked_cheap credible=1.0 lcb=0.956 cheap_tried=True escalated=False tier=cheap thompson_sample=None",
+      "pass": true,
+      "detail": "Wilson LCB on this seed is ~0.96 diagnostic only; gate is credible."
+    },
+    {
+      "id": "routing.lock_out_strong",
+      "intended": "\u03b1=2,\u03b2=20,cheap_n=21 \u2192 locked_strong, cheap_tried=false",
+      "actual": "decision=locked_strong phase=locked_strong credible=0.0 cheap_tried=False tier=strong",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.manual_consolidate",
+      "intended": "POST /v1/admin/consolidate \u2192 200 status=ok",
+      "actual": "{\"job_id\": \"adb5255f-0dbf-436e-8f84-341f0dfff1a6\", \"trigger\": \"manual\", \"pruned_meta\": 0, \"candidates\": 2, \"patterns_found\": 2, \"vpt_days\": 3, \"resets\": 0, \"decayed\": 3, \"cache_extended\": 0, \"cache_extend_skipped\": \"exact Redis keys are not query_hash\", \"duration_ms\": 77, \"status\": \"ok\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.decay_applied",
+      "intended": "\u03b1,\u03b2 decay 51,3 \u2192 41,3; n_obs stays 55",
+      "actual": "row={'alpha': 41, 'beta': 3, 'n_obs': 55, 'cheap_n': 52} expected_ab=(41,3)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.pattern_quality_gate",
+      "intended": "high-quality repeats \u2192 pending candidate; quality 0.70 \u2192 no row",
+      "actual": "good={'frequency': 5, 'status': 'pending', 'avg_quality': Decimal('0.970')} bad=None",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.no_auto_publish",
+      "intended": "faq_entries count unchanged; source=sleep is 0",
+      "actual": "before=2 after=2 sleep_source=0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.consolidation_log",
+      "intended": "consolidation_log grew by 1, trigger=manual",
+      "actual": "before=2 after=3 last={'trigger': 'manual', 'routes_decayed': 3, 'candidates_created': 2, 'duration_ms': 77}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.legacy_endpoint_and_lock_release",
+      "intended": "POST /v1/admin/sleep works (lock was released after first job)",
+      "actual": "{\"job_id\": \"03866984-33b7-405b-b456-022513db6861\", \"trigger\": \"manual\", \"pruned_meta\": 0, \"candidates\": 2, \"patterns_found\": 2, \"vpt_days\": 3, \"resets\": 0, \"decayed\": 3, \"cache_extended\": 0, \"cache_extend_skipped\": \"exact Redis keys are not query_hash\", \"duration_ms\": 49, \"status\": \"ok\"}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "sleep.second_cycle_decays_again",
+      "intended": "second sleep \u2192 \u03b1,\u03b2 33,3, n_obs still 55",
+      "actual": "row={'alpha': 33, 'beta': 3, 'n_obs': 55}",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "pipeline.cache_after_sleep",
+      "intended": "repeat query HITs exact cache IF first quality passed; else miss is honest",
+      "actual": "first_passed=True first_cost=0.000146 second_hit=True second_cost=0.0 tier1=cheap",
+      "pass": true,
+      "detail": "Do not count a quality-fail miss as a cache regression."
+    }
+  ],
+  "honesty": {
+    "n_min_note": "Process N_MIN comes from .env (often 6). Production default is 30.",
+    "cheap_final_note": "Routing pass \u2260 cheap produced the final answer. Escalation is quality.",
+    "sleep_note": "This proves the manual job, decay, candidate gate, and log. Not a week of prod traffic."
+  }
+}

@@ -12,8 +12,8 @@ async def trigger(route_class: str = "email_draft:standard"):
     pool = await asyncpg.create_pool(settings.POSTGRES_DSN)
     alpha, beta, n_obs = 50, 5, 55
     d = decision_from_stats(alpha, beta, n_obs, tau=0.92)
-    print(f"Seeding {route_class}: n_obs={n_obs} phase={phase_of(n_obs)} "
-          f"p_hat={d.p_hat} lcb={d.lcb} decision={d.decision}")
+    print(f"Seeding {route_class}: n_obs={n_obs} phase={phase_of(n_obs, d.cheap_trials)} "
+          f"p_hat={d.p_hat} lcb={d.lcb} credible={d.credible} decision={d.decision}")
     async with pool.acquire() as conn:
         await conn.execute(
             """

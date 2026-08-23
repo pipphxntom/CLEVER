@@ -176,7 +176,12 @@ async def route(req: RouteRequest, app_state) -> RouteResponse:
         "p_hat": myelin.p_hat,
         "n_obs": myelin.n_obs,
         "lcb": myelin.lcb,
+        "credible": myelin.credible,
         "decision": myelin.decision,
+        "alpha": myelin.alpha,
+        "beta": myelin.beta,
+        "thompson_sample": myelin.thompson_sample,
+        "tau": myelin.tau,
     })
 
     force_strong = stakes.suspend_optimization or (not myelin.eligible)

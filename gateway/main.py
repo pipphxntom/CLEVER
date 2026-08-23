@@ -41,16 +41,17 @@ async def lifespan(app: FastAPI):
     scheduler = AsyncIOScheduler()
 
     async def _sleep_job():
-        await consolidation.run(app.state.pool, app.state.redis)
+        await consolidation.run(app.state.pool, app.state.redis, trigger="scheduled")
 
-    scheduler.add_job(
-        _sleep_job,
-        trigger="cron",
-        day_of_week="sun",
-        hour=3,
-        minute=0,
-        id="sleep",
-    )
+    if settings.SLEEP_ENABLED:
+        scheduler.add_job(
+            _sleep_job,
+            trigger="interval",
+            seconds=max(60, int(settings.SLEEP_INTERVAL_S)),
+            id="sleep",
+            replace_existing=True,
+        )
+        log.info("sleep interval_s=%s", settings.SLEEP_INTERVAL_S)
     scheduler.start()
     app.state.scheduler = scheduler
     log.info("ready")
@@ -61,7 +62,7 @@ async def lifespan(app: FastAPI):
     log.info("shutdown")
 
 
-app = FastAPI(title="CLEVER Gateway", version="0.4.0", lifespan=lifespan, docs_url="/docs" if settings.CLEVER_ENV != "prod" else None)
+app = FastAPI(title="CLEVER Gateway", version="0.5.0", lifespan=lifespan, docs_url="/docs" if settings.CLEVER_ENV != "prod" else None)
 
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
@@ -124,7 +125,14 @@ async def route(req: RouteRequest, _auth: str = Depends(require_api_key)):
 
 @app.post("/v1/admin/sleep")
 async def trigger_sleep(_auth: str = Depends(require_admin_key)):
-    result = await consolidation.run(app.state.pool, app.state.redis)
+    result = await consolidation.run(app.state.pool, app.state.redis, trigger="manual")
+    return result
+
+
+@app.post("/v1/admin/consolidate")
+async def trigger_consolidation(_auth: str = Depends(require_admin_key)):
+    """Manual sleep trigger (alias of /v1/admin/sleep). Admin key required."""
+    result = await consolidation.run(app.state.pool, app.state.redis, trigger="manual")
     return result
 
 
@@ -260,7 +268,8 @@ async def stats(_auth: str = Depends(require_api_key)):
 
     def _phase(n):
         n = n or 0
-        if n < 30:
+        cold = settings.COLD_MIN if settings.COLD_MIN is not None else settings.N_MIN
+        if n < cold:
             return "cold"
         if n < 100:
             return "warming"

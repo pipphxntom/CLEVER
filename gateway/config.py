@@ -1,4 +1,6 @@
 """Runtime settings. Names are provider-agnostic — no vendor lock-in in fields."""
+from typing import Optional
+
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -35,8 +37,23 @@ class Settings(BaseSettings):
     QUERY_MAX_CHARS: int = 8000
     CONTEXT_MAX_BYTES: int = 262144
     FAQ_MIN_SCORE: float = 0.5
+    # Cold-start: strong-only until this many observations. Production 30.
+    # Eval .env may set N_MIN=6. COLD_MIN aliases N_MIN when unset.
     N_MIN: int = 30
-    N_EXPLORE: int = 10  # cheap trials after cold before LCB gating
+    COLD_MIN: Optional[int] = None
+    # Kept so existing .env N_EXPLORE=3 is not a surprise. Not an explore budget.
+    N_EXPLORE: int = 10
+    LOCK_IN: float = 0.90
+    LOCK_OUT: float = 0.01
+    LOCK_OUT_MIN_CHEAP: int = 10  # do not lock out on a 1-fail posterior
+    SLEEP_ENABLED: bool = True
+    SLEEP_INTERVAL_S: int = 604800  # 7 days
+    SLEEP_DECAY_FACTOR: float = 0.80
+    SLEEP_DECAY_MIN_OBS: int = 10
+    SLEEP_PATTERN_THRESHOLD: int = 5
+    SLEEP_PATTERN_QUALITY_FLOOR: float = 0.95
+    SLEEP_COLD_CACHE_AGE_S: int = 604800  # 7 days; was hardcoded in sleep
+    SLEEP_HOT_EXTEND_TTL_S: int = 7200
     RATE_LIMIT_PER_MIN: int = 60
 
     def cors_origin_list(self) -> list[str]:
@@ -52,6 +69,8 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _prod_guards(self):
+        if self.COLD_MIN is None:
+            object.__setattr__(self, "COLD_MIN", self.N_MIN)
         if self.CLEVER_ENV == "prod":
             if self.CLEVER_API_KEY in ("", "dev-key-change-me"):
                 raise ValueError("CLEVER_API_KEY must be set in prod")

@@ -41,6 +41,7 @@ async def write_request_log(pool, rec: LogRecord) -> None:
     try:
         version = (rec.req.context or {}).get("aging_version")
         qh = query_hash(rec.req.query, rec.intent, str(version or "none"))
+        query_snip = (getattr(rec.req, "query", None) or "").strip()[:200]
         tokens_in = rec.accounting.get("tokens_in", 0)
         tokens_out = rec.accounting.get("tokens_out", 0)
         async with pool.acquire() as conn:
@@ -53,7 +54,7 @@ async def write_request_log(pool, rec: LogRecord) -> None:
                     cost_usd, baseline_cost_usd, quality_score,
                     latency_ms, decision_trace, query_hash, aging_version,
                     vpt, outcome_unit, outcome_value_usd, route_class,
-                    cache_hit, usage_legs
+                    cache_hit, usage_legs, query_text_redacted
                 ) VALUES (
                     $1,$2,$3,$4,$5,
                     $6,$7,$8,
@@ -61,7 +62,7 @@ async def write_request_log(pool, rec: LogRecord) -> None:
                     $12,$13,$14,
                     $15,$16,$17,$18,
                     $19,$20,$21,$22,
-                    $23,$24
+                    $23,$24,$25
                 )
                 """,
                 rec.request_id,
@@ -88,6 +89,7 @@ async def write_request_log(pool, rec: LogRecord) -> None:
                 rec.route_class,
                 rec.cache_hit,
                 json.dumps(rec.usage_legs, default=str),
+                query_snip or None,
             )
     except Exception as exc:
         log.warning("request_log write failed: %s", exc)

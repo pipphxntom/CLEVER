@@ -400,14 +400,14 @@ async def main():
             all(n < 30 for n in n_obs_vals) if n_obs_vals else True,
             "If n_obs grew from strong-only calls, the success signal is still wrong.",
         )
-        # q_floor for collections_outreach is 0.92. Wilson LCB(95/100)=0.9008 < 0.92
-        # so alpha=96,beta=5,n=100 MUST stay ineligible. That is the honest gate.
+        # v0.5 Thompson: α=96, β=5, n=100 has P(p>0.92)≈0.92 ≥ LOCK_IN 0.90
+        # so this seed UNLOCKS cheap. Wilson LCB(95/100)≈0.901 < 0.92 was the old gate.
         await conn.execute(
             """
-            INSERT INTO myelination_registry (route_class, alpha, beta, n_obs, updated_at)
-            VALUES ('email_draft:standard', 96, 5, 100, now())
+            INSERT INTO myelination_registry (route_class, alpha, beta, n_obs, cheap_n, updated_at)
+            VALUES ('email_draft:standard', 96, 5, 100, 99, now())
             ON CONFLICT (route_class) DO UPDATE
-            SET alpha=96, beta=5, n_obs=100, updated_at=now()
+            SET alpha=96, beta=5, n_obs=100, cheap_n=99, updated_at=now()
             """
         )
     finally:
@@ -427,12 +427,13 @@ async def main():
         })).json()
         my = layer_hit(r["decision_trace"], "myelination") or {}
         cas = layer_hit(r["decision_trace"], "cascade") or {}
+        unlocked = my.get("decision") in {"locked_cheap", "cheap_explore", "cheap_ok"}
         ev.add(
-            "myelination.95pct_at_n100_still_blocked_at_tau092",
-            "alpha=96,beta=5,n=100 => LCB~0.901 < q_floor 0.92 => cheap_ineligible (NOT a bug)",
-            f"decision={my.get('decision')} lcb={my.get('lcb')} cheap_tried={cas.get('cheap_tried')} tier={r.get('model_tier')}",
-            my.get("decision") == "cheap_ineligible" and cas.get("cheap_tried") is False,
-            "Old slide said LCB 0.907 >= 0.90. Floor is 0.92 now. 95% success in 100 trials is not enough.",
+            "myelination.95pct_at_n100_unlocks_under_thompson",
+            "alpha=96,beta=5,n=100 => credible≥LOCK_IN => cheap eligible (Wilson LCB would still block)",
+            f"decision={my.get('decision')} credible={my.get('credible')} lcb={my.get('lcb')} cheap_tried={cas.get('cheap_tried')} tier={r.get('model_tier')}",
+            unlocked and cas.get("cheap_tried") is True,
+            "v0.5 replaced Wilson LCB with Thompson + credible lock-in. 95/100 is enough to lock cheap.",
         )
 
         conn2 = await asyncpg.connect(dsn)
@@ -440,7 +441,7 @@ async def main():
             await conn2.execute(
                 """
                 UPDATE myelination_registry
-                SET alpha=99, beta=2, n_obs=100, updated_at=now()
+                SET alpha=99, beta=2, n_obs=100, cheap_n=99, updated_at=now()
                 WHERE route_class='email_draft:standard'
                 """
             )
@@ -455,10 +456,10 @@ async def main():
         my = layer_hit(r["decision_trace"], "myelination") or {}
         ev.add(
             "myelination.98pct_unlocks_cheap",
-            "alpha=99,beta=2,n=100 => LCB>=0.92 => cheap_tried=true",
-            f"decision={my.get('decision')} lcb={my.get('lcb')} cheap_tried={cas.get('cheap_tried')} escalated={cas.get('escalated')} tier={r.get('model_tier')} legs={cas.get('legs')}",
-            my.get("decision") == "cheap_ok" and cas.get("cheap_tried") is True,
-            "This is the actual unlock bar. Mock canned text should pass quality so no escalate.",
+            "alpha=99,beta=2,n=100 => locked_cheap => cheap_tried=true",
+            f"decision={my.get('decision')} credible={my.get('credible')} lcb={my.get('lcb')} cheap_tried={cas.get('cheap_tried')} escalated={cas.get('escalated')} tier={r.get('model_tier')} legs={cas.get('legs')}",
+            my.get("decision") in {"locked_cheap", "cheap_ok"} and cas.get("cheap_tried") is True,
+            "High-confidence posterior is deterministic cheap. Mock canned text should pass quality so no escalate.",
         )
 
         stats = (await client.get(f"{BASE}/v1/stats", headers=HEADERS)).json()

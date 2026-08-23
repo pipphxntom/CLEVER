@@ -21,6 +21,12 @@ class FakeRedis:
         self.store[k] = v
         return True
 
+    async def exists(self, k):
+        return 1 if k in self.store else 0
+
+    async def expire(self, k, ttl):
+        return k in self.store
+
     async def ping(self):
         return True
 
