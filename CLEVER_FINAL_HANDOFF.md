@@ -73,7 +73,15 @@ CLEVER_ADMIN_KEY=dev-admin-change-me
 # Offline / unit / mock eval:
 LLM_PROVIDER=mock
 
-# Live DeepSeek (this packet’s A–H run):
+# Live Cvent Bedrock (SSO, not an API key):
+# LLM_PROVIDER=bedrock
+# AWS_PROFILE=cvt-aws-developer-sandbox
+# AWS_REGION=us-east-1
+# MODEL_CHEAP=<from python -m harness.check_bedrock>
+# MODEL_STRONG=<from python -m harness.check_bedrock>
+# Then: aws sso login --profile cvt-aws-developer-sandbox  (AWS CLI v2)
+
+# Leftover OpenAI-compatible path (DeepSeek evals, not Cvent):
 # LLM_PROVIDER=openai_compat
 # LLM_API_KEY=<your key — never commit>
 # LLM_BASE_URL=https://api.deepseek.com
@@ -133,7 +141,7 @@ Check:
 curl -s http://127.0.0.1:8080/health
 ```
 
-You want `"status":"ok"`, `"db":"ok"`, `"redis":"ok"`, and `"provider"` equal to what you set (`mock` or `openai_compat`). If `provider` is wrong, you are looking at a stale process on 8080.
+You want `"status":"ok"`, `"db":"ok"`, `"redis":"ok"`, and `"provider"` equal to what you set (`mock`, `openai_compat`, or `bedrock`). If `provider` is wrong, you are looking at a stale process on 8080.
 
 **Dashboard:** open `http://127.0.0.1:8080/`  
 The API key field is pre-filled with `dev-key-change-me`. Stats polling needs that header. After a live A–H run the KPIs should match §6.

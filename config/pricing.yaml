@@ -1,12 +1,15 @@
-# USD per 1M tokens. Internal tiers only.
-# Source: https://api-docs.deepseek.com/quick_start/pricing/  (fetched 2026-08-23)
-# CACHE-MISS OFF-PEAK — weekends are all-day off-peak as of 2026-08-23 (Beijing).
-# Peak cache-miss (weekday UTC peak windows): cheap 0.44/1.32, strong 1.32/3.96
-# Cache-hit input is much cheaper (0.007 / 0.022 off-peak). We do NOT use hit rates
-# here because CLEVER cannot see provider cache-hit splits unless usage reports them.
+# USD per 1M tokens. Internal tiers only. Must match the models in MODEL_CHEAP / MODEL_STRONG.
+#
+# Active: AWS Bedrock on-demand US list (Aug 2026) for Claude Haiku 4.5 / Sonnet 4.6.
+#   https://aws.amazon.com/bedrock/pricing/  — confirm in your region.
+# If CAI granted different models (Nova, Llama, older Haiku 3.5), change these rates
+# before quoting any dashboard dollar column.
+#
+# Previous DeepSeek off-peak cache-miss (do not use while on Bedrock):
+#   cheap 0.22/0.66  strong 0.66/1.98
 cheap:
-  in: 0.22
-  out: 0.66
+  in: 1.00
+  out: 5.00
 strong:
-  in: 0.66
-  out: 1.98
+  in: 3.00
+  out: 15.00

@@ -17,15 +17,17 @@ class OpenAICompatProvider:
             raise RuntimeError("LLM_API_KEY is required for openai_compat")
         if not settings.LLM_BASE_URL:
             raise RuntimeError("LLM_BASE_URL is required for openai_compat")
-        if not settings.MODEL_CHEAP or not settings.MODEL_STRONG:
-            raise RuntimeError("MODEL_CHEAP and MODEL_STRONG must be set")
+        cheap = settings.compat_model("cheap")
+        strong = settings.compat_model("strong")
+        if not cheap or not strong:
+            raise RuntimeError("COMPAT_MODEL_* or MODEL_CHEAP/STRONG must be set")
         self._client = AsyncOpenAI(
             api_key=settings.LLM_API_KEY,
             base_url=settings.LLM_BASE_URL,
             timeout=settings.LLM_TIMEOUT_S,
             max_retries=2,
         )
-        self._models = {"cheap": settings.MODEL_CHEAP, "strong": settings.MODEL_STRONG}
+        self._models = {"cheap": cheap, "strong": strong}
 
     async def complete(
         self,

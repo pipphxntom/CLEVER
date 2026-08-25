@@ -32,7 +32,9 @@ if ($contexts -match "rancher-desktop") {
     docker context use rancher-desktop | Out-Null
 }
 
-docker info 2>$null | Out-Null
+# Native docker writes WARNINGs to stderr. PowerShell Stop mode turns that
+# into NativeCommandError even when the engine is fine (seccomp profile).
+cmd /c "docker info >nul 2>&1"
 if ($LASTEXITCODE -ne 0) {
     Fail "Rancher engine is not ready. Open Rancher Desktop and wait until the VM is Running (dockerd)."
 }

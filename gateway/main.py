@@ -18,7 +18,7 @@ from gateway.security import SecurityHeadersMiddleware
 from gateway.config import settings
 from gateway.models import RouteRequest, RouteResponse
 from gateway import catalog, pipeline
-from gateway.providers.factory import build_provider
+from gateway.providers.factory import build_providers
 from gateway.sleep import consolidation
 from gateway.telemetry import tail_cost as tail_cost_calc
 
@@ -34,7 +34,10 @@ async def lifespan(app: FastAPI):
     log.info("CLEVER starting env=%s provider=%s", settings.CLEVER_ENV, settings.LLM_PROVIDER)
     catalog.reload()
 
-    app.state.provider = build_provider()
+    default, backends = build_providers()
+    app.state.provider = default
+    app.state.providers = backends
+    log.info("llm default=%s ready=%s", default.name, sorted(backends))
     app.state.pool = await asyncpg.create_pool(settings.POSTGRES_DSN, min_size=2, max_size=10)
     app.state.redis = aioredis.from_url(settings.REDIS_URL, decode_responses=True)
 
@@ -62,7 +65,7 @@ async def lifespan(app: FastAPI):
     log.info("shutdown")
 
 
-app = FastAPI(title="CLEVER Gateway", version="0.5.0", lifespan=lifespan, docs_url="/docs" if settings.CLEVER_ENV != "prod" else None)
+app = FastAPI(title="CLEVER Gateway", version="0.6.0", lifespan=lifespan, docs_url="/docs" if settings.CLEVER_ENV != "prod" else None)
 
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
@@ -79,6 +82,8 @@ class HealthResponse(BaseModel):
     provider: str
     db: str
     redis: str
+    backends: dict = {}
+    default_provider: str = ""
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -94,12 +99,16 @@ async def health():
     except Exception:
         redis_ok = "error"
     overall = "ok" if db_ok == "ok" and redis_ok == "ok" else "degraded"
+    ready = sorted(getattr(app.state, "providers", {}) or {})
+    default_name = getattr(app.state.provider, "name", settings.LLM_PROVIDER)
     return HealthResponse(
         status=overall,
         version=app.version,
-        provider=getattr(app.state.provider, "name", settings.LLM_PROVIDER),
+        provider=default_name,
         db=db_ok,
         redis=redis_ok,
+        backends={name: "ready" for name in ready},
+        default_provider=default_name,
     )
 
 
@@ -118,6 +127,12 @@ async def route(req: RouteRequest, _auth: str = Depends(require_api_key)):
         return await pipeline.route(req, app.state)
     except HTTPException:
         raise
+    except RuntimeError as exc:
+        msg = str(exc)
+        if "llm_backend" in msg or "not configured" in msg or "not available" in msg:
+            raise HTTPException(status_code=422, detail=msg) from exc
+        log.exception("route failed")
+        raise HTTPException(status_code=503, detail="upstream_error")
     except Exception:
         log.exception("route failed")
         raise HTTPException(status_code=503, detail="upstream_error")

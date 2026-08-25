@@ -12,6 +12,7 @@ from gateway.telemetry import accounting, vpt as vpt_calc
 from gateway.telemetry import logger as telemetry
 from gateway.telemetry.logger import LogRecord
 from gateway.config import settings
+from gateway.providers.factory import pick_provider
 
 log = logging.getLogger(__name__)
 
@@ -19,7 +20,13 @@ log = logging.getLogger(__name__)
 async def route(req: RouteRequest, app_state) -> RouteResponse:
     start = time.time()
     request_id = str(uuid.uuid4())
-    trace: list = [{"layer": "request", "request_id": request_id, "mode": req.mode}]
+    provider = pick_provider(app_state, getattr(req, "llm_backend", None))
+    trace: list = [{
+        "layer": "request",
+        "request_id": request_id,
+        "mode": req.mode,
+        "llm_backend": getattr(provider, "name", "unknown"),
+    }]
 
     intent, confidence, method = classifier.classify(req)
     trace.append({
@@ -47,7 +54,7 @@ async def route(req: RouteRequest, app_state) -> RouteResponse:
     trace.append(gate_entry)
 
     if req.mode == "baseline":
-        return await _baseline(req, app_state, request_id, intent, confidence, ctx, trace, start)
+        return await _baseline(req, app_state, request_id, intent, confidence, ctx, trace, start, provider)
 
     if stakes.suspend_optimization and stakes.require_human_confirm:
         ok = await _confirm_ok(app_state.redis, req.confirm_token, intent)
@@ -204,7 +211,7 @@ async def route(req: RouteRequest, app_state) -> RouteResponse:
     })
 
     result = await cascade.run(
-        provider=app_state.provider,
+        provider=provider,
         intent=intent,
         feature_class=req.feature_class,
         prompt=ctx["prompt"],
@@ -290,10 +297,10 @@ async def route(req: RouteRequest, app_state) -> RouteResponse:
     )
 
 
-async def _baseline(req, app_state, request_id, intent, confidence, ctx, trace, start):
+async def _baseline(req, app_state, request_id, intent, confidence, ctx, trace, start, provider):
     trace.append({"layer": "baseline", "result": "strong_uncompressed"})
     result = await cascade.run(
-        provider=app_state.provider,
+        provider=provider,
         intent=intent,
         feature_class=req.feature_class,
         prompt=ctx["uncompressed_prompt"],

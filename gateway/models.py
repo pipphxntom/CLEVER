@@ -15,6 +15,7 @@ class RouteRequest(BaseModel):
     intent_hint: Optional[str] = None
     stakes: Literal["auto", "read", "mutate"] = "auto"
     mode: Literal["clever", "baseline"] = "clever"
+    llm_backend: Literal["auto", "bedrock", "openai_compat", "mock"] = "auto"
     confirm_token: Optional[str] = None
     outcome_count: int = Field(default=1, ge=1, le=10_000)
 

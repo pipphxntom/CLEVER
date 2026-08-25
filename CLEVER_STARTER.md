@@ -204,34 +204,47 @@ Expect: `"status":"ok"` and a `job_id`. On a fresh DB `decayed` / `candidates` m
 
 ## 8. Optional: live LLM (spends money)
 
-Only if you have an OpenAI-compatible key. Stop the gateway (Ctrl+C), edit `.env`:
+Both backends can be live at once (`LLM_PROVIDER=auto`). This machine **does not use SSO**.
+
+- **OpenAI-compatible API:** `LLM_API_KEY` + `LLM_BASE_URL` + `COMPAT_MODEL_*`
+- **Bedrock:** `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` + `AWS_SESSION_TOKEN` (if STS) + `BEDROCK_MODEL_*`
+
+Fill `.env` from `WHAT_TO_PROVIDE.md`. AWS CLI v2 / SSO is optional on *another* machine to **export** those keys:
+
+Needs AWS CLI **v2** only if you export STS creds elsewhere (this host’s pip `aws` is v1 and cannot `sso login`):
+
+```powershell
+winget install -e --id Amazon.AWSCLI
+aws sso login --profile cvt-aws-developer-sandbox
+```
+
+`.env`:
 
 ```env
-LLM_PROVIDER=openai_compat
-LLM_API_KEY=<your key — never commit>
-LLM_BASE_URL=https://api.deepseek.com
-MODEL_CHEAP=deepseek-v4-flash
-MODEL_STRONG=deepseek-v4-pro
-LLM_THINKING=disabled
+LLM_PROVIDER=bedrock
+AWS_PROFILE=cvt-aws-developer-sandbox
+AWS_REGION=us-east-1
+MODEL_CHEAP=<inference profile id>
+MODEL_STRONG=<inference profile id>
 LLM_TIMEOUT_S=90
 LLM_MAX_TOKENS=1024
 ```
 
-Restart uvicorn (same command as §5). `/health` must show `"provider":"openai_compat"`.
-
-Then (venv on):
+List what this account can actually invoke, then paste those ids into `.env`:
 
 ```powershell
-python -m harness.run_routing_sleep_api
+python -m harness.check_bedrock
 ```
 
-Writes `harness/last_routing_sleep_api.json`. This **seeds** the routing registry; it is not organic lock-in and not production `N_MIN=30`. Read `CLEVER_v0.5.0_Routing_Sleep_Evaluation.md` before quoting any %.
+Restart uvicorn. `/health` must show `"provider":"bedrock"`. If it still says `openai_compat` or `mock`, you are on a stale process.
 
-Full Groups A–H (clears `request_log`, spends more):
+`config/pricing.yaml` must match those models. Current table is Bedrock on-demand **Haiku 4.5 / Sonnet 4.6** US list. Wrong table = dishonest dollar columns.
 
-```powershell
-python -m harness.run_suite_ah
-```
+OpenAI-compatible (DeepSeek) still exists as `LLM_PROVIDER=openai_compat` for leftover evals. Do not mix those savings numbers with Bedrock runs.
+
+After `/health` shows `bedrock`, probe with `python -m harness.check_bedrock` (lists models, then Converse on `MODEL_CHEAP` if set).
+
+The older DeepSeek harnesses (`run_suite_ah`, `run_routing_sleep_api`) still refuse unless `provider=openai_compat`. Do not run them against Bedrock until they are updated — they would either no-op or spend on the wrong provider.
 
 ---
 
