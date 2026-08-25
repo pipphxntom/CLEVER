@@ -44,7 +44,7 @@ This is an engineering audit, not a certification. Residual risk remains.
 |---|---|---|
 | S1 | Semantic cache on query text alone would leak Account A’s letter to Account B | **Fixed:** `context_hash` equality **before** vector search |
 | S2 | OpenAPI `/docs` on a collections gateway | **Fixed for prod** (`docs_url=None`). Dev still open behind LAN |
-| S3 | API key in chat history | **Operator:** rotate DeepSeek key. Not fixable in code |
+| S3 | API key in chat history | **Operator:** rotate the live API key. Not fixable in code |
 
 ### Medium
 
@@ -70,7 +70,7 @@ This is an engineering audit, not a certification. Residual risk remains.
 Attacker on the same host/network who can hit `:8080`:
 
 - Without key: 401 on route/stats. Health only.
-- With stolen route key: can read synthetic aging via RAS; can spend DeepSeek budget; cannot confirm-mutate without the confirm token flow.
+- With stolen route key: can read synthetic aging via RAS; can spend the live API budget; cannot confirm-mutate without the confirm token flow.
 - With stolen admin key: can trigger sleep / read FAQ candidates.
 
 Attacker with DB access: full AR snapshot + cached letters. Treat Postgres as confidential.

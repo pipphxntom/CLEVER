@@ -15,6 +15,6 @@
 | F7 | Dashboard: $0 exit share vs paid $ vs LLM-only %; provider label | `clever_dashboard.html` | Stop telecasting mixed avg as savings |
 | F8 | Test-2 eval N_MIN=6, N_EXPLORE=3 in `.env` only | `.env` (gitignored) | Observe cheap explore inside API budget; prod defaults stay 30/10 |
 
-**Not changed:** semantic cache still unwired; sleep still untested; thinking still disabled; DeepSeek prices still cache-miss off-peak.
+**Not changed:** semantic cache still unwired; sleep still untested; thinking still disabled; the live API prices still cache-miss off-peak.
 
 **Tests added/updated:** classifier write-a, quality required fields, myelination explore.

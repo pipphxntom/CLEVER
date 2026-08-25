@@ -9,7 +9,7 @@
 **Also:** `python -m pytest -q` → 48 passed (unit, no Docker)
 
 **Headline:** Live mock gates that we can actually exercise: **30 / 30 pass.**  
-That is **not** “the product is proven.” Mock cannot prove model quality, real token bills, or cascade-on-bad-output. Those stay open until DeepSeek.
+That is **not** “the product is proven.” Mock cannot prove model quality, real token bills, or cascade-on-bad-output. Those stay open until the live API.
 
 Do not quote dashboard `avg_saved_pct` (this run **73.7%**). That mix is mostly $0 short-circuits vs a fake-priced mock, not routing savings.
 
@@ -111,29 +111,29 @@ From `/v1/stats` after the eval (includes leftover rows from earlier manual clic
 
 ---
 
-## 4. What mock **cannot** prove (OPEN — fix/watch before DeepSeek)
+## 4. What mock **cannot** prove (OPEN — fix/watch before the live API)
 
 These are not silent passes. They are **not tested live** or **not meaningful** on mock.
 
 | Item | Why it’s open | Evidence we do have |
 |---|---|---|
-| Cheap→strong **escalate** on bad output | Mock canned strings are long and pass the heuristic. Live eval never produced `escalated=true`. | Unit test `test_escalate_bills_both_legs` passes. DeepSeek will be the first real escalate. |
+| Cheap→strong **escalate** on bad output | Mock canned strings are long and pass the heuristic. Live eval never produced `escalated=true`. | Unit test `test_escalate_bills_both_legs` passes. the live API will be the first real escalate. |
 | Quality = correctness | Heuristic = refusal regex + length + optional `$` in context. No facts vs aging. | Will misfire on real models (too short / too long / extra dollars). |
-| Real USD | `pricing.yaml` is generic (`cheap` 1.25/2.50, `strong` 2.00/6.00). Mock `tokens_*` are tiktoken of canned text. | **Must replace price table with DeepSeek list prices before API eval**, or the $ columns stay fiction. |
+| Real USD | `pricing.yaml` is generic (`cheap` 1.25/2.50, `strong` 2.00/6.00). Mock `tokens_*` are tiktoken of canned text. | **Must replace price table with the live API list prices before API eval**, or the $ columns stay fiction. |
 | Semantic cache | Still unwired | Table exists, pipeline does not call it |
 | Sleep job | Not run in this eval | Code writes FAQ **candidates**, not auto-FAQ. Untested live. |
-| Groundedness on real numbers | Mock invents 4021/3887 in canned triage, not from DB | DeepSeek may hallucinate balances — quality may still **pass** |
-| Load / timeouts / 429 | Mock is instant | DeepSeek $4.5 is enough for the gold set, not a soak test |
+| Groundedness on real numbers | Mock invents 4021/3887 in canned triage, not from DB | the live API may hallucinate balances — quality may still **pass** |
+| Load / timeouts / 429 | Mock is instant | the live API $4.5 is enough for the gold set, not a soak test |
 
 ---
 
-## 5. Flags to fix **before** DeepSeek (not optional)
+## 5. Flags to fix **before** the live API (not optional)
 
-1. **Put DeepSeek prices in `config/pricing.yaml`** (look up current list; do not keep 1.25/2.00). Otherwise “cost_usd” is still a costume.
+1. **Put the live API prices in `config/pricing.yaml`** (look up current list; do not keep 1.25/2.00). Otherwise “cost_usd” is still a costume.
 2. **Do not quote 73.7% or 93.8%.** Report by exit: RAS $0 / cache $0 / LLM actual vs `mode=baseline`.
-3. **Cheap unlock is strict.** If DeepSeek cheap fails quality often, you will stay on strong forever. That is correct, and savings will look small. Do not loosen τ to print a slide.
+3. **Cheap unlock is strict.** If the live API cheap fails quality often, you will stay on strong forever. That is correct, and savings will look small. Do not loosen τ to print a slide.
 4. **Classifier** labels “what is today’s date” as intent `triage` even though template answers. Harmless for $0; messy in stats buckets.
-5. **Mock `email_draft` canned text is only used if the prompt contains the substring `email_draft`.** Real queries say “draft email”, so mock returns the **default** paragraph. Fine for plumbing; DeepSeek will actually draft.
+5. **Mock `email_draft` canned text is only used if the prompt contains the substring `email_draft`.** Real queries say “draft email”, so mock returns the **default** paragraph. Fine for plumbing; the live API will actually draft.
 
 ---
 
@@ -148,20 +148,20 @@ No product patch required for those two.
 
 ---
 
-## 7. Go / no-go for DeepSeek
+## 7. Go / no-go for the live API
 
 **Go for a measured API eval**, with the flags in §5 done first (at least pricing.yaml).
 
 **No-go for any savings claim, novelty claim, or “it works in production.”**
 
-Recommended DeepSeek protocol (next session, after you paste the key into `.env` only — not into chat if you can avoid it):
+Recommended the live API protocol (next session, after you paste the key into `.env` only — not into chat if you can avoid it):
 
 ```
 LLM_PROVIDER=openai_compat
 LLM_API_KEY=...
-LLM_BASE_URL=https://api.deepseek.com
-MODEL_CHEAP=deepseek-chat
-MODEL_STRONG=deepseek-reasoner
+LLM_BASE_URL=https://YOUR_API_BASE_URL
+MODEL_CHEAP=cheap-model
+MODEL_STRONG=strong-model
 ```
 
 Then rerun `python -m harness.run_mock_eval` **plus** a gold-set `clever` vs `mode=baseline` table. That table is the only API result that counts.

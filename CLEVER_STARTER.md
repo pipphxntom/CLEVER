@@ -1,5 +1,7 @@
 # CLEVER starter — clone to “it works on my machine”
 
+**Short path:** `RUN.md` + `powershell -File scripts\first-run.ps1`
+
 **Audience:** you just cloned the repo. You have not run it before.  
 **Default mode in this file:** **mock LLM** (no API key, no spend). That is enough to prove the gateway, dashboard, RAS, stakes, cache plumbing, and health.  
 **OS these commands were written for:** Windows PowerShell. Linux/macOS notes at the bottom.
@@ -204,47 +206,16 @@ Expect: `"status":"ok"` and a `job_id`. On a fresh DB `decayed` / `candidates` m
 
 ## 8. Optional: live LLM (spends money)
 
-Both backends can be live at once (`LLM_PROVIDER=auto`). This machine **does not use SSO**.
+Both backends can be live at once (`LLM_PROVIDER=auto`).
 
-- **OpenAI-compatible API:** `LLM_API_KEY` + `LLM_BASE_URL` + `COMPAT_MODEL_*`
+- **HTTP API:** `LLM_API_KEY` + `LLM_BASE_URL` + `COMPAT_MODEL_*`
 - **Bedrock:** `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` + `AWS_SESSION_TOKEN` (if STS) + `BEDROCK_MODEL_*`
 
-Fill `.env` from `WHAT_TO_PROVIDE.md`. AWS CLI v2 / SSO is optional on *another* machine to **export** those keys:
+See `WHAT_TO_PROVIDE.md` and `RUN.md`. Restart uvicorn after filling `.env`. `/health` must show the backend you intended (`openai_compat`, `bedrock`, or `mock`). A stale process on 8080 is the usual mix-up.
 
-Needs AWS CLI **v2** only if you export STS creds elsewhere (this host’s pip `aws` is v1 and cannot `sso login`):
+`config/pricing.yaml` must match the models you configured. Wrong table = dishonest dollar columns.
 
-```powershell
-winget install -e --id Amazon.AWSCLI
-aws sso login --profile cvt-aws-developer-sandbox
-```
-
-`.env`:
-
-```env
-LLM_PROVIDER=bedrock
-AWS_PROFILE=cvt-aws-developer-sandbox
-AWS_REGION=us-east-1
-MODEL_CHEAP=<inference profile id>
-MODEL_STRONG=<inference profile id>
-LLM_TIMEOUT_S=90
-LLM_MAX_TOKENS=1024
-```
-
-List what this account can actually invoke, then paste those ids into `.env`:
-
-```powershell
-python -m harness.check_bedrock
-```
-
-Restart uvicorn. `/health` must show `"provider":"bedrock"`. If it still says `openai_compat` or `mock`, you are on a stale process.
-
-`config/pricing.yaml` must match those models. Current table is Bedrock on-demand **Haiku 4.5 / Sonnet 4.6** US list. Wrong table = dishonest dollar columns.
-
-OpenAI-compatible (DeepSeek) still exists as `LLM_PROVIDER=openai_compat` for leftover evals. Do not mix those savings numbers with Bedrock runs.
-
-After `/health` shows `bedrock`, probe with `python -m harness.check_bedrock` (lists models, then Converse on `MODEL_CHEAP` if set).
-
-The older DeepSeek harnesses (`run_suite_ah`, `run_routing_sleep_api`) still refuse unless `provider=openai_compat`. Do not run them against Bedrock until they are updated — they would either no-op or spend on the wrong provider.
+Do not mix HTTP-API eval savings with Bedrock eval savings.
 
 ---
 

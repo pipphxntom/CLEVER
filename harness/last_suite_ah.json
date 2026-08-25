@@ -139,12 +139,12 @@
     ],
     "model_breakdown": [
       {
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "calls": 20,
         "total_cost": 0.019113
       },
       {
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "calls": 13,
         "total_cost": 0.007027
       },
@@ -180,7 +180,7 @@
         "ts": "2026-08-22 21:54:11.139015+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 17,
         "tokens_out": 402,
         "cost_usd": 0.000269,
@@ -196,7 +196,7 @@
         "ts": "2026-08-22 21:54:05.403980+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "tokens_in": 17,
         "tokens_out": 610,
         "cost_usd": 0.001219,
@@ -212,7 +212,7 @@
         "ts": "2026-08-22 21:53:51.176541+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "tokens_in": 30,
         "tokens_out": 2021,
         "cost_usd": 0.002664,
@@ -228,7 +228,7 @@
         "ts": "2026-08-22 21:53:45.439183+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "tokens_in": 30,
         "tokens_out": 1661,
         "cost_usd": 0.002167,
@@ -244,7 +244,7 @@
         "ts": "2026-08-22 21:53:44.516779+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "tokens_in": 30,
         "tokens_out": 1615,
         "cost_usd": 0.001859,
@@ -260,7 +260,7 @@
         "ts": "2026-08-22 21:53:37.868632+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "tokens_in": 30,
         "tokens_out": 1256,
         "cost_usd": 0.001148,
@@ -276,7 +276,7 @@
         "ts": "2026-08-22 21:53:34.829535+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-pro",
+        "model": "strong-model",
         "tokens_in": 30,
         "tokens_out": 1028,
         "cost_usd": 0.000939,
@@ -292,7 +292,7 @@
         "ts": "2026-08-22 21:53:34.446271+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 951,
         "cost_usd": 0.000631,
@@ -308,7 +308,7 @@
         "ts": "2026-08-22 21:53:33.580760+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 1024,
         "cost_usd": 0.000679,
@@ -324,7 +324,7 @@
         "ts": "2026-08-22 21:53:33.474135+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 1024,
         "cost_usd": 0.000679,
@@ -340,7 +340,7 @@
         "ts": "2026-08-22 21:53:33.274817+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 1024,
         "cost_usd": 0.000679,
@@ -356,7 +356,7 @@
         "ts": "2026-08-22 21:53:33.012592+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 1024,
         "cost_usd": 0.000679,
@@ -372,7 +372,7 @@
         "ts": "2026-08-22 21:53:32.979522+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 1024,
         "cost_usd": 0.000679,
@@ -388,7 +388,7 @@
         "ts": "2026-08-22 21:53:31.640282+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 1022,
         "cost_usd": 0.000678,
@@ -404,7 +404,7 @@
         "ts": "2026-08-22 21:53:30.074435+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 792,
         "cost_usd": 0.000526,
@@ -420,7 +420,7 @@
         "ts": "2026-08-22 21:53:29.603386+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 591,
         "cost_usd": 0.000393,
@@ -436,7 +436,7 @@
         "ts": "2026-08-22 21:53:27.220328+00:00",
         "intent": "triage",
         "feature_class": "collections_outreach",
-        "model": "deepseek-v4-flash",
+        "model": "cheap-model",
         "tokens_in": 15,
         "tokens_out": 506,
         "cost_usd": 0.000337,
@@ -1037,7 +1037,7 @@
             "legs": [
               {
                 "tier": "strong",
-                "model_id": "deepseek-v4-pro",
+                "model_id": "strong-model",
                 "tokens_in": 13,
                 "tokens_out": 115,
                 "latency_ms": 2487
@@ -1175,7 +1175,7 @@
             "legs": [
               {
                 "tier": "strong",
-                "model_id": "deepseek-v4-pro",
+                "model_id": "strong-model",
                 "tokens_in": 10,
                 "tokens_out": 848,
                 "latency_ms": 12913
@@ -1292,7 +1292,7 @@
             "legs": [
               {
                 "tier": "strong",
-                "model_id": "deepseek-v4-pro",
+                "model_id": "strong-model",
                 "tokens_in": 18,
                 "tokens_out": 482,
                 "latency_ms": 8174
@@ -1539,7 +1539,7 @@
             "legs": [
               {
                 "tier": "strong",
-                "model_id": "deepseek-v4-pro",
+                "model_id": "strong-model",
                 "tokens_in": 6,
                 "tokens_out": 497,
                 "latency_ms": 7268
@@ -1770,7 +1770,7 @@
             "legs": [
               {
                 "tier": "strong",
-                "model_id": "deepseek-v4-pro",
+                "model_id": "strong-model",
                 "tokens_in": 13,
                 "tokens_out": 388,
                 "latency_ms": 5899
@@ -1945,7 +1945,7 @@
             "legs": [
               {
                 "tier": "strong",
-                "model_id": "deepseek-v4-pro",
+                "model_id": "strong-model",
                 "tokens_in": 16,
                 "tokens_out": 38,
                 "latency_ms": 1971

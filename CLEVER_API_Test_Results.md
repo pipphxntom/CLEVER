@@ -1,18 +1,18 @@
-# CLEVER live API eval (DeepSeek)
+# CLEVER live API eval (the live API)
 
 **When:** 2026-08-23 (Sunday — vendor off-peak all day per their pricing page)  
-**Provider:** `openai_compat` → `https://api.deepseek.com`  
-**Cheap model id:** `deepseek-v4-flash`  
-**Strong model id:** `deepseek-v4-pro`  
+**Provider:** `openai_compat` → `https://YOUR_API_BASE_URL`  
+**Cheap model id:** `cheap-model`  
+**Strong model id:** `strong-model`  
 **Thinking:** **disabled** (vendor default is thinking=on; leaving it on would bill chain-of-thought as output and chew the $4.50)  
-**Prices used in CLEVER math:** cache-miss **off-peak** from https://api-docs.deepseek.com/quick_start/pricing/
+**Prices used in CLEVER math:** cache-miss **off-peak** from (vendor pricing page)
 
 | Tier | Input / 1M | Output / 1M |
 |---|---|---|
 | cheap (flash, cache miss, off-peak) | $0.22 | $0.66 |
 | strong (pro, cache miss, off-peak) | $0.66 | $1.98 |
 
-Peak weekday cache-miss is 2× those numbers. We did **not** use cache-hit input rates ($0.007 / $0.022). CLEVER does not see DeepSeek’s prompt-cache split unless usage reports it.
+Peak weekday cache-miss is 2× those numbers. We did **not** use cache-hit input rates ($0.007 / $0.022). CLEVER does not see the live API's prompt-cache split unless usage reports it.
 
 **Key is in `.env` only. Rotate it.** It was pasted in chat.
 
@@ -38,7 +38,7 @@ This-eval accounted USD (CLEVER table, LLM legs only): **~$0.0015**
 ## 2. First run — real fail (not a flaky test)
 
 **Query (clever mode):** “Write a short collections dunning email for this account…”  
-**Intended:** call `deepseek-v4-pro` (cold start), draft an email using 40211 / $12,500.  
+**Intended:** call `strong-model` (cold start), draft an email using 40211 / $12,500.  
 **Actual:** FAQ HIT. Response was the SLA canned line: *“Standard collections SLA is 30 days…”* Cost **$0**, tokens **0**. No vendor call.
 
 Cause: FAQ scorer required `overlap_frac < τ AND score < τ` to reject. One shared token (“collections”) plus a BM25 bonus cleared the score bar.
@@ -51,7 +51,7 @@ Vacuous “pass” on the same first run: `clever_in=0 <= baseline_in=72` becaus
 
 ## 3. After the FAQ fix — what actually happened
 
-### Still free (no DeepSeek)
+### Still free (no the live API)
 
 | Case | Intended | Actual |
 |---|---|---|
@@ -64,7 +64,7 @@ Vacuous “pass” on the same first run: `clever_in=0 <= baseline_in=72` becaus
 
 **Dunning email, clever (cold start):**
 
-- Model: **`deepseek-v4-pro`** (`forced=true`, `cheap_tried=false` — cold start, correct)
+- Model: **`strong-model`** (`forced=true`, `cheap_tried=false` — cold start, correct)
 - Provider usage: **40 in / 96 out**, 3275 ms
 - CLEVER cost: **$0.000216**
 - Compressor: **45.5%** on this small context (not 85% theater)
@@ -98,18 +98,18 @@ Fat-pair “90% cheaper” is the noise blob, not a Cvent KPI.
 
 1. **Cheap model was never used on the live API.** Cold start forces strong. Do not claim flash routing savings until n_obs and LCB ≥ 0.92 (~98/100 cheap successes). That will take real traffic, not this eval.
 2. **FAQ was too greedy.** Fixed. Keep the unit test. A $0 wrong answer is worse than a $0.0002 email.
-3. **Strong answers are still unscored** (`unchecked_strong`). DeepSeek can be fluent and wrong; we would cache that fluent wrongness for an hour.
+3. **Strong answers are still unscored** (`unchecked_strong`). the live API can be fluent and wrong; we would cache that fluent wrongness for an hour.
 4. **Contact name ignored.** Grounding is partial. A collections product should fail quality if `contact` was in context and missing from the letter — we do not.
 5. **Fat “summarize account” classified as triage**, so `contact` / `invoice_ids` never reached the model. Classifier is still keyword-cheap.
 6. **Dashboard 71.5% avg saved is polluted** (old mock rows + RAS). Ignore it.
-7. **Accounted $ ≠ vendor invoice.** We use cache-miss off-peak. If DeepSeek counts cache hits, the card charge is lower. If you run on a weekday peak window, it is ~2×.
+7. **Accounted $ ≠ vendor invoice.** We use cache-miss off-peak. If the live API counts cache hits, the card charge is lower. If you run on a weekday peak window, it is ~2×.
 8. **Thinking is off.** If someone enables it, output tokens (and cost) can jump an order of magnitude. Keep it disabled for this gateway unless you have a reason.
 
 ---
 
 ## 5. Go / no-go
 
-**Go:** DeepSeek is wired, usage tokens are real, RAS still costs $0, cache still $0 on repeats, compression is real on fat prompts, stakes still blocks remit.
+**Go:** the live API is wired, usage tokens are real, RAS still costs $0, cache still $0 on repeats, compression is real on fat prompts, stakes still blocks remit.
 
 **No-go:** quoting 71% or 90% savings; claiming cheap-model routing; claiming quality control on strong; treating FAQ as safe without the overlap fix (now in).
 
@@ -123,9 +123,9 @@ Fat-pair “90% cheaper” is the noise blob, not a Cvent KPI.
 
 ```
 LLM_PROVIDER=openai_compat
-LLM_BASE_URL=https://api.deepseek.com
-MODEL_CHEAP=deepseek-v4-flash
-MODEL_STRONG=deepseek-v4-pro
+LLM_BASE_URL=https://YOUR_API_BASE_URL
+MODEL_CHEAP=cheap-model
+MODEL_STRONG=strong-model
 LLM_THINKING=disabled
 LLM_API_KEY=  (yours)
 ```

@@ -7,16 +7,16 @@ Do **not** put secrets in chat if you can avoid it. Filling `.env` locally is en
 
 ---
 
-## A. OpenAI-compatible API (DeepSeek or any `/v1/chat/completions` host)
+## A. HTTP chat-completions API (any `/v1/chat/completions` host)
 
 | Field | Example | Required |
 |---|---|---|
-| `LLM_API_KEY` | `sk-…` | yes |
-| `LLM_BASE_URL` | `https://api.deepseek.com` | yes |
-| `COMPAT_MODEL_CHEAP` | `deepseek-v4-flash` | yes |
-| `COMPAT_MODEL_STRONG` | `deepseek-v4-pro` | yes |
+| `LLM_API_KEY` | your API key | yes |
+| `LLM_BASE_URL` | `https://YOUR_API_BASE_URL` | yes |
+| `COMPAT_MODEL_CHEAP` | cheap model id from your vendor | yes |
+| `COMPAT_MODEL_STRONG` | strong model id from your vendor | yes |
 
-Optional: `LLM_THINKING=disabled` (DeepSeek). Leave Bedrock fields empty if you only want this path.
+Optional: `LLM_THINKING=disabled` if your vendor bills hidden reasoning tokens. Leave Bedrock fields empty if you only want this path.
 
 ---
 
@@ -70,4 +70,4 @@ Default (`auto`) prefers Bedrock if it is ready, else the OpenAI-compatible API,
 
 ## D. Pricing honesty
 
-`config/pricing.yaml` is **one** cheap/strong table. It currently assumes Bedrock Haiku 4.5 / Sonnet 4.6. If you run DeepSeek on `openai_compat` at the same time, dollar columns for that backend are **wrong** until we split the price table. Say so if you will run both in one session.
+`config/pricing.yaml` is **one** cheap/strong table. It currently assumes Bedrock Haiku 4.5 / Sonnet 4.6. If you run a different HTTP API on `openai_compat` at the same time, dollar columns for that backend are **wrong** until we split the price table. Say so if you will run both in one session.

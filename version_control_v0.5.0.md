@@ -12,4 +12,4 @@
 | S4 | `query_hash` was already written in v0.4.0. Hash function **not** changed. Logger now also writes truncated `query_text_redacted` for pattern representatives. |
 | T1 | Unit tests: Thompson lock-in/out, `beta_credible` vs Monte Carlo, sleep decay math, 500-request sim vs LCB. |
 
-**Not claimed:** live DeepSeek savings from Thompson. The 23–38% figures in the research handoff are **simulations**. A–H 43.7% was an eval `N_MIN=6` result and is not reproduced here.
+**Not claimed:** live HTTP API savings from Thompson. The 23–38% figures in the research handoff are **simulations**. A–H 43.7% was an eval `N_MIN=6` result and is not reproduced here.

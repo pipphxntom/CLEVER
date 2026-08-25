@@ -44,7 +44,7 @@
     {
       "id": "llm.clever_draft",
       "intended": "real vendor call; usage tokens > 0; not a mock canned paragraph",
-      "actual": "http=200 tier=strong model_id=[{'tier': 'strong', 'model_id': 'deepseek-v4-pro', 'tokens_in': 40, 'tokens_out': 96, 'latency_ms': 3275}] cost=0.000216 in=40 out=96 forced=True cheap_tried=False esc=False quality={'checked': False, 'method': 'unchecked_strong', 'score': None, 'passed': True, 'reason': 'unchecked_strong'} compress=45.5 myelin=cold_start mentions=2 preview='Subject: Urgent: Action Required on Your Account\\n\\nDear Customer,\\n\\nOur records indicate that account **40211** has an outstanding balance of **$12,500.00** that is now past due.\\n\\nWe'",
+      "actual": "http=200 tier=strong model_id=[{'tier': 'strong', 'model_id': 'strong-model', 'tokens_in': 40, 'tokens_out': 96, 'latency_ms': 3275}] cost=0.000216 in=40 out=96 forced=True cheap_tried=False esc=False quality={'checked': False, 'method': 'unchecked_strong', 'score': None, 'passed': True, 'reason': 'unchecked_strong'} compress=45.5 myelin=cold_start mentions=2 preview='Subject: Urgent: Action Required on Your Account\\n\\nDear Customer,\\n\\nOur records indicate that account **40211** has an outstanding balance of **$12,500.00** that is now past due.\\n\\nWe'",
       "pass": true,
       "detail": "Cold start should force strong. Mentions of 40211/12500/Ada are a grounding check, not a pass gate."
     },

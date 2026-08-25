@@ -1,7 +1,7 @@
 # CLEVER savings — live API only (mocks excluded)
 
 **Window:** Groups A–H suite, 2026-08-23, gateway `0.4.0`  
-**Provider:** DeepSeek via `openai_compat` (`deepseek-v4-flash` / `deepseek-v4-pro`)  
+**Provider:** the live API via `openai_compat` (`cheap-model` / `strong-model`)  
 **Log:** `request_log` was **cleared of mock and prior API rows** before this suite. The 55 rows below are this run only.  
 **Raw:** `harness/last_suite_ah.json` → `db_window`  
 **Dashboard at the time of writing:** same 55 rows (`avg_saved_pct` 59.4 is **not** the number to quote).
@@ -35,15 +35,15 @@ That $0.037 is **not** money Cvent would have spent without CLEVER on this exact
 | RAS (template / structured) | 4 | 0 | Date, days-until, invoice status, plus the date repeat in E4. |
 | Cache HIT (exact 2 + semantic 5) | 7 | 0 | Repeats and near-paraphrase triage. |
 | Stakes pending (no model) | 11 | 0 | remit / blast / campaign_send / reconciliation / F2×5. |
-| **LLM** | **33** | **0.02614** | DeepSeek usage × `pricing.yaml`. |
+| **LLM** | **33** | **0.02614** | the live API usage × `pricing.yaml`. |
 | **Total logged** | **55** | **0.02614** | |
 
 LLM split:
 
 | Model | Calls | Cost USD |
 |---|---|---|
-| `deepseek-v4-pro` (strong) | 20 | 0.019113 |
-| `deepseek-v4-flash` (cheap) | 13 | 0.007027 |
+| `strong-model` (strong) | 20 | 0.019113 |
+| `cheap-model` (cheap) | 13 | 0.007027 |
 | **LLM total** | **33** | **0.026140** |
 | LLM baseline (strong, uncompressed prompt, same output tokens) | 33 | **0.046400** |
 | **LLM dollar-weighted save** | | **43.7%** |
@@ -69,11 +69,11 @@ Flash rows in this run typically show **66.6%** saved_pct (cheap vs strong list 
 
 ### 2.2 Counterfactual is “always strong, uncompressed prompt”
 
-`baseline_method = uncompressed_prompt_strong_tier`. It is **not** “what Cvent pays ChatGPT today.” It is also **not** DeepSeek’s own prompt-cache hit rates. Weekday peak list prices are ~2× the table we used (weekend off-peak, 2026-08-23).
+`baseline_method = uncompressed_prompt_strong_tier`. It is **not** “what Cvent pays ChatGPT today.” It is also **not** the live API's own prompt-cache hit rates. Weekday peak list prices are ~2× the table we used (weekend off-peak, 2026-08-23).
 
 ### 2.3 RAS 100% is not a KPI
 
-A date template vs a priced-out `deepseek-v4-pro` call is 100% by construction. The query never needed a model.
+A date template vs a priced-out `strong-model` call is 100% by construction. The query never needed a model.
 
 ### 2.4 Negative rows are real
 
@@ -104,7 +104,7 @@ There is **no** 80% number hiding in the LLM legs unless you count $0 exits.
 
 ## 4. Comparison to earlier live API evals (also not mock)
 
-These are **not** added into the 43.7%. They used the same DeepSeek account before `request_log` was reset.
+These are **not** added into the 43.7%. They used the same the live API account before `request_log` was reset.
 
 | Run | File | Honest takeaway |
 |---|---|---|

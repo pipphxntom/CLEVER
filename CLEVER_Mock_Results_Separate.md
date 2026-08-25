@@ -1,9 +1,9 @@
 # CLEVER mock results — kept separate from API savings
 
-**These numbers are not DeepSeek. Do not mix them into `CLEVER_Final_API_Savings.md`.**
+**These numbers are not the live API. Do not mix them into `CLEVER_Final_API_Savings.md`.**
 
 **When:** 2026-08-23  
-**Provider:** `mock` (canned completions, tiktoken-sized, priced from whatever `pricing.yaml` was at that moment — originally generic 1.25/2.00, later replaced by DeepSeek list prices)  
+**Provider:** `mock` (canned completions, tiktoken-sized, priced from whatever `pricing.yaml` was at that moment — originally generic 1.25/2.00, later replaced by the live API list prices)  
 **Full write-up:** `CLEVER_Mock_Test_Results.md`  
 **Raw:** `harness/last_mock_eval.json`  
 **Runner:** `python -m harness.run_mock_eval`  
@@ -57,5 +57,5 @@ Mock **cannot** prove: model quality, vendor bills, cheap→strong escalate on a
 ## Rule for anyone reading both files
 
 If a percentage came from `LLM_PROVIDER=mock`, it goes in **this** file.  
-If it came from DeepSeek `usage` × `pricing.yaml` on Groups A–H, it goes in **`CLEVER_Final_API_Savings.md`**.  
+If it came from the live API `usage` × `pricing.yaml` on Groups A–H, it goes in **`CLEVER_Final_API_Savings.md`**.  
 Never average them.

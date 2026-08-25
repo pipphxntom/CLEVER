@@ -12,4 +12,4 @@
 | S2 | `SECURITY.md`, `CLEVER_Novels_Status.md` |
 | DB | `db/schema_v04.sql` |
 
-A/B (live DeepSeek, 2026-08-23): RAS questions $0 clever vs paid baseline; dunning clever **cheap $0.000136** vs baseline **strong $0.000310**.
+A/B (live HTTP API, 2026-08-23): RAS questions $0 clever vs paid baseline; dunning clever **cheap $0.000136** vs baseline **strong $0.000310**.

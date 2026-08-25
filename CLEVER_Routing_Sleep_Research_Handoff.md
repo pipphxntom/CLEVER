@@ -849,7 +849,7 @@ Step 10: Update dashboard for Thompson fields                   [superblocks/]
 
 Steps 1-3 can be tested without Docker (unit tests only).  
 Steps 4-8 require Docker (Postgres + Redis).  
-Step 9 requires DeepSeek API key.
+Step 9 requires the live API API key.
 
 ---
 

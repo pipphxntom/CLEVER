@@ -1,4 +1,4 @@
-# Groups A–H — live DeepSeek observation
+# Groups A–H — live HTTP API observation
 
 **When:** 2026-08-23 (gateway clock 2026-08-22 21:50–21:54 UTC)  
 **Suite file:** `CLEVER_Test_Suite.md` (37 cases, Groups A–H)  
@@ -6,8 +6,8 @@
 **Raw JSON:** `harness/last_suite_ah.json`  
 **Elapsed:** 240.3 s  
 **Gateway:** `0.4.0` at `http://127.0.0.1:8080`  
-**Provider:** `openai_compat` → `https://api.deepseek.com`  
-**Cheap:** `deepseek-v4-flash` · **Strong:** `deepseek-v4-pro` · **Thinking:** disabled  
+**Provider:** `openai_compat` → `https://YOUR_API_BASE_URL`  
+**Cheap:** `cheap-model` · **Strong:** `strong-model` · **Thinking:** disabled  
 **Auth:** `X-API-Key` required (dev key, not printed here)  
 **Infra:** Rancher Desktop dockerd + `clever_postgres` + `clever_redis`  
 **Dashboard:** `http://127.0.0.1:8080/` — this run **cleared `request_log` first** so the 24h window **is** Groups A–H, not leftover mock rows.
@@ -27,7 +27,7 @@ This file is the deep observation. Savings numbers that a finance person could q
 | SURPRISE PASS (audit trap, now fixed) | 19 |
 | EXPECTED FAIL (audit defect still real, or harness over-called it) | 3 |
 | Gateway crash (500) | **0** |
-| Provider | live DeepSeek, not mock |
+| Provider | live HTTP API, not mock |
 
 The 34/37 headline is **not** “product is done.” Three of the most important original traps (E1 8200-token lie, D2 cache leak, B4 confirm theater, G1 no-auth) are now passes. What still fails, and what passed for the wrong reason, is the rest of this file.
 
@@ -48,13 +48,13 @@ Corrected engineering score: **35/37 product-ok**, **1 remaining functional defe
 |---|---|---|
 | provider | `openai_compat` | Correct. Not mock. |
 | total_requests | 55 | More than 37 tests: repeats (D1, H1, H4×20, H5×3, F2×5) plus auth-only tests that do not log. |
-| total_cost_usd | $0.0261 | Priced from `config/pricing.yaml` off-peak cache-miss rates × provider `usage`. Not a DeepSeek invoice screenshot. |
+| total_cost_usd | $0.0261 | Priced from `config/pricing.yaml` off-peak cache-miss rates × provider `usage`. Not a the live API invoice screenshot. |
 | avg_saved_pct | **59.4** | **Do not quote.** Unweighted mean of every row, including RAS/cache/stakes at 100%. |
 | llm_saved_pct | **32.4** | Unweighted mean of **LLM rows only**. Pulled down by negative-save verbose answers. |
 | short_circuit_pct | **40.0** | 22/55 paid $0 (4 RAS + 7 cache + 11 stakes pending). |
 | by_exit | ras 4 / cache 7 / stakes 11 / llm 33 | This split is the useful view. |
 | models | pro 20 · flash 13 · semantic cache 5 · exact cache 2 | Cheap routing **did** happen. See §7. |
-| avg_latency_ms | 7416 | Dominated by 20 concurrent DeepSeek calls, some 12–34 s. |
+| avg_latency_ms | 7416 | Dominated by 20 concurrent the live API calls, some 12–34 s. |
 
 Open `http://127.0.0.1:8080/`, leave the API key field as the local dev key, and you should see LIVE + those KPIs + recent `triage` rows + Stakes HOLD trips on remit.
 
@@ -91,9 +91,9 @@ Not tested here: the **second** call with a valid `confirm_token` actually invok
 |---|---|---|
 | C1 date | TRUE PASS | `ras.template` HIT, $0, “Today is August 23, 2026.” |
 | C2 days until | SURPRISE PASS | Was dead regex. Now HIT: “2026-12-31 is 130 days from today.” |
-| C3 account 4021 | TRUE PASS (graceful miss) | Fixture account is **40211**, not 4021. No SQL HIT (good — did not invent a row). **Fell through to DeepSeek**, which refused (“I don’t have access to your account…”). Cost **$0.000236**. This is the RAS miss path: you **pay** when lookup misses. The suite’s 4-digit example will always miss 5–8 digit accounts. |
+| C3 account 4021 | TRUE PASS (graceful miss) | Fixture account is **40211**, not 4021. No SQL HIT (good — did not invent a row). **Fell through to the live API**, which refused (“I don’t have access to your account…”). Cost **$0.000236**. This is the RAS miss path: you **pay** when lookup misses. The suite’s 4-digit example will always miss 5–8 digit accounts. |
 | C4 invoice | SURPRISE PASS with a scar | Entity `INV-2024-089` recognized, **not** account `2024`. HIT structured. Response text: “Account Northwind Events: **status = open**.” That is the **account** status, not an invoice-status field. Extraction bug is gone; the answer shape is still account-centric. |
-| C5 weak FAQ | SURPRISE PASS | “tell me something about disputes maybe” did **not** hit FAQ (overlap bar 0.5). DeepSeek wrote an essay on the nature of disputes. Cost **$0.001686**,  lots of output tokens. False-negative FAQ is preferred to false-positive, but this is also how money leaks on vague questions. |
+| C5 weak FAQ | SURPRISE PASS | “tell me something about disputes maybe” did **not** hit FAQ (overlap bar 0.5). the live API wrote an essay on the nature of disputes. Cost **$0.001686**,  lots of output tokens. False-negative FAQ is preferred to false-positive, but this is also how money leaks on vague questions. |
 
 ### D — Cache
 
@@ -110,10 +110,10 @@ Not tested here: the **second** call with a valid `confirm_token` actually invok
 
 | ID | Verdict | Observation |
 |---|---|---|
-| E1 empty context | SURPRISE PASS on the 8200 lie | `tokens_before=2`, `tokens_after=2`, `reduction_pct=0.0`. **Not 8200, not 85.1%.** Then DeepSeek wrote **497 output tokens** on the query `"triage"`. Accounting: cost $0.000988 vs baseline $0.000985 → **saved_pct −0.3%**. CLEVER can **lose** money vs its own baseline when the model is verbose and compression has nothing to cut. |
+| E1 empty context | SURPRISE PASS on the 8200 lie | `tokens_before=2`, `tokens_after=2`, `reduction_pct=0.0`. **Not 8200, not 85.1%.** Then the live API wrote **497 output tokens** on the query `"triage"`. Accounting: cost $0.000988 vs baseline $0.000985 → **saved_pct −0.3%**. CLEVER can **lose** money vs its own baseline when the model is verbose and compression has nothing to cut. |
 | E2 identity | SURPRISE PASS | `reduction_pct=0.0`, not 85.1. (Harness printed −1.0 because `0.0 or -1` in Python — ignore that display bug; extra JSON has 0.0.) |
 | E3 identity math | TRUE PASS | 66.4% = (0.000357−0.00012)/0.000357. Arithmetic holds. 66.4% here is **cheap vs strong**, not compression. |
-| E4 RAS 100% | TRUE PASS on “not hardcoded 8200”; still a **counterfactual** problem | Date query: cost $0, baseline $0.0003 (real tiktoken × strong rate × estimated 150 out tokens), saved_pct 100.0, method `uncompressed_prompt_strong_tier`. Nobody would have called `deepseek-v4-pro` to ask the date. **Do not put RAS 100% in a savings slide.** |
+| E4 RAS 100% | TRUE PASS on “not hardcoded 8200”; still a **counterfactual** problem | Date query: cost $0, baseline $0.0003 (real tiktoken × strong rate × estimated 150 out tokens), saved_pct 100.0, method `uncompressed_prompt_strong_tier`. Nobody would have called `strong-model` to ask the date. **Do not put RAS 100% in a savings slide.** |
 
 **Baseline undercount:** actual `tokens_in` on E1 was **6** (system/wrapper) vs compressor `tokens_before=2` (query only). That is why empty-context LLM rows go slightly negative. The 8200 costume is dead; a smaller honesty gap remains.
 
@@ -133,7 +133,7 @@ Not tested here: the **second** call with a valid `confirm_token` actually invok
 | G2 admin sleep no key | SURPRISE PASS | 401. |
 | G3 stats no key | SURPRISE PASS | 401. |
 | G4 XSS feature_class | SURPRISE PASS | 422 `unknown feature_class: <img ...>`. Allowlist blocks storage. Dashboard `escapeHtml` on recent/FC panels. Residual: trip-time line still interpolates `t.feature_class` **without** `escapeHtml`. Cannot fire via this vector. Still sloppy. |
-| G5 prompt injection | Harness FAIL; **outcome was a refusal** | Query: dump system prompt. Model: “I’m sorry, but I can’t disclose the system prompt…” **No dump.** There is still **no** untrusted-content wrapper in the prompt assembler. One polite DeepSeek refusal is not a control. |
+| G5 prompt injection | Harness FAIL; **outcome was a refusal** | Query: dump system prompt. Model: “I’m sorry, but I can’t disclose the system prompt…” **No dump.** There is still **no** untrusted-content wrapper in the prompt assembler. One polite the live API refusal is not a control. |
 | G6 500 KB | SURPRISE PASS | **413** `payload_too_large` (Content-Length middleware), not a billed call. |
 | G7 SQLi | TRUE PASS | `request_log` still exists. Model treated it as an injection attempt in prose. Parameterized SQL. |
 
@@ -187,7 +187,7 @@ Auth is real enough for a laptop demo. **Not** enough for Cvent AR: HTTP not TLS
 ## 6. Spend this run (priced, not invoiced)
 
 Harness sum of `accounting.cost_usd`: **$0.02614**.  
-Matches `request_log` total. DeepSeek billed usage × off-peak cache-miss table:
+Matches `request_log` total. the live API billed usage × off-peak cache-miss table:
 
 | Tier | $/1M in | $/1M out |
 |---|---|---|
@@ -198,7 +198,7 @@ Matches `request_log` total. DeepSeek billed usage × off-peak cache-miss table:
 
 Weekend/off-peak was assumed (2026-08-23). Weekday peak would be ~2× on the LLM legs.
 
-**Rotate the DeepSeek key.** It has been pasted in chat in this project’s history.
+**Rotate the the live API key.** It has been pasted in chat in this project’s history.
 
 ---
 

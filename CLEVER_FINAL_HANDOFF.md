@@ -5,6 +5,8 @@
 **Version this packet describes:** `0.4.0`  
 **Code root:** `CLEVER-main/` (if you cloned a zip you may have `CLEVER-main/CLEVER-main/` — **run commands from the directory that contains `gateway/` and `infra/`**).
 
+**Clone-and-run (Rancher Desktop):** `RUN.md` and `powershell -File scripts\first-run.ps1`.
+
 **This is a laptop challenge build.** It is not a Cvent production service. No TLS, no SSO, no tenant isolation. Read `SECURITY.md` before pointing it at real AR data. Verdict there is still **NO-GO** for real customer data.
 
 ---
@@ -14,7 +16,7 @@
 | File | Why |
 |---|---|
 | **This file** | Install, run, where the truth is. |
-| `CLEVER_Suite_AH_Observation.md` | Groups A–H live DeepSeek, case by case, including failures. |
+| `CLEVER_Suite_AH_Observation.md` | Groups A–H live HTTP API eval, case by case, including failures. |
 | `CLEVER_Final_API_Savings.md` | The only savings percentages that use a real model. |
 | `CLEVER_Mock_Results_Separate.md` | Mock-only; do not mix into API %. |
 | `SECURITY.md` | What is gated and what is not. |
@@ -36,7 +38,7 @@ Do **not** treat `archive/glean_generators/` as source — `DO_NOT_RUN.txt`.
 | Python | 3.11+ (this run was **3.13**). |
 | Container engine | **Rancher Desktop, container engine = dockerd (moby).** Cvent-supported. **Not Docker Desktop** — it steals the `docker` context (`desktop-linux`) and this repo’s scripts will refuse it. |
 | RAM | 8 GB+ . First start downloads `pgvector` + Redis + **sentence-transformers MiniLM** (~80 MB) into the Python env. |
-| Network | DeepSeek API if you want live LLM. Mock mode works offline after images/pip are cached. |
+| Network | the live API API if you want live LLM. Mock mode works offline after images/pip are cached. |
 
 Install Rancher if needed:
 
@@ -81,12 +83,12 @@ LLM_PROVIDER=mock
 # MODEL_STRONG=<from python -m harness.check_bedrock>
 # Then: aws sso login --profile cvt-aws-developer-sandbox  (AWS CLI v2)
 
-# Leftover OpenAI-compatible path (DeepSeek evals, not Cvent):
+# Leftover OpenAI-compatible path (the live API evals, not Cvent):
 # LLM_PROVIDER=openai_compat
 # LLM_API_KEY=<your key — never commit>
-# LLM_BASE_URL=https://api.deepseek.com
-# MODEL_CHEAP=deepseek-v4-flash
-# MODEL_STRONG=deepseek-v4-pro
+# LLM_BASE_URL=https://YOUR_API_BASE_URL
+# MODEL_CHEAP=cheap-model
+# MODEL_STRONG=strong-model
 # LLM_THINKING=disabled
 # LLM_TIMEOUT_S=90
 # LLM_MAX_TOKENS=1024
@@ -175,7 +177,7 @@ Mock live eval (gateway must be `LLM_PROVIDER=mock`, stack up):
 python -m harness.run_mock_eval
 ```
 
-Groups A–H against **live** DeepSeek (gateway must be `openai_compat`, key in `.env`, stack up). **Spends money** (this run was **~$0.026** off-peak):
+Groups A–H against **live** the live API (gateway must be `openai_compat`, key in `.env`, stack up). **Spends money** (this run was **~$0.026** off-peak):
 
 ```powershell
 python -m harness.run_suite_ah
@@ -250,7 +252,7 @@ scripts/start-stack.ps1  Rancher bring-up
 
 - `.env` is gitignored. Never commit it.
 - Default keys `dev-key-change-me` / `dev-admin-change-me` are **dev only**. `CLEVER_ENV=prod` refuses them.
-- DeepSeek key used for A–H was in `.env` and **also appeared in prior chat — rotate it.**
+- the live API key used for A–H was in `.env` and **also appeared in prior chat — rotate it.**
 - This handoff does **not** contain API keys.
 
 ---
@@ -273,7 +275,7 @@ scripts/start-stack.ps1  Rancher bring-up
 
 ## 12. Honest status for the person inheriting this
 
-CLEVER **does** intercept calls, hold mutations, answer a few lookups at $0, cache with isolation, measure tokens with tiktoken, and bill from vendor usage × a real price table. Groups A–H on DeepSeek did **not** crash. The old 85.1% / 8200-token / confirm-theater / unauthenticated-route defects are **gone**.
+CLEVER **does** intercept calls, hold mutations, answer a few lookups at $0, cache with isolation, measure tokens with tiktoken, and bill from vendor usage × a real price table. Groups A–H on the live API did **not** crash. The old 85.1% / 8200-token / confirm-theater / unauthenticated-route defects are **gone**.
 
 CLEVER does **not** deliver an 80–95% production savings number. Live A–H LLM dollar-weighted save was **43.7%** under an eval `N_MIN=6`, and would have been **~14%** on the same traffic with production `N_MIN=30`. Short-circuiting 40% of *this* suite (lots of remit holds and date templates) is not the same as 40% of Cvent production traffic.
 

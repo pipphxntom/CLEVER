@@ -3,7 +3,7 @@
 **Test ID:** `real_test-2`  
 **When:** 2026-08-23  
 **Build:** v0.3.1 (after real_test-1 defects)  
-**Provider:** DeepSeek `openai_compat` (thinking disabled)  
+**Provider:** the live API `openai_compat` (thinking disabled)  
 **Eval knobs (not production):** `N_MIN=6`, `N_EXPLORE=3` in `.env`. Production defaults remain 30 / 10.  
 **Raw:** `harness/last_real_test2.json`  
 **Plots:** `harness/plots/test2_exits.png`, `harness/plots/test2_paid.png`  

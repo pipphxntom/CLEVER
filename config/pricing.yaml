@@ -5,7 +5,7 @@
 # If CAI granted different models (Nova, Llama, older Haiku 3.5), change these rates
 # before quoting any dashboard dollar column.
 #
-# Previous DeepSeek off-peak cache-miss (do not use while on Bedrock):
+# Previous HTTP-API off-peak cache-miss (do not use while on Bedrock):
 #   cheap 0.22/0.66  strong 0.66/1.98
 cheap:
   in: 1.00

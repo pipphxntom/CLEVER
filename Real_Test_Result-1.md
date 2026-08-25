@@ -5,8 +5,8 @@
 **Date:** 2026-08-23  
 **Build:** CLEVER gateway 0.3.0  
 **Engine:** Rancher Desktop dockerd (not Docker Desktop)  
-**Provider after switch:** `openai_compat` @ `https://api.deepseek.com`  
-**Models:** cheap=`deepseek-v4-flash` · strong=`deepseek-v4-pro`  
+**Provider after switch:** `openai_compat` @ `https://YOUR_API_BASE_URL`  
+**Models:** cheap=`cheap-model` · strong=`strong-model`  
 **Thinking:** disabled  
 **Pricing file:** `config/pricing.yaml` cache-miss off-peak (Sunday)  
 **Artifacts:**  
@@ -38,12 +38,12 @@ This file is the frozen record of what we measured **before** the v0.3.1 defect 
 |---|---|---|
 | pytest (unit) | 48/48 then FAQ 8/8 | Isolated logic |
 | Live mock eval | 30/30 | After flushing Redis and unique queries |
-| Live DeepSeek **first** | **11/13 FAIL** | FAQ stole dunning email |
-| Live DeepSeek **after FAQ overlap patch** | 13/13 | Still no cheap-model calls |
+| Live the live API **first** | **11/13 FAIL** | FAQ stole dunning email |
+| Live the live API **after FAQ overlap patch** | 13/13 | Still no cheap-model calls |
 
 ---
 
-## 3. Case log (DeepSeek, post-overlap-patch — last_api_eval.json)
+## 3. Case log (the live API, post-overlap-patch — last_api_eval.json)
 
 | ID | Intended | Actual | Pass |
 |---|---|---|---|
@@ -72,12 +72,12 @@ Class: **false $0 answer**. Fixed later as overlap ≥ 0.5. This result-1 includ
 
 ---
 
-## 5. Paid DeepSeek numbers (honest)
+## 5. Paid the live API numbers (honest)
 
 | Call | Model | in | out | CLEVER $ | Notes |
 |---|---|---|---|---|---|
-| Dunning clever | deepseek-v4-pro | 40 | 96 | 0.000216 | Forced strong, 45.5% compress |
-| Dunning baseline | deepseek-v4-pro | 72 | 98 | 0.000242 | Same prompt uncompressed |
+| Dunning clever | strong-model | 40 | 96 | 0.000216 | Forced strong, 45.5% compress |
+| Dunning baseline | strong-model | 72 | 98 | 0.000242 | Same prompt uncompressed |
 | **Delta** | | | | **$0.000026 (~11%)** | Compression only. **Flash unused.** |
 | Fat clever | pro (cold) | 39 | — | 0.000095 | Triage fields only |
 | Fat baseline | pro | 1281 | — | 0.000939 | Noise in prompt |

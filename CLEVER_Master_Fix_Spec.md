@@ -103,29 +103,28 @@ Introduce a **provider interface**. Swap implementations with env, not with comm
 
 | Provider | Role | When to use |
 |---|---|---|
-| **`spacexai`** (xAI API, OpenAI-compatible) | **Default for study and for proving the pipeline** | You can get a key today at [console.x.ai](https://console.x.ai). No Cvent CAI ticket. Real tokens in, real tokens out, real bills. |
+| **`openai_compat`** (HTTP chat-completions API) | **Default for study and for proving the pipeline** | Any OpenAI-compatible key + base URL. Real tokens in, real tokens out, real bills. |
 | **`ollama`** | Offline / zero-spend study | Laptop has no key, or you want to test the gateway without sending collections text to a third party. |
 | **`bedrock`** | Cvent production later | Only after CAI approves. Same interface, different client. |
 | **`mock`** | Unit tests only | Deterministic fixtures. Never the default when `CLEVER_ENV=dev` if a key exists. `/health` must report `provider=mock` so nobody confuses it with live. |
 
-SpaceXAI is the provider *name*; the actual API is xAI:
+The HTTP adapter talks to whatever chat-completions host you configure:
 
-- Key: `XAI_API_KEY` (git-ignored `.env` only)
-- Base URL: `https://api.x.ai/v1`
-- Docs: https://docs.x.ai/developers/quickstart
-- Client: `openai` Python SDK with `base_url` **or** `xai-sdk`. Prefer `AsyncOpenAI` so we do not block the event loop (the current Bedrock snippet uses sync `boto3` inside `async def` — that is one of the bugs).
+- Key: `LLM_API_KEY` (git-ignored `.env` only)
+- Base URL: `https://YOUR_API_BASE_URL/v1`
+- Client: `openai` Python SDK with `base_url`. Prefer `AsyncOpenAI` so we do not block the event loop (the current Bedrock snippet uses sync `boto3` inside `async def` — that is one of the bugs).
 
-**Live model list (docs.x.ai, fetched 2026-08-22).** Prices per 1M tokens, prompts &lt; 200k:
+**Live model ids are whatever your API account exposes.** Put cheap/strong ids in `.env`. Prices per 1M tokens belong in `config/pricing.yaml`:
 
 | Slot | Model id | Input | Output | Why |
 |---|---|---|---|---|
-| Strong (`MODEL_STRONG`) | `grok-4.6` | $2.00 | $6.00 | Current flagship |
-| Cheap (`MODEL_CHEAP`) | `grok-4.3` | $1.25 | $2.50 | Same family, lower price; enough spread to *exercise* cascade |
-| Optional cheaper | `grok-build-0.1` | $1.00 | $2.00 | If 4.3 quality is too close to 4.6 on your gold set, try this as cheap |
+| Strong (`MODEL_STRONG`) | `strong-model` | $2.00 | $6.00 | Current flagship |
+| Cheap (`MODEL_CHEAP`) | `cheap-model` | $1.25 | $2.50 | Same family, lower price; enough spread to *exercise* cascade |
+| Optional cheaper | `cheap-model` | $1.00 | $2.00 | If 4.3 quality is too close to 4.6 on your gold set, try this as cheap |
 
-This spread is **not** Haiku vs Sonnet (~4× on input). Do not expect 93% savings from routing alone on xAI. That is good: it forces savings to come from short-circuit, cache, and real compression — the parts that are actually yours.
+This spread is **not** Haiku vs Sonnet (~4× on input). Do not expect 93% savings from routing alone on the API vendor. That is good: it forces savings to come from short-circuit, cache, and real compression — the parts that are actually yours.
 
-**Embeddings:** xAI’s public model card (as of this fetch) is chat/image/video/voice, not Titan-style embeddings. Do **not** block semantic cache on Bedrock Titan. For study, embed **locally**:
+**Embeddings:** the API vendor’s public model card (as of this fetch) is chat/image/video/voice, not Titan-style embeddings. Do **not** block semantic cache on Bedrock Titan. For study, embed **locally**:
 
 - `sentence-transformers` model `all-MiniLM-L6-v2` (384-d)
 - Change `semantic_cache.embedding` from `vector(1024)` to `vector(384)`
@@ -139,7 +138,7 @@ If Cvent later mandates Titan, add `embedders/bedrock_titan.py` and a dimension 
 
 ```
 gateway/providers/base.py          # Protocol + Completion dataclass
-gateway/providers/spacexai.py      # AsyncOpenAI, api.x.ai
+gateway/providers/openai_compat.py      # AsyncOpenAI, YOUR_API_BASE_URL
 gateway/providers/ollama.py        # httpx to localhost:11434
 gateway/providers/bedrock.py       # real async, or keep mock in providers/mock.py
 gateway/providers/mock.py          # tests only
@@ -161,7 +160,7 @@ class Completion:
     raw_cost_usd: float | None  # optional; else accounting applies price table
 ```
 
-**`spacexai.py` rules**
+**`openai_compat.py` rules**
 
 - One shared `AsyncOpenAI` client on app lifespan, not per request.
 - `chat.completions.create` (stable usage fields). Timeout `LLM_TIMEOUT_S=30`. `max_tokens` from config.
@@ -172,7 +171,7 @@ class Completion:
 **Health**
 
 ```json
-{ "status": "ok", "version": "0.3.0", "provider": "spacexai", "model_cheap": "grok-4.3", "model_strong": "grok-4.6", "db": "ok", "redis": "ok" }
+{ "status": "ok", "version": "0.3.0", "provider": "openai_compat", "model_cheap": "cheap-model", "model_strong": "strong-model", "db": "ok", "redis": "ok" }
 ```
 
 If provider is mock, `status` may still be `ok` but dashboard must show a red **MOCK** badge. Silent mock is how the last dashboard lied.
@@ -180,10 +179,10 @@ If provider is mock, `status` may still be `ok` but dashboard must show a red **
 **Env (`.env.example`)**
 
 ```
-LLM_PROVIDER=spacexai
-XAI_API_KEY=
-MODEL_CHEAP=grok-4.3
-MODEL_STRONG=grok-4.6
+LLM_PROVIDER=openai_compat
+LLM_API_KEY=
+MODEL_CHEAP=cheap-model
+MODEL_STRONG=strong-model
 LLM_TIMEOUT_S=30
 EMBEDDER=sbert
 SBERT_MODEL=all-MiniLM-L6-v2
@@ -322,8 +321,8 @@ Price table in config, not scattered:
 
 ```yaml
 # config/pricing.yaml
-grok-4.3: {in: 1.25, out: 2.50}
-grok-4.6: {in: 2.00, out: 6.00}
+cheap-model: {in: 1.25, out: 2.50}
+strong-model: {in: 2.00, out: 6.00}
 # keep old haiku/sonnet rows only if bedrock adapter is on
 ```
 
@@ -520,7 +519,7 @@ key = "exact:" + ver + ":" + sha256(json.dumps(payload, sort_keys=True))
   "response": "...",
   "baseline_cost_usd": 0.027,
   "original_cost_usd": 0.0017,
-  "original_model": "grok-4.3"
+  "original_model": "cheap-model"
 }
 ```
 
@@ -806,7 +805,7 @@ Covered in H6 (lock + single worker or separate process).
 | L1 | `datetime.now(timezone.utc)` |
 | L2 | Save `requirements.txt`, `.gitignore`, `.env.example` as UTF-8 no BOM |
 | L3 | Leave empty `__init__.py` (needed for package) |
-| L4 | Drop unused `httpx` **only if** ollama/spacexai don’t need it; spacexai uses openai SDK; keep httpx for ollama |
+| L4 | Drop unused `httpx` **only if** ollama/openai_compat don’t need it; openai_compat uses openai SDK; keep httpx for ollama |
 | L5 | Guard GleanBridge |
 | L6 | Health: `db: "error"` without exception string to clients; full error in server logs |
 | L7 | Re-save `schema.sql` as UTF-8; replace `�12` with `section 12` |
@@ -846,7 +845,7 @@ Do not start with dashboard chrome. The first honest number requires B1 + a real
 
 ### Phase 1 — Honest pipeline core (2–3 days)
 
-- Provider interface + `spacexai` + `mock`
+- Provider interface + `openai_compat` + `mock`
 - Tokenizer compressor (B1)
 - Accounting sums legs (H9)
 - Logger classified intent + query_hash + cache hits (H3, H2)
@@ -857,7 +856,7 @@ Do not start with dashboard chrome. The first honest number requires B1 + a real
 - Myelination update rules (H4)
 - pytest from B4 for everything above
 
-**Exit:** mock-provider tests green; with `XAI_API_KEY`, one real `POST /v1/route` shows provider usage in the trace that matches the xAI response.
+**Exit:** mock-provider tests green; with `LLM_API_KEY`, one real `POST /v1/route` shows provider usage in the trace that matches the the API vendor response.
 
 ### Phase 2 — RAS made true + data (1–2 days)
 
@@ -882,7 +881,7 @@ Do not start with dashboard chrome. The first honest number requires B1 + a real
 
 ### Phase 5 — Study protocol (1 day)
 
-- Run gold set twice: `mode=clever` vs `mode=baseline` against **xAI**
+- Run gold set twice: `mode=clever` vs `mode=baseline` against **the API vendor**
 - Export a table: n, layer mix, actual USD, baseline USD, saved_pct **measured**
 - That table is the only savings claim you are allowed to use
 
@@ -892,7 +891,7 @@ Do not parallelize Phase 1. Later phases can overlap 3 and 4.
 
 ## 5. Study protocol (how we prove it without Bedrock)
 
-1. Get `XAI_API_KEY`. Small credit load. You will spend cents, not hundreds, if the gold set is ~50 prompts.
+1. Get `LLM_API_KEY`. Small credit load. You will spend cents, not hundreds, if the gold set is ~50 prompts.
 2. Load **synthetic** aging (faker accounts), not the real `Aging 05.18.26.xlsx`, until auth + bind + `.gitignore` are in place.
 3. Run:
 
@@ -948,7 +947,7 @@ If Phase 5 numbers are ugly, we publish the ugly numbers. We do not retune `_FUL
 | `gateway/auth.py` | **new** |
 | `gateway/tokens.py` | **new** |
 | `gateway/pipeline.py` | order, confirm branch, await myelin, log all exits, no 8200 |
-| `gateway/providers/*` | Protocol + spacexai + mock; bedrock later |
+| `gateway/providers/*` | Protocol + openai_compat + mock; bedrock later |
 | `gateway/layers/classifier.py` | YAML-driven, mutate fail-closed, phrase keywords |
 | `gateway/layers/stakes_gate.py` | YAML only |
 | `gateway/layers/ras/*` | invoice first, BM25/FTS, template group 3 |
@@ -989,7 +988,7 @@ Fix in the phase order. After each phase, tests must be green.
 
 ## 9. Direct answers, compressed
 
-**Alternative to Bedrock for the study:** SpaceXAI / xAI (`XAI_API_KEY`, `https://api.x.ai/v1`, cheap `grok-4.3`, strong `grok-4.6`). Local SBERT for embeddings. Ollama if you cannot send text off-box. Keep Bedrock as a later adapter for Cvent CAI — do not block on it.
+**Alternative to Bedrock for the study:** HTTP API / the API vendor (`LLM_API_KEY`, `https://YOUR_API_BASE_URL/v1`, cheap `cheap-model`, strong `strong-model`). Local SBERT for embeddings. Ollama if you cannot send text off-box. Keep Bedrock as a later adapter for Cvent CAI — do not block on it.
 
 **Are the novels true?** No. Pre-LLM short-circuit, cheap→strong cascade, Beta success tracking, and cache hygiene are **standard**. FrugalGPT (2023) and RouteLLM (2024) already occupy this design space. The names are branding. The “no prior art” line is the most dangerous sentence in the handoff. Delete it.
 

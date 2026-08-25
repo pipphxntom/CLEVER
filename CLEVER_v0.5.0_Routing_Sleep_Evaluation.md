@@ -1,7 +1,7 @@
 # CLEVER v0.5.0 — Routing & Sleep evaluation (honest)
 
 **Date:** 2026-08-23  
-**Gateway:** `0.5.0`, `openai_compat` (DeepSeek `deepseek-v4-flash` / `deepseek-v4-pro`)  
+**Gateway:** `0.5.0`, `openai_compat` (the live API `cheap-model` / `strong-model`)  
 **This file is the evaluation of the Thompson routing + sleep work.** It is not a savings press release.
 
 **Raw artifacts:**
@@ -20,7 +20,7 @@
 
 ## 0. Verdict in one paragraph
 
-Thompson routing and testable sleep **work as mechanisms on a live DeepSeek gateway**, when the request actually reaches myelination and when sleep is triggered by hand. They did **not** fail as a rewrite of RAS / stakes / exact cache. They also did **not** prove the research handoff’s 23–38% production savings, did **not** learn from a cold registry to lock-in without seeding, and did **not** run a week of unattended sleep.
+Thompson routing and testable sleep **work as mechanisms on a live HTTP API gateway**, when the request actually reaches myelination and when sleep is triggered by hand. They did **not** fail as a rewrite of RAS / stakes / exact cache. They also did **not** prove the research handoff’s 23–38% production savings, did **not** learn from a cold registry to lock-in without seeding, and did **not** run a week of unattended sleep.
 
 The first live pass looked like 14/18 failed. **Three of those were a harness bug** (`0.0 or 1` in Python). **One was real:** semantic cache HIT `sim=0.930` skipped myelination, so “first cheap explore” never ran. After flushing Postgres `semantic_cache` and isolating context, explore/lock-in/lock-out and sleep decay all passed.
 
@@ -109,11 +109,11 @@ The handoff was a design document. Several statements were **false or stale** ag
 | Cheap actually bad (p=0.50) | Thompson **~0%**, self-corrects; no fake win |
 | Degradation 96%→75% at t=300 | Mean Thompson save **~18%** over 5 seeds. Seed 3 was **4.9%**. We did not cherry-pick |
 
-Simulation is **not** live DeepSeek. Cheap=0.5 / strong=1.0 / escalate=1.5 is a toy cost model.
+Simulation is **not** live HTTP API. Cheap=0.5 / strong=1.0 / escalate=1.5 is a toy cost model.
 
 ---
 
-## 5. Live API observations (DeepSeek)
+## 5. Live API observations (the live API)
 
 Harness: `python -m harness.run_routing_sleep_api`  
 Spend this session: **~$0.002** (first pass ~$0.000975 + second ~$0.001375).
@@ -188,7 +188,7 @@ Fixes: compare zeros without `or 1`; `DELETE FROM semantic_cache` before routing
 |---|---|
 | “Thompson explores naturally from Beta(1,1) after cold” | **Failed as specified.** We had to **force** the first cheap trial. That deviation is load-bearing. Without it the design reintroduces the v0.3 cold-start deadlock. |
 | “No N_EXPLORE needed” | **Partly failed.** The budget is gone, but a **first-trial** exception exists, and lock-out still needs a minimum cheap count. |
-| Organic cheap unlock on live traffic | **Not demonstrated.** Registry rows were **seeded**. Nobody walked a cold route to 27 cheap successes on DeepSeek. |
+| Organic cheap unlock on live traffic | **Not demonstrated.** Registry rows were **seeded**. Nobody walked a cold route to 27 cheap successes on the live API. |
 | Production N_MIN=30 on the live gateway | **Not this run.** `.env` is still `N_MIN=6`. The below-N_MIN test proves 6, not 30. |
 | Routing save % on mixed traffic | **Not measured for v0.5.** A–H 43.7% is v0.4.0 + eval knob. Do not reuse it as a Thompson result. |
 | Semantic cache vs routing | **Interference, by design.** Pass 1 explore was a **false miss** of the routing layer. Any demo that paraphrases “draft email to Ada…” without flushing **Postgres** semantic cache is not a routing demo. |
@@ -249,7 +249,7 @@ Fixes: compare zeros without `or 1`; `DELETE FROM semantic_cache` before routing
 **Quote:**
 
 - v0.5.0 replaced Wilson LCB **gating** with Thompson + Bayesian credible lock. Update rule unchanged.
-- Live DeepSeek probe: seeded lock-in and first-explore both called flash and **kept** the cheap answer (quality 1.0). Lock-out stayed on pro. RAS/stakes/exact cache still $0 where they should be.
+- Live HTTP API probe: seeded lock-in and first-explore both called flash and **kept** the cheap answer (quality 1.0). Lock-out stayed on pro. RAS/stakes/exact cache still $0 where they should be.
 - Sleep is a manual, logged maintenance job that decays posteriors and queues FAQ **candidates**. It does not publish.
 - At production `N_MIN=30`, a 500-request **simulation** still shows LCB ~1% vs Thompson ~23–41% when cheap is 96% good.
 

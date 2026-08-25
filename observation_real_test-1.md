@@ -2,14 +2,14 @@
 # Observation — real_test-1
 
 **Observer role:** engineering review of measured behavior, not the pitch.  
-**Scope:** mock eval + first DeepSeek eval on Rancher.  
+**Scope:** mock eval + first the live API eval on Rancher.  
 **Companion:** `Real_Test_Result-1.md`
 
 ---
 
 ## What the system actually is today
 
-A FastAPI gateway in front of DeepSeek that can (1) answer a few lookups without paying, (2) hold mutate intents, (3) project context, (4) cache exact repeats, (5) force the **strong** model on new routes.
+A FastAPI gateway in front of the live API that can (1) answer a few lookups without paying, (2) hold mutate intents, (3) project context, (4) cache exact repeats, (5) force the **strong** model on new routes.
 
 It is **not** yet a cheap-model router. It is **not** a quality system for paid answers. It is **not** a source of a 70% savings KPI.
 
@@ -18,7 +18,7 @@ It is **not** yet a cheap-model router. It is **not** a quality system for paid 
 ## Observations that matter
 
 ### 1. The conveyor belt is real
-Health, auth, Rancher Postgres/Redis, template/FAQ/SQL, remit hold, exact cache, and a live `deepseek-v4-pro` call with **vendor usage tokens** all happened. That is more than the mock era.
+Health, auth, Rancher Postgres/Redis, template/FAQ/SQL, remit hold, exact cache, and a live `strong-model` call with **vendor usage tokens** all happened. That is more than the mock era.
 
 ### 2. The first paid-path failure was a $0 lie
 FAQ answering a dunning request with an SLA sentence is the worst class of bug: cheap, confident, wrong. Collections cannot ship that. Overlap ≥ 0.5 is a patch, not a knowledge base.
