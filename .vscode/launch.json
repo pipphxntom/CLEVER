@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CLEVER gateway",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["gateway.main:app", "--port", "8080"],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "jinja": false,
+      "console": "integratedTerminal"
+    }
+  ]
+}

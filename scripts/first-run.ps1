@@ -29,5 +29,6 @@ if (Get-Command python -ErrorAction SilentlyContinue) {
 Write-Host ""
 Write-Host "Stack is up. In this folder, with venv active, run:"
 Write-Host "  python -m uvicorn gateway.main:app --port 8080"
-Write-Host "Then open http://127.0.0.1:8080/  (API key field: dev-key-change-me)"
+Write-Host "Then open http://127.0.0.1:8080/  (chat) and /dashboard (metrics)"
+Write-Host "API key field: dev-key-change-me"
 Write-Host "Health:  curl.exe -s http://127.0.0.1:8080/health"

@@ -129,5 +129,13 @@ class Settings(BaseSettings):
             and self.bedrock_model("strong")
         )
 
+    def compat_partial(self) -> bool:
+        started = bool((self.LLM_API_KEY or "").strip() or (self.LLM_BASE_URL or "").strip())
+        return started and not self.compat_configured()
+
+    def bedrock_partial(self) -> bool:
+        started = self.bedrock_has_static_keys() or bool((self.AWS_PROFILE or "").strip())
+        return started and not self.bedrock_configured()
+
 
 settings = Settings()

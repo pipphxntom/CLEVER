@@ -540,7 +540,10 @@ body {
   <div class="topbar-brand">
     <div class="logo-mark">CL</div>
     <span class="brand-name">CLEVER</span>
-    <span class="brand-sub">/ Cvent AI Gateway</span>
+    <span class="brand-sub">/ live monitor</span>
+    <a href="/" style="margin-left:16px;color:var(--artifact-primary-brand);font-size:12px;text-decoration:none;">Chat</a>
+    <a href="/dashboard" style="margin-left:10px;color:var(--artifact-text-secondary);font-size:12px;text-decoration:none;">Dashboard</a>
+    <a href="/docs" style="margin-left:10px;color:var(--artifact-text-secondary);font-size:12px;text-decoration:none;">API docs</a>
   </div>
   <div class="topbar-right">
     <div class="gateway-url">
@@ -676,9 +679,10 @@ body {
 
 <script>
 // ── State ────────────────────────────────────────────────────────────
-let baseUrl = 'http://localhost:8080';
+let baseUrl = window.location.origin || 'http://127.0.0.1:8080';
 let modelChart = null;
 let lastRequestCount = 0;
+let lastRecentSig = '';
 let connected = false;
 
 function escapeHtml(s) {
@@ -742,6 +746,8 @@ async function fetchStats() {
       if (h.provider === 'mock') badge.textContent = 'MOCK';
     }
     const res = await fetch(`${baseUrl}/v1/stats`, { headers: authHeaders() });
+    if (res.status === 401) throw new Error('401: set gateway API key to CLEVER_API_KEY (dev-key-change-me)');
+    if (res.status === 429) throw new Error('429 rate limit (should not hit on stats; restart gateway)');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     setConnected(true);
@@ -753,7 +759,7 @@ async function fetchStats() {
   } catch (e) {
     setConnected(false);
     document.getElementById('errorText').textContent =
-      `Cannot reach gateway at ${baseUrl} or auth failed.`;
+      e && e.message ? e.message : `Cannot reach gateway at ${baseUrl}`;
   }
 }
 
@@ -779,7 +785,8 @@ function setConnected(ok) {
 }
 
 function reconnect() {
-  baseUrl = document.getElementById('gatewayUrl').value.replace(/\/$/, '');
+  const typed = (document.getElementById('gatewayUrl').value || '').replace(/\/$/, '');
+  baseUrl = typed || window.location.origin;
   fetchStats();
 }
 
@@ -865,7 +872,9 @@ function updateRecent(requests) {
 
   if (newCount === 0) return;
 
-  const isNew = newCount > lastRequestCount;
+  const sig = (requests[0] && (requests[0].ts + '|' + requests[0].intent + '|' + requests[0].latency_ms)) || '';
+  const isNew = sig !== lastRecentSig;
+  lastRecentSig = sig;
   lastRequestCount = newCount;
 
   tbody.innerHTML = requests.map((r, i) => {
@@ -930,9 +939,20 @@ function updateDashboard(data) {
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────
-initModelChart();
-fetchStats();
-setInterval(fetchStats, 5000);
+(function boot() {
+  const urlInput = document.getElementById('gatewayUrl');
+  if (urlInput) urlInput.value = baseUrl;
+  initModelChart();
+  fetchStats();
+  setInterval(fetchStats, 2000);
+  try {
+    const ch = new BroadcastChannel('clever-live');
+    ch.onmessage = function () { fetchStats(); };
+  } catch (e) {}
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) fetchStats();
+  });
+})();
 </script>
 
 <script>

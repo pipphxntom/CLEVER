@@ -105,6 +105,8 @@ async def test_complete_rejects_empty_text(monkeypatch):
 
 def test_factory_bedrock(monkeypatch):
     monkeypatch.setattr("gateway.config.settings.LLM_PROVIDER", "bedrock")
+    monkeypatch.setattr("gateway.config.settings.LLM_API_KEY", "")
+    monkeypatch.setattr("gateway.config.settings.LLM_BASE_URL", "")
     monkeypatch.setattr("gateway.config.settings.MODEL_CHEAP", "c")
     monkeypatch.setattr("gateway.config.settings.MODEL_STRONG", "s")
     monkeypatch.setattr("gateway.config.settings.BEDROCK_MODEL_CHEAP", "c")
@@ -121,10 +123,32 @@ def test_factory_bedrock(monkeypatch):
     assert isinstance(p, BedrockProvider)
 
 
+def test_partial_http_key_refuses_mock(monkeypatch):
+    monkeypatch.setattr("gateway.config.settings.LLM_PROVIDER", "auto")
+    monkeypatch.setattr("gateway.config.settings.LLM_API_KEY", "sk-test")
+    monkeypatch.setattr("gateway.config.settings.LLM_BASE_URL", "")
+    monkeypatch.setattr("gateway.config.settings.COMPAT_MODEL_CHEAP", "")
+    monkeypatch.setattr("gateway.config.settings.COMPAT_MODEL_STRONG", "")
+    monkeypatch.setattr("gateway.config.settings.MODEL_CHEAP", "")
+    monkeypatch.setattr("gateway.config.settings.MODEL_STRONG", "")
+    monkeypatch.setattr("gateway.config.settings.AWS_ACCESS_KEY_ID", "")
+    monkeypatch.setattr("gateway.config.settings.AWS_SECRET_ACCESS_KEY", "")
+    monkeypatch.setattr("gateway.config.settings.AWS_PROFILE", "")
+    from gateway.providers.factory import build_providers
+    with pytest.raises(RuntimeError, match="incomplete"):
+        build_providers()
+
+
 def test_auto_falls_to_mock_without_creds(monkeypatch):
     monkeypatch.setattr("gateway.config.settings.LLM_PROVIDER", "auto")
     monkeypatch.setattr("gateway.config.settings.LLM_API_KEY", "")
     monkeypatch.setattr("gateway.config.settings.LLM_BASE_URL", "")
+    monkeypatch.setattr("gateway.config.settings.COMPAT_MODEL_CHEAP", "")
+    monkeypatch.setattr("gateway.config.settings.COMPAT_MODEL_STRONG", "")
+    monkeypatch.setattr("gateway.config.settings.MODEL_CHEAP", "")
+    monkeypatch.setattr("gateway.config.settings.MODEL_STRONG", "")
+    monkeypatch.setattr("gateway.config.settings.BEDROCK_MODEL_CHEAP", "")
+    monkeypatch.setattr("gateway.config.settings.BEDROCK_MODEL_STRONG", "")
     monkeypatch.setattr("gateway.config.settings.AWS_ACCESS_KEY_ID", "")
     monkeypatch.setattr("gateway.config.settings.AWS_SECRET_ACCESS_KEY", "")
     monkeypatch.setattr("gateway.config.settings.AWS_PROFILE", "")

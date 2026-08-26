@@ -5,7 +5,15 @@ import hmac
 from collections import defaultdict
 from time import time
 
-from fastapi import Header, HTTPException, Request
+from fastapi import Header, HTTPException, Request, Security
+from fastapi.security import APIKeyHeader
+
+GATEWAY_KEY = APIKeyHeader(
+    name="X-API-Key",
+    auto_error=False,
+    scheme_name="GatewayKey",
+    description="Gateway key (local default: dev-key-change-me). Not the LLM vendor key.",
+)
 
 from gateway.config import settings
 
@@ -38,7 +46,7 @@ def _rate_limit(key: str) -> None:
 
 async def require_api_key(
     request: Request,
-    x_api_key: str | None = Header(default=None, alias="X-API-Key"),
+    x_api_key: str | None = Security(GATEWAY_KEY),
     authorization: str | None = Header(default=None),
 ) -> str:
     offered = _extract(x_api_key, authorization)
@@ -46,7 +54,10 @@ async def require_api_key(
         offered, settings.CLEVER_ADMIN_KEY
     ):
         raise HTTPException(status_code=401, detail="unauthorized")
-    _rate_limit(offered)
+    # Dashboard/chat poll GET /v1/stats every 2s. Rate-limiting those
+    # (same key as POST /v1/route) made the UI look "dead" at 60/min.
+    if request.method != "GET":
+        _rate_limit(offered)
     request.state.api_key = offered
     return offered
 

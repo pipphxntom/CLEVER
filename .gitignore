@@ -11,7 +11,9 @@ __pycache__/
 *.key
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 .idea/
 
 # OS

@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "CLEVER: Rancher stack",
+      "type": "shell",
+      "command": "powershell -File scripts/first-run.ps1",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always" }
+    }
+  ]
+}

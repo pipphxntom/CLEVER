@@ -33,8 +33,20 @@ def _try_bedrock() -> Provider | None:
 
 
 def build_providers() -> tuple[Provider, dict[str, Provider]]:
-    """Return (default, {name: provider}). Mock is always available."""
-    available: dict[str, Provider] = {"mock": MockProvider()}
+    """Return (default, {name: provider}). Mock is last-resort, never silent."""
+    if settings.compat_partial():
+        raise RuntimeError(
+            "HTTP API config is incomplete. Set LLM_API_KEY, LLM_BASE_URL, "
+            "COMPAT_MODEL_CHEAP, and COMPAT_MODEL_STRONG (or MODEL_CHEAP / MODEL_STRONG). "
+            "Refusing to fall back to mock while a partial key is present."
+        )
+    if settings.bedrock_partial():
+        raise RuntimeError(
+            "Bedrock config is incomplete. Set AWS keys (or AWS_PROFILE), AWS_REGION, "
+            "BEDROCK_MODEL_CHEAP, and BEDROCK_MODEL_STRONG. Refusing mock fallback."
+        )
+
+    available: dict[str, Provider] = {}
     compat = _try_compat()
     if compat is not None:
         available["openai_compat"] = compat
@@ -43,6 +55,11 @@ def build_providers() -> tuple[Provider, dict[str, Provider]]:
     if bedrock is not None:
         available["bedrock"] = bedrock
         log.info("backend ready: bedrock")
+    # Mock only when no live backend is configured, or LLM_PROVIDER=mock.
+    if not available or (settings.LLM_PROVIDER or "").strip().lower() == "mock":
+        available["mock"] = MockProvider()
+        if (settings.LLM_PROVIDER or "").strip().lower() != "mock":
+            log.warning("no live LLM configured; using mock. Fill .env and restart.")
 
     wanted = (settings.LLM_PROVIDER or "auto").strip().lower()
     if wanted == "auto":

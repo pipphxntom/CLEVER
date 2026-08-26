@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 
 _ROOT = Path(__file__).resolve().parents[1]
 _DASHBOARD = _ROOT / "superblocks" / "clever_dashboard.html"
+_APP = _ROOT / "superblocks" / "clever_app.html"
 
 
 @asynccontextmanager
@@ -65,7 +66,17 @@ async def lifespan(app: FastAPI):
     log.info("shutdown")
 
 
-app = FastAPI(title="CLEVER Gateway", version="0.6.0", lifespan=lifespan, docs_url="/docs" if settings.CLEVER_ENV != "prod" else None)
+app = FastAPI(
+    title="CLEVER Gateway",
+    version="0.6.0",
+    description=(
+        "Local **Authorize** → GatewayKey → value `dev-key-change-me` (or your CLEVER_API_KEY). "
+        "That is the gateway key, not the LLM vendor key. LLM credentials stay in `.env`."
+    ),
+    lifespan=lifespan,
+    docs_url="/docs" if settings.CLEVER_ENV != "prod" else None,
+    swagger_ui_parameters={"persistAuthorization": True},
+)
 
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
@@ -84,6 +95,7 @@ class HealthResponse(BaseModel):
     redis: str
     backends: dict = {}
     default_provider: str = ""
+    live_llm: bool = False
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -101,6 +113,7 @@ async def health():
     overall = "ok" if db_ok == "ok" and redis_ok == "ok" else "degraded"
     ready = sorted(getattr(app.state, "providers", {}) or {})
     default_name = getattr(app.state.provider, "name", settings.LLM_PROVIDER)
+    live = default_name not in ("mock", "", None)
     return HealthResponse(
         status=overall,
         version=app.version,
@@ -109,10 +122,23 @@ async def health():
         redis=redis_ok,
         backends={name: "ready" for name in ready},
         default_provider=default_name,
+        live_llm=live,
     )
 
 
 @app.get("/")
+async def chat_app():
+    if not _APP.exists():
+        raise HTTPException(404, "chat UI missing")
+    return FileResponse(_APP)
+
+
+@app.get("/chat")
+async def chat_app_alias():
+    return await chat_app()
+
+
+@app.get("/dashboard")
 async def dashboard():
     if not _DASHBOARD.exists():
         raise HTTPException(404, "dashboard missing")

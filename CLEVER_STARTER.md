@@ -1,23 +1,18 @@
-# CLEVER starter — clone to “it works on my machine”
+# CLEVER starter — clone to running
 
-**Short path:** `RUN.md` + `powershell -File scripts\first-run.ps1`
-
-**Audience:** you just cloned the repo. You have not run it before.  
-**Default mode in this file:** **mock LLM** (no API key, no spend). That is enough to prove the gateway, dashboard, RAS, stakes, cache plumbing, and health.  
-**OS these commands were written for:** Windows PowerShell. Linux/macOS notes at the bottom.
-
-This is a **laptop challenge build**. No TLS, no SSO. Do not point it at real customer AR data. Read `SECURITY.md` if you might.
+This is the file to follow after `git clone`. It matches the current tree (gateway `0.6.0`).  
+Laptop demo only: HTTP, no TLS, no SSO. Do not point it at real customer data. See `SECURITY.md`.
 
 ---
 
-## 0. Find the code root
+## 0. Where to run commands
 
-Commands must run from the folder that contains **`gateway/`**, **`infra/`**, **`scripts/`**, and **`requirements.txt`**.
+You must be in the folder that contains **`gateway/`**, **`infra/`**, **`scripts/`**, and **`requirements.txt`**.
 
-If you cloned a zip you may have `CLEVER-main/CLEVER-main/`. Go one level in until you see `gateway`.
+If the zip nested as `CLEVER-main/CLEVER-main/`, go **one level in**.
 
 ```powershell
-cd <the folder that contains gateway, infra, scripts>
+cd <that folder>
 dir gateway, infra, scripts, requirements.txt
 ```
 
@@ -25,27 +20,39 @@ If those four are missing, you are in the wrong directory.
 
 ---
 
-## 1. What you need installed
+## 1. What you need
 
-| Piece | Default |
+| Piece | Requirement |
 |---|---|
+| OS | Windows PowerShell below. Linux/macOS: same steps, `python3` / `source .venv/bin/activate`. |
 | Python | 3.11+ (`python --version`) |
-| Rancher Desktop | Container engine = **dockerd (moby)**. **Not Docker Desktop** — this repo’s start script will refuse `desktop-linux`. |
-| RAM | 8 GB+. First start downloads Postgres pgvector, Redis, and MiniLM (~80 MB) into the venv. |
+| Rancher Desktop | **Running**, container engine = **dockerd (moby)**. **Not Docker Desktop.** |
+| RAM | 8 GB+. First start pulls Postgres (pgvector), Redis, and a local MiniLM model. |
 
-If Rancher is missing:
+Rancher:
 
 ```powershell
 winget install -e --id SUSE.RancherDesktop
 ```
 
-Then: open **Rancher Desktop** → Preferences → Container Engine → **dockerd (moby)**. Quit Docker Desktop if it is installed. Wait until Rancher shows **Running**.
+Then: Rancher Desktop → Preferences → Container Engine → **dockerd (moby)**. Quit Docker Desktop if it is installed. Wait until the app says **Running**.
+
+This repo’s scripts **refuse** the Docker Desktop context (`desktop-linux`).
 
 ---
 
-## 2. Virtual environment (do this)
+## 2. Two different keys (do not mix them)
 
-From the code root:
+| Key | Where | What it is |
+|---|---|---|
+| **Gateway key** | Chat page, dashboard field, Swagger **Authorize** | `CLEVER_API_KEY` in `.env`. Local default: `dev-key-change-me` |
+| **LLM vendor key** | **Only** `.env` on the server | `LLM_API_KEY` (HTTP API) or AWS keys (Bedrock). Never put this in Swagger or the browser. |
+
+Swagger 401 means you did not click **Authorize** with the **gateway** key. That is expected.
+
+---
+
+## 3. Install (once per machine)
 
 ```powershell
 python -m venv .venv
@@ -55,213 +62,164 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Your prompt should show `(.venv)`. If `Activate.ps1` is blocked, the `Set-ExecutionPolicy` line is only for **this** PowerShell window.
+The prompt should show `(.venv)`.
 
-Unit tests (no Docker, no gateway):
+Unit tests (no Docker):
 
 ```powershell
 python -m pytest -q
 ```
 
-You want tests passing (currently 73). If this fails, stop — the venv or install is wrong.
+You want them green. If this fails, stop — the venv is wrong.
 
 ---
 
-## 3. Env file (default = mock)
+## 4. Env file
 
 ```powershell
 copy .env.example .env
 ```
 
-Do **not** edit it for the default walkthrough. `.env.example` already has:
+Open `.env` in VS Code.
 
-- `LLM_PROVIDER=mock`
-- `CLEVER_API_KEY=dev-key-change-me`
-- `CLEVER_ADMIN_KEY=dev-admin-change-me`
-- Postgres / Redis URLs for the local compose stack
+### Live HTTP API (chat-completions)
 
-**Do not commit `.env`.** Do not paste a live LLM key unless you intend to spend money (optional §8).
+Fill **all four** or leave **all four empty**. A half-filled file will **refuse to start** (it will not silently use mock).
 
-Do **not** add `N_MIN=6` unless you are deliberately reproducing the old eval-knob savings slide. Production default in code is `N_MIN=30`.
+```env
+LLM_PROVIDER=auto
+LLM_API_KEY=<your vendor API key>
+LLM_BASE_URL=https://YOUR_API_BASE_URL
+COMPAT_MODEL_CHEAP=<cheap model id>
+COMPAT_MODEL_STRONG=<strong model id>
+LLM_THINKING=disabled
+```
+
+Put matching USD/1M rates in `config/pricing.yaml` or the dollar columns are fiction.
+
+### Or AWS Bedrock
+
+Fill AWS keys (or `AWS_PROFILE`), `AWS_REGION`, `BEDROCK_MODEL_CHEAP`, `BEDROCK_MODEL_STRONG`. Partial Bedrock config also refuses to start.
+
+### Or mock (no spend)
+
+Leave LLM and AWS fields empty. `/health` will say `"provider":"mock"`. The chat UI will tell you it is mock. That is **not** a live model.
+
+Restart uvicorn after every `.env` change.
 
 ---
 
-## 4. Start Postgres + Redis + schema
+## 5. Start everything
 
-Rancher must be **Running**. Then:
-
-```powershell
-powershell -File scripts\start-stack.ps1
-```
-
-That script: refuses Docker Desktop, starts `clever_postgres` + `clever_redis`, applies `schema.sql` through **`schema_v05.sql`**, seeds FAQ.
-
-Load the **synthetic** aging file (two fake accounts: `40211`, `38870`):
+Rancher must already be **Running**.
 
 ```powershell
-python -m harness.load_aging
+powershell -File scripts\dev.ps1
 ```
 
-Do not point that at a production spreadsheet.
+That script:
 
-Quick check:
+1. Checks Rancher (dockerd)
+2. Creates `.env` from the example if missing
+3. Starts Postgres + Redis
+4. Applies schema, seeds FAQ, loads synthetic aging
+5. Starts the gateway on port **8080** (Ctrl+C stops the gateway, not the containers)
 
-```powershell
-docker ps --format "{{.Names}} {{.Status}}"
-```
+Leave that window open.
 
-You want `clever_postgres` and `clever_redis` **healthy**.
+### VS Code instead
+
+1. Open **this** folder as the workspace (the one with `gateway/`).
+2. Terminal: `powershell -File scripts\first-run.ps1` or task **CLEVER: Rancher stack**.
+3. Run / debug: **CLEVER gateway** (uses `.env`).
 
 ---
 
-## 5. Start the gateway
+## 6. Open the product
 
-Keep the venv active. **Leave this window open.**
+Use **one host** for all tabs: `127.0.0.1` **or** `localhost`, not both.
 
-```powershell
-python -m uvicorn gateway.main:app --host 127.0.0.1 --port 8080
+| URL | What |
+|---|---|
+| http://127.0.0.1:8080/ | **Chat** — type a prompt, get the answer in the thread |
+| http://127.0.0.1:8080/dashboard | **Live metrics** — updates when chat or Swagger calls `/v1/route` |
+| http://127.0.0.1:8080/docs | **Swagger** — Authorize first |
+| http://127.0.0.1:8080/health | JSON health |
+
+Chat / dashboard gateway-key field: `dev-key-change-me`.
+
+### First prompts in chat
+
+1. `what is today's date` — should be **$0** (RAS template, no LLM).
+2. `what is the balance on account 40211` — synthetic aging, **$0** if the fixture loaded.
+3. A real sentence (dunning draft, triage) — hits the live model if `.env` is complete; dashboard request count and cost should move.
+4. `remit payment for 40211` — **confirm hold**, no model until you click confirm.
+
+### Swagger
+
+1. Open `/docs`.
+2. Click **Authorize** → GatewayKey → `dev-key-change-me` → Authorize.
+3. `POST /v1/route` → Try it out:
+
+```json
+{"query":"what is today's date"}
 ```
 
-Wait until you see: `Application startup complete` and `Uvicorn running on http://127.0.0.1:8080`.
+4. Execute. `decision_trace` should include `ras.template` (or classifier / stakes / myelination on other queries).
+5. Refresh `/dashboard` — the same call should appear in Recent Requests.
 
-First boot may sit on MiniLM download. That is not a hang.
-
-Optional second terminal (activate `.venv` again) for all `curl` / `python -m harness...` commands below.
+If you skip Authorize, you get **401**. That is not a dead server.
 
 ---
 
-## 6. Open these in the browser
+## 7. Check that you are live
 
-| URL | What it is | What “good” looks like |
-|---|---|---|
-| **http://127.0.0.1:8080/health** | JSON health | `"status":"ok"`, `"version":"0.5.0"`, `"provider":"mock"`, `"db":"ok"`, `"redis":"ok"` |
-| **http://127.0.0.1:8080/** | **Dashboard** (this is the UI to watch) | Dark “CLEVER — AI Cost Intelligence Dashboard”. API key field should already be `dev-key-change-me`. After a few `/v1/route` calls, KPIs / recent requests populate. |
-| **http://127.0.0.1:8080/docs** | Swagger (dev only) | Try `POST /v1/route` here if you prefer a form. You must click **Authorize** and enter `dev-key-change-me` (header `X-API-Key`). |
+```powershell
+curl.exe -s http://127.0.0.1:8080/health
+```
 
-If `/health` shows `"provider":"openai_compat"` you are **not** in the default mock setup — wrong `.env` or a leftover process on 8080.
+You want `"db":"ok"`, `"redis":"ok"`, and `"provider"` equal to what you configured:
 
-**Dashboard note:** the top key field is required for `/v1/stats` polling. Empty KPIs on a fresh DB are normal until you send routes. **Do not screenshot `avg_saved_pct`** as a product number — the UI itself says that mix includes RAS/cache 100%.
+| `provider` | Meaning |
+|---|---|
+| `openai_compat` | HTTP API from `.env` |
+| `bedrock` | Bedrock from `.env` |
+| `mock` | No live LLM. Fill `.env` and restart. |
 
-Nothing else to open. Postgres/Redis have no web UI in this repo.
+`"live_llm": true` means the default backend is not mock.
 
 ---
 
-## 7. Commands that prove the pipeline (copy these)
+## 8. Stop
 
-Same machine, venv on, gateway still running.
+Gateway: Ctrl+C in the `dev.ps1` / uvicorn window.
 
-**7.1 No key → 401 (auth is on)**
-
-```powershell
-curl.exe -s -o NUL -w "%{http_code}" -X POST http://127.0.0.1:8080/v1/route -H "Content-Type: application/json" -d "{\"query\":\"hello\"}"
-```
-
-Expect: `401`
-
-**7.2 Date lookup → RAS, $0, no model**
+Containers:
 
 ```powershell
-curl.exe -s -X POST http://127.0.0.1:8080/v1/route `
-  -H "Content-Type: application/json" `
-  -H "X-API-Key: dev-key-change-me" `
-  -d "{\"query\":\"what is today's date\"}"
+docker compose -p clever -f infra\docker-compose.yml down
 ```
-
-Expect: `"status":"ok"`, `"cost_usd":0.0`, `"tokens_in":0`, a `ras.template` HIT in `decision_trace`. Refresh the dashboard — you should see a $0 RAS row.
-
-**7.3 Remit → hold, no model**
-
-```powershell
-curl.exe -s -X POST http://127.0.0.1:8080/v1/route `
-  -H "Content-Type: application/json" `
-  -H "X-API-Key: dev-key-change-me" `
-  -d "{\"query\":\"please remit payment for 40211\"}"
-```
-
-Expect: `"status":"pending_confirmation"` and a `confirmation_id`. No LLM tokens.
-
-**7.4 Structured balance (needs aging loaded)**
-
-```powershell
-curl.exe -s -X POST http://127.0.0.1:8080/v1/route `
-  -H "Content-Type: application/json" `
-  -H "X-API-Key: dev-key-change-me" `
-  -d "{\"query\":\"what is the balance on account 40211\",\"context\":{\"aging_version\":\"synthetic-v1\"}}"
-```
-
-Expect: cost `0`, RAS structured lookup, balance **12,500** / Northwind in the text.
-
-**7.5 Sleep job (admin key, not the API key)**
-
-```powershell
-curl.exe -s -X POST http://127.0.0.1:8080/v1/admin/consolidate `
-  -H "X-API-Key: dev-admin-change-me"
-```
-
-Expect: `"status":"ok"` and a `job_id`. On a fresh DB `decayed` / `candidates` may be **0**. That is still success — the job ran. `"status":"skipped_lock"` is a fail (lock stuck).
-
-**Default walkthrough is done** if 7.1–7.5 plus `/health` and the dashboard match the table in §6.
-
----
-
-## 8. Optional: live LLM (spends money)
-
-Both backends can be live at once (`LLM_PROVIDER=auto`).
-
-- **HTTP API:** `LLM_API_KEY` + `LLM_BASE_URL` + `COMPAT_MODEL_*`
-- **Bedrock:** `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` + `AWS_SESSION_TOKEN` (if STS) + `BEDROCK_MODEL_*`
-
-See `WHAT_TO_PROVIDE.md` and `RUN.md`. Restart uvicorn after filling `.env`. `/health` must show the backend you intended (`openai_compat`, `bedrock`, or `mock`). A stale process on 8080 is the usual mix-up.
-
-`config/pricing.yaml` must match the models you configured. Wrong table = dishonest dollar columns.
-
-Do not mix HTTP-API eval savings with Bedrock eval savings.
 
 ---
 
 ## 9. If it does not start
 
-| Symptom | Likely cause |
+| Symptom | Cause |
 |---|---|
-| `start-stack` / `desktop-linux` | Docker Desktop stole the CLI. Quit it. Rancher = dockerd. |
-| `rdctl` / engine not ready | Rancher still booting. Wait until **Running**. |
-| health `db: error` | Compose down, or DSN not `clever:clever`. |
-| health `redis: error` | URL must be `redis://:clever@localhost:6379/0` (password in the URL). |
-| `/v1/route` 401 | Missing `X-API-Key`. |
-| 503 `upstream_error` | Live provider timeout / bad key. Check the uvicorn window. |
-| Dashboard empty | Fresh DB, or key field blank. Send §7 routes, wait ~5s. |
-| `Activate.ps1` disabled | `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` |
-| Nested folder | You ran commands from the outer `CLEVER-main` zip wrapper. |
+| `desktop-linux` / Docker Desktop | Quit Docker Desktop. Rancher = dockerd. `docker context show` |
+| Rancher engine not ready | Wait until Rancher is **Running** |
+| Incomplete HTTP/Bedrock config | Fill **all** fields or empty **all**. Partial keys refuse startup |
+| health `db` / `redis` error | Stack down. Re-run `scripts\first-run.ps1` |
+| Chat/dashboard OFFLINE | Gateway not on 8080, or mixed `localhost` vs `127.0.0.1` |
+| Swagger 401 | Authorize with `dev-key-change-me` |
+| Dashboard MOCK | You are on mock. Not a live API. |
+| Port 8080 in use | Stop the other uvicorn. |
+| MiniLM slow first request | First embed download. Wait. |
 
 ---
 
-## 10. What to read after it boots
+## 10. What this is (and is not)
 
-| File | Why |
-|---|---|
-| `CLEVER_STARTER.md` | This file. |
-| `CLEVER_v0.5.0_Routing_Sleep_Evaluation.md` | Honest pass/fail of Thompson routing + sleep. |
-| `CLEVER_Final_API_Savings.md` | Only live dollar-weighted % (v0.4.0 A–H, `N_MIN=6` caveat). |
-| `CLEVER_Novels_Status.md` | What is a filter vs a slogan. |
-| `SECURITY.md` | NO-GO for real customer data. |
+CLEVER sits in front of an LLM: classify → stakes hold on mutations → RAS (template/SQL/FAQ) → cache → compress → cheap/strong routing → log cost vs a strong-tier baseline.
 
-Do **not** run anything under `archive/glean_generators/` (`DO_NOT_RUN.txt`).
-
----
-
-## Linux / macOS (same idea, translate the shell)
-
-```bash
-cd <folder with gateway and infra>
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-# start Rancher/docker equivalently, then:
-docker compose -p clever -f infra/docker-compose.yml up -d
-# apply db/schema.sql … schema_v05.sql and harness/seed_faq.sql the same order as scripts/start-stack.ps1
-python -m harness.load_aging
-python -m uvicorn gateway.main:app --host 127.0.0.1 --port 8080
-```
-
-Browser URLs in §6 are unchanged.
+It is **not** production Cvent AR. Analysis and old eval write-ups: `docs/analysis/`.
